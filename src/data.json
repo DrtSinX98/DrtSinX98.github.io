@@ -1,0 +1,29 @@
+[  
+    {
+        "title": "Education",
+        "image": "https://i.imgur.com/JIcNRL3.jpg",
+        "item1": "M.Sc Computational Chemistry - IIT Dhanbad",
+        "item2": "B.Sc Chemistry Majors - IGNOU New Delhi",
+        "more" : "#"
+    },
+    
+    {    
+        "title": "Interests",
+        "image": "https://i.imgur.com/DX2xTKp.jpg",
+        "item1": "Coding",
+        "item2": "Teaching",
+        "item3": "Research",
+        "item4": "Anime",
+        "more" : "#"
+    },
+    
+    {
+        "title": "Works",
+        "image": "https://i.imgur.com/AlROwnO.jpg",
+        "item1": "Research Project",
+        "item2": "Custom ROM Development",
+        "item3": "Web Development",
+        "item4": "Education",
+        "more" : "#"
+    }
+]
