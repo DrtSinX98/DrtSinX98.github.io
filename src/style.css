@@ -39,6 +39,7 @@ body {
   
   /* Main Styles */
   .container {
+    position: relative;
     max-width: 1140px;
     padding: 20px;
   }
@@ -134,3 +135,31 @@ body {
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
+
+  /* Spinner */
+
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 8px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #c91574;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
