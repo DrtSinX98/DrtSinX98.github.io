@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Image } from "react-bootstrap"
-import data from './data.json';
+import data from '../data.json';
 
 function Card() {
     return (

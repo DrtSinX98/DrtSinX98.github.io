@@ -2,9 +2,9 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import Card from './Card';
-import pfp from "../src/images/pfp.jpg"
+import pfp from "../images/pfp.jpg"
 
-export function Home() {
+function Home() {
     const date = new Date()
     const hours = date.getHours()
     let timeOfDay
@@ -47,31 +47,4 @@ export function Home() {
   );
 }
 
-export function Projects() {
-    return (
-        <Container>
-        <h1>Welcome to my Projects!</h1>
-        <p>This page will be ready soon</p>
-        </Container>
-    );
-  }
-  
-export function About() {
-    return (
-        <Container>
-        <h1>About Me</h1>
-        <p>This page will be ready soon</p>
-        </Container>
-    );
-  }
-  
-export  function Contact() {
-    return (
-        <Container>
-        <h1>Contact Me</h1>
-        <p>This page will be ready soon</p>
-        </Container>
-    );
-  }
-
-
+export default Home
