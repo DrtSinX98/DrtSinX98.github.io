@@ -14,7 +14,7 @@ function App() {
     // Simulate an API call to fetch data
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
   }, []);
 
     return (
@@ -25,14 +25,12 @@ function App() {
                 <Spinner className="spinner" />
             </div>
             ) : (
-            <div>
             <Container>
             {active === 'home' && <Home />}
             {active === 'about' && <About />}
             {active === 'projects' && <Projects />}
             {active === 'contact' && <Contact />}
             </Container>
-            </div>
             )}
         </div>
     );
