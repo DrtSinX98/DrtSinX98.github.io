@@ -15,6 +15,9 @@ body {
   /* Navbar styles */
   .header {
     background-color: #301934;
+    position: sticky;
+    top: 0;
+    z-index: 999;
   }
   .navbar {
     background-color: #301934;
