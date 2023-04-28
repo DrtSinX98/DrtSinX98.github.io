@@ -24,11 +24,11 @@ function Home() {
   return (
     <Container>
       <div className="row">
-            <div className="col-lg-4">
+            <div className="col-lg-4 image-p">
                 <img src={pfp} alt="my-pic" className="mb-4 img-fluid rounded-circle" />
             </div>
             <div className="col-lg-8">
-                <h1><span className="pink">{timeOfDay},</span> I'm Pritish Joshi</h1>
+                <div className="greet"><h1><span className="pink">{timeOfDay},</span> I'm Pritish Joshi</h1></div>
                 <p className="lead">A Tech enthusiast, Chemist, Educator and Coder</p>
                 <p className="lead">Even though I enjoy coding and techie stuff, I'm currently a postgrad student of Chemistry in <span className="pink">IIT Dhanbad</span> with a research project in Computational Chemistry and molecular dynamics</p>
                 <div className="button-container">

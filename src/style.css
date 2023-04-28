@@ -114,7 +114,19 @@ body {
     color: #c91574;
   }
 
-  /* Card styles */
+  @media (max-width: 767px) {
+    .button-container,
+    .image-p
+    {
+      display: flex;
+      justify-content:center;
+    }
+    .greet {
+      text-align: center;
+    }
+}
+
+/* Card styles */
 .card {
     background-color: #eeeafc;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
