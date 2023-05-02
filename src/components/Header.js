@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Container } from 'react-bootstrap';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Container } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 export const useActiveState = () => {
-  const [active, setActive] = useState('home');
+  const [active, setActive] = useState("home");
   const handleSelect = (key) => {
     setActive(key);
   };
@@ -12,7 +12,7 @@ export const useActiveState = () => {
 };
 
 function Header(props) {
-  const { active, handleSelect } = props
+  const { active, handleSelect } = props;
 
   return (
     <header className="header">
@@ -23,16 +23,36 @@ function Header(props) {
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
             <Nav activeKey={active} onSelect={handleSelect}>
               <Nav.Item>
-                <Nav.Link eventKey="home" className={active === 'home' ? 'active-link' : ''}>Home</Nav.Link>
+                <Nav.Link
+                  eventKey="home"
+                  className={active === "home" ? "active-link" : ""}
+                >
+                  Home
+                </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="about" className={active === 'about' ? 'active-link' : ''}>About</Nav.Link>
+                <Nav.Link
+                  eventKey="about"
+                  className={active === "about" ? "active-link" : ""}
+                >
+                  About
+                </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="projects" className={active === 'projects' ? 'active-link' : ''}>Projects</Nav.Link>
+                <Nav.Link
+                  eventKey="projects"
+                  className={active === "projects" ? "active-link" : ""}
+                >
+                  Projects
+                </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="contact" className={active === 'contact' ? 'active-link' : ''}>Contact</Nav.Link>
+                <Nav.Link
+                  eventKey="contact"
+                  className={active === "contact" ? "active-link" : ""}
+                >
+                  Contact
+                </Nav.Link>
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>
