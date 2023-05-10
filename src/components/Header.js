@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import { Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 
 export const useActiveState = () => {
   const [active, setActive] = useState("home");
