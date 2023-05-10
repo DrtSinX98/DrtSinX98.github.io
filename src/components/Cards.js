@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Col } from "react-bootstrap";
 import data from "../data.json";
 
 function Cards() {
   return data.map((item, index) => (
-    <div className="col-lg-4 col-md-6 mb-4" key={index}>
+    <Col lg={4} md={6} className="mb-4" key={index}>
       <Card>
         <Card.Img variant="top" src={item.image} alt="Card cap" />
         <Card.Body>
@@ -20,7 +20,7 @@ function Cards() {
           </Button>
         </Card.Body>
       </Card>
-    </div>
+    </Col>
   ));
 }
 

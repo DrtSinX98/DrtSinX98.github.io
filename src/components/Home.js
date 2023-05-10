@@ -1,6 +1,5 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import { Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Image } from "react-bootstrap";
 import Cards from "./Cards";
 import pfp from "../images/pfp.jpg";
 
@@ -20,15 +19,17 @@ function Home() {
   }
   return (
     <Container>
-      <div className="row">
-        <div className="col-lg-4 image-p">
-          <img
+      <Row>
+        <Col lg={4} className="image-p">
+          <Image
             src={pfp}
             alt="my-pic"
-            className="mb-4 img-fluid rounded-circle"
+            className="mb-4"
+            roundedCircle
+            fluid
           />
-        </div>
-        <div className="col-lg-8">
+        </Col>
+        <Col lg={8}>
           <div className="greet">
             <h1>
               <span className="pink">{timeOfDay},</span> I'm Pritish Joshi
@@ -64,12 +65,12 @@ function Home() {
               LinkedIn
             </Button>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
       <hr className="my-4" />
-      <div className="row">
+      <Row>
         <Cards />
-      </div>
+      </Row>
     </Container>
   );
 }
