@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import Card from "./Card";
+import Cards from "./Cards";
 import pfp from "../images/pfp.jpg";
 
 function Home() {
@@ -68,7 +68,7 @@ function Home() {
       </div>
       <hr className="my-4" />
       <div className="row">
-        <Card />
+        <Cards />
       </div>
     </Container>
   );
