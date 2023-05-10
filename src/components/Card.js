@@ -18,7 +18,7 @@ function Card() {
               {item.item4 && <li>{item.item4}</li>}
             </ul>
           </p>
-          <Button href={item.more} className="btn btn-primary">
+          <Button variant="secondary" size="sm" href={item.more}>
             More..
           </Button>
         </div>

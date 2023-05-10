@@ -12,6 +12,16 @@ a:hover {
   text-decoration: none;
 }
 
+.btn {
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 0px 10px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
 /* Navbar styles */
 .header {
   background-color: rgba(48 25 52 / 0.9);
@@ -68,40 +78,18 @@ h1 {
   line-height: 1.5;
 }
 
-.btn-primary {
-  background-color: #c91574;
-  border-color: #c91574;
-  font-size: 18px;
-}
-
-.btn-primary:hover {
-  background-color: #301934;
-  border-color: #301934;
-}
-
 .button-container {
   display: flex;
   justify-content: left;
   margin-top: 20px;
 }
 
-.github-button,
-.twitter-button,
-.linkedin-button {
+.btn-primary {
   color: #fafafa;
   background-color: #301934;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 5px;
-  margin: 0px 10px;
-  text-decoration: none;
-  transition: background-color 0.3s;
 }
 
-.github-button:hover,
-.twitter-button:hover,
-.linkedin-button:hover {
+.btn-primary:hover {
   color: #fff;
   background-color: #c91574;
   cursor: pointer;
@@ -149,6 +137,18 @@ a.pink:hover {
 
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+  background-color: #c91574;
+  font-size: 18px;
+  padding: 6px 12px;
+  margin: 0;
+}
+
+.btn-secondary:hover {
+  background-color: #301934;
+  cursor: pointer;
 }
 
 /* Spinner */

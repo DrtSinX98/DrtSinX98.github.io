@@ -43,22 +43,22 @@ function Home() {
           </p>
           <div className="button-container">
             <Button
+              variant="primary"
               href="https://github.com/DrtSinX98"
-              className="github-button"
               target="_blank"
             >
               GitHub
             </Button>
             <Button
+              variant="primary"
               href="https://twitter.com/rjpritish"
-              className="twitter-button"
               target="_blank"
             >
               Twitter
             </Button>
             <Button
+              variant="primary"
               href="https://linkedin.com/in/pritish-joshi-b870bb242"
-              className="linkedin-button"
               target="_blank"
             >
               LinkedIn
