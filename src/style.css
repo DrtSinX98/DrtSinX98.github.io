@@ -3,11 +3,21 @@
   box-sizing: border-box;
 }
 
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
 body {
   font-family: "Helvetica Neue", sans-serif;
   background-color: #eeeafc;
   color: #301934;
 }
+
 a:hover {
   text-decoration: none;
 }
