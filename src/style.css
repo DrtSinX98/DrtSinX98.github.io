@@ -8,7 +8,7 @@ html {
   scrollbar-width: none;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
 }
 
@@ -67,63 +67,6 @@ a:hover {
   max-width: 1140px;
   padding: 20px;
 }
-
-.rounded-circle {
-  width: 250px;
-  height: 250px;
-  border: 5px solid #301934;
-}
-
-.rounded-circle:hover {
-  border: 5px solid #c91574;
-}
-
-h1 {
-  font-size: 50px;
-  font-weight: bold;
-}
-
-.lead {
-  font-size: 24px;
-  line-height: 1.5;
-}
-
-.button-container {
-  display: flex;
-  justify-content: left;
-  margin-top: 20px;
-}
-
-.btn-primary {
-  color: #fafafa;
-  background-color: #301934;
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background-color: #c91574;
-  cursor: pointer;
-}
-
-.pink {
-  color: #c91574;
-}
-a.pink:hover {
-  color: #c91574;
-}
-
-@media (max-width: 767px) {
-  .button-container,
-  .image-p {
-    display: flex;
-    justify-content: center;
-  }
-  .greet {
-    text-align: center;
-  }
-}
-
-/* Card styles */
 
 /* Spinner */
 

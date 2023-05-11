@@ -1,0 +1,60 @@
+import React from "react";
+
+function Bio() {
+  const date = new Date();
+  const hours = date.getHours();
+  let timeOfDay;
+
+  if (hours < 12) {
+    timeOfDay = "Ohayou";
+  } else if (hours >= 12 && hours < 17) {
+    timeOfDay = "Konnichiwa";
+  } else if (hours >= 17 && hours < 21) {
+    timeOfDay = "Konbanwa";
+  } else {
+    timeOfDay = "Oyasumi";
+  }
+  return (
+    <div>
+      <div className="greet">
+        <h1>
+          <span className="pink">{timeOfDay},</span> I'm Pritish Joshi
+        </h1>
+      </div>
+      <p className="lead">A Tech enthusiast, Chemist, Educator and Coder</p>
+      <p className="lead">
+        Even though I enjoy coding and techie stuff, I'm currently a postgrad
+        student of Chemistry in <span className="pink">IIT Dhanbad</span> with a
+        research project in Computational Chemistry and molecular dynamics
+      </p>
+      <style>
+        {`
+          h1 {
+            font-size: 50px;
+            font-weight: bold;
+          }
+
+          .lead {
+            font-size: 24px;
+            line-height: 1.5;
+          }
+
+          .pink {
+            color: #c91574;
+          }
+
+          a.pink:hover {
+            color: #c91574;
+          }
+          @media (max-width: 767px) {
+            .greet {
+              text-align: center;
+            }
+          }
+        `}
+      </style>
+    </div>
+  );
+}
+
+export default Bio;
