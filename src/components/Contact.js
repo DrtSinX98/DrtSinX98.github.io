@@ -12,14 +12,14 @@ function Contact() {
       </div>
       </Col>
       <Col>
-      <h1>Here's how you can reach out <span className="pink">to me!</span></h1>
+      <h1>Reach out <span className="pink">to me!</span></h1>
       <p className="lead">I'm available on Linkedin, Twitter, Telegram, Whatsapp and <span className="pink">Reddit</span>Not on Facebook and Instagram though because of a certain <span className="pink">Lizard</span> XD. <br/>Below you can find my contact details, feel free to reach out.</p>
       </Col>
       </Row>
       <hr className="my-4" />
       <style>
         {`
-          ct-img {
+          #ct-img {
             width: 350px;
             height: 350px;
           }

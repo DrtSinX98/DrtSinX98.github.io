@@ -16,7 +16,7 @@ function Header(props) {
   return (
     <header className="header">
       <Container>
-        <Navbar variant="dark" expand="lg">
+        <Navbar variant="dark" expand="lg" collapseOnSelect>
           <Navbar.Brand href="#">Pritish's Dungeon</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
