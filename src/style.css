@@ -18,7 +18,7 @@ body {
   color: #301934;
 }
 
-a:hover {
+a, a:hover {
   text-decoration: none;
 }
 
