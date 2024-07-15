@@ -1,32 +1,100 @@
-import React from "react";
-import { Col, Image } from "react-bootstrap";
+import { React, useState } from "react";
+import { Col } from "react-bootstrap";
 import pfp from "../images/pfp.jpg";
+import { useSpring, animated } from "react-spring";
+import blobshape from "blobshape";
 
 function Rimage() {
   return (
     <Col lg={4} className="image-p">
-      <Image src={pfp} alt="my-pic" className="mb-4" roundedCircle fluid />
+      <div className="blob">
+        <Blob
+          color="#c91574"
+          style={{ opacity: 0.8, position: "absolute", top: 0, left: 0 }}
+        />
+        <Blob
+          color="#301934"
+          style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
+        />
+        <Blob
+          color="#c91574"
+          style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
+        />
+        <Blob
+          image
+          style={{
+            width: "92%",
+            opacity: 0.95,
+            position: "absolute",
+            top: 10,
+            left: 10
+          }}
+        />
+      </div>
       <style>
         {`
-          .rounded-circle {
-            width: 250px;
-            height: 250px;
-            border: 5px solid #301934;
+          .blob{
+          width:400px;
+          height:400px;
+          position: relative;
           }
-
-          .rounded-circle:hover {
-            border: 5px solid #c91574;
+          
+          .image-p{
+          align-items: center;
+          justify-content: center;
           }
-
-          @media (max-width: 767px) {
-            .image-p {
-              display: flex;
-              justify-content: center;
-            }
-          }
-      `}
+          
+        `}
       </style>
     </Col>
+  );
+}
+
+function getRandomPath() {
+  return blobshape({
+    growth: 8,
+    edges: 15
+  }).path;
+}
+
+function Blob(props) {
+  const [flip, set] = useState(false);
+
+  const { path } = useSpring({
+    to: { path: getRandomPath() },
+    from: { path: getRandomPath() },
+    reverse: flip,
+    config: {
+      duration: props.image ? 3000 : 2000
+    },
+    onRest: (x) => {
+      x.value.path = getRandomPath();
+      // !props.image &&
+      set(!flip);
+    }
+  });
+
+  return (
+    <svg viewBox="0 0 500 500" width="100%" style={props.style}>
+      {!props.image && <animated.path fill={props.color} d={path} />}
+
+      {props.image && (
+        <>
+          <defs>
+            <clipPath id="a">
+              <animated.path fill={props.color} d={path} />
+            </clipPath>
+          </defs>
+          <image
+            width="80%"
+            height="80%"
+            clip-path="url(#a)"
+            xlinkHref={pfp}
+            preserveAspectRatio="xMidYMid slice"
+          />
+        </>
+      )}
+    </svg>
   );
 }
 
