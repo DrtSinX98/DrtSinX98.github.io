@@ -6,13 +6,13 @@ function Bio() {
   let timeOfDay;
 
   if (hours < 12) {
-    timeOfDay = "Ohayou";
+    timeOfDay = "G'morning";
   } else if (hours >= 12 && hours < 17) {
-    timeOfDay = "Konnichiwa";
+    timeOfDay = "G'afternoon";
   } else if (hours >= 17 && hours < 21) {
-    timeOfDay = "Konbanwa";
+    timeOfDay = "G'evening";
   } else {
-    timeOfDay = "Oyasumi";
+    timeOfDay = "G'night";
   }
   return (
     <div>
@@ -21,11 +21,13 @@ function Bio() {
           <span className="pink">{timeOfDay},</span> I'm Pritish Joshi
         </h1>
       </div>
-      <p className="lead">A Tech enthusiast, Chemist, Educator and Coder</p>
+      <p className="lead">A Tech enthusiast, Researcher, Educator and Coder</p>
       <p className="lead">
-        Even though I enjoy coding and techie stuff, I'm currently a postgrad
-        student of Chemistry in <span className="pink">IIT Dhanbad</span> with a
-        research project in Computational Chemistry and molecular dynamics
+        Even though I enjoy coding and techie stuff, I'm currently a researcher in 
+        Computational Materials Design at <span className="pink">TCG CREST</span>. 
+        I've done my postgraduation in Chemistry, specializing 
+        in Computational Chemistry and molecular dynamics 
+        from <span className="pink">IIT Dhanbad</span>.
       </p>
       <style>
         {`
