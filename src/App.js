@@ -14,7 +14,7 @@ function App() {
     // Simulate an API call to fetch data
     setTimeout(() => {
       setLoading(false);
-    }, 5000);
+    }, 2000);
   }, []);
 
   return (
