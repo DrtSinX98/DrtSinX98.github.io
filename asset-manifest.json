@@ -1,20 +1,32 @@
 {
   "files": {
     "main.css": "/static/css/main.799a1637.css",
-    "main.js": "/static/js/main.c7d8bb39.js",
+    "main.js": "/static/js/main.598f55a9.js",
+    "static/media/pub.png": "/static/media/pub.47c8543dd8d5f472cf7c.png",
     "static/media/che.png": "/static/media/che.d891ef33af13dbe198e4.png",
+    "static/media/res.png": "/static/media/res.eecace93d1402152e738.png",
+    "static/media/work.png": "/static/media/work.ca12e4be243c636812a2.png",
     "static/media/edu.png": "/static/media/edu.9790be7414d2abab8854.png",
+    "static/media/cert.png": "/static/media/cert.d57e8eaa611b6576f4f5.png",
     "static/media/and.png": "/static/media/and.5b0f264548538a7ad3b5.png",
     "static/media/pfp.jpg": "/static/media/pfp.8036a0636c29a13e24fd.jpg",
+    "static/media/teach.png": "/static/media/teach.503c40a3fa4180139d6e.png",
+    "static/media/social.png": "/static/media/social.79f6b05fc4f10c044c01.png",
+    "static/media/code.png": "/static/media/code.3592daa21336ebb4cc89.png",
+    "static/media/thesis.png": "/static/media/thesis.9caebd6524c2f28fc998.png",
+    "static/media/soft.png": "/static/media/soft.04d0d211c2011be55643.png",
+    "static/media/grad.png": "/static/media/grad.1c642cec1acf85b0c217.png",
+    "static/media/hobby.png": "/static/media/hobby.67e1f1c6445164af3cc9.png",
     "static/media/pr.svg": "/static/media/pr.20f8374663704c95396fdfbc337829ee.svg",
+    "static/media/test.png": "/static/media/test.8d770a16b7b5efe3bb4c.png",
     "static/media/ct.svg": "/static/media/ct.4d92535c3f8caecc98cdb63904d0b360.svg",
     "static/media/ab.svg": "/static/media/ab.2d50a007ccb8b1d7ee949775dd38bd96.svg",
     "index.html": "/index.html",
     "main.799a1637.css.map": "/static/css/main.799a1637.css.map",
-    "main.c7d8bb39.js.map": "/static/js/main.c7d8bb39.js.map"
+    "main.598f55a9.js.map": "/static/js/main.598f55a9.js.map"
   },
   "entrypoints": [
     "static/css/main.799a1637.css",
-    "static/js/main.c7d8bb39.js"
+    "static/js/main.598f55a9.js"
   ]
 }
