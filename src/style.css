@@ -3,6 +3,7 @@
   --primary-color: #301934;
   --secondary-color: #c91574;
   --tertiary-color: #eeeafc;
+  --primary-color-dark: #130A15;
 }
 
 /* Global styles */
@@ -46,7 +47,7 @@ html {
 
 [data-bs-theme="dark"] {
   --bs-body-color: var(--tertiary-color);
-  --bs-body-bg: var(--primary-color);
+  --bs-body-bg: var(--primary-color-dark);
 
   .dropdown-menu {
     --bs-dropdown-bg: var(--primary-color);
