@@ -23,7 +23,7 @@ function Cards() {
       <style>
         {`
         .card {
-          background-color: #eeeafc;
+          background-color: var(--tertiary-color);
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
           transition: 0.3s;
         }
@@ -48,15 +48,9 @@ function Cards() {
         }
         
         .btn-secondary {
-          background-color: #c91574;
           font-size: 18px;
           padding: 6px 12px;
           margin: 0;
-        }
-        
-        .btn-secondary:hover {
-          background-color: #301934;
-          cursor: pointer;
         }
         `}
       </style>

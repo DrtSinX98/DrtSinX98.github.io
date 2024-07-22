@@ -109,11 +109,11 @@ function Contact() {
           }
 
           .pink {
-            color: #c91574;
+            color: var(--secondary-color);
           }
           
           .card {
-            background-color: #eeeafc;
+            background-color: var(--tertiary-color);
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: 0.3s;
           }
@@ -129,7 +129,7 @@ function Contact() {
           }
           
           .card:hover {
-            background-color: #301934;
+            background-color: var(--primary-color);
             color: white;
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
           }

@@ -1,3 +1,10 @@
+/* Root styles */
+:root {
+  --primary-color: #301934;
+  --secondary-color: #c91574;
+  --tertiary-color: #eeeafc;
+}
+
 /* Global styles */
 * {
   box-sizing: border-box;
@@ -14,8 +21,8 @@ html {
 
 body {
   font-family: "Helvetica Neue", sans-serif;
-  background-color: #eeeafc;
-  color: #301934;
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
 }
 
 a, a:hover {
@@ -32,6 +39,23 @@ a, a:hover {
   transition: background-color 0.3s;
 }
 
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color);
+  cursor: pointer;
+}
 /* Navbar styles */
 .header {
   background-color: rgba(48 25 52 / 0.9);
@@ -50,7 +74,7 @@ a, a:hover {
 }
 
 .navbar-nav .active {
-  background-color: #c91574;
+  background-color: var(--secondary-color);
   border-radius: 5px;
 }
 
@@ -81,7 +105,7 @@ div .spinner-container {
   position: absolute;
   top: 50%;
   border: 8px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #c91574;
+  border-left-color: var(--secondary-color);
   border-radius: 50%;
   width: 60px;
   height: 60px;

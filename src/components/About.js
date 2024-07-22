@@ -321,7 +321,7 @@ function About() {
           }
 
           .pink {
-            color: #c91574;
+            color: var(--secondary-color);
           }
           
           .card-img-top {
@@ -331,20 +331,20 @@ function About() {
 
           .card {
             height: 590px;
-            background-color: #eeeafc;
+            background-color: var(--tertiary-color);
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: 0.3s;
           }
 
           .card-title {
-            color: #c91574;
+            color: var(--secondary-color);
             font-size: 24px;
             font-weight: bold;
           }
           
 
           .card-header {
-            color: #c91574;
+            color: var(--secondary-color);
             font-size: 22px;
             font-weight: bold;
           }
@@ -355,7 +355,7 @@ function About() {
           }
           
           .card:hover {
-            background-color: #301934;
+            background-color: var(--primary-color);
             color: white;
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
           }
@@ -374,32 +374,26 @@ function About() {
           }
 
           .list-group-item:hover {
-            background-color: #c91574;
+            background-color: var(--secondary-color);
             color: white;
             font-weight: bold;
           }
 
           .list-group-item.active {
             z-index: 0;
-            color: #301934;
+            color: var(--primary-color);
             background-color: rgba(256, 256, 256, 0.0);
             border-color: rgb(222, 226, 230);
           }
 
           .list-group-item.active:hover {
-            background-color: #c91574;
+            background-color: var(--secondary-color);
           }
 
           .btn-secondary {
-            background-color: #c91574;
             font-size: 18px;
             padding: 6px 12px;
             margin: 0;
-          }
-          
-          .btn-secondary:hover {
-            background-color: #301934;
-            cursor: pointer;
           }
 
           @media (max-width: 767px) {

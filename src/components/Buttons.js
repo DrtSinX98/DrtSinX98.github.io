@@ -35,13 +35,10 @@ function Buttons() {
 
           .btn-primary {
             color: #fafafa;
-            background-color: #301934;
           }
 
           .btn-primary:hover {
             color: #fff;
-            background-color: #c91574;
-            cursor: pointer;
           }
 
           @media (max-width: 767px) {

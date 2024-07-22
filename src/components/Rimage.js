@@ -9,15 +9,15 @@ function Rimage() {
     <Col lg={4} className="image-p">
       <div className="blob">
         <Blob
-          color="#c91574"
+          color="var(--secondary-color)"
           style={{ opacity: 0.8, position: "absolute", top: 0, left: 0 }}
         />
         <Blob
-          color="#301934"
+          color="var(--primary-color)"
           style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
         />
         <Blob
-          color="#c91574"
+          color="var(--secondary-color)"
           style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
         />
         <Blob

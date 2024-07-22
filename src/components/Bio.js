@@ -42,12 +42,9 @@ function Bio() {
           }
 
           .pink {
-            color: #c91574;
+            color: var(--secondary-color);
           }
 
-          a.pink:hover {
-            color: #c91574;
-          }
           @media (max-width: 767px) {
             .greet {
               text-align: center;
