@@ -120,6 +120,7 @@ a, a:hover {
 
 @media (max-width: 767px) {
   .nav-link {
+    text-align: center;
     margin-top: 10px;
     padding-left: 5px;
   }
