@@ -15,7 +15,7 @@ function ThemeSwitch() {
   };
   
     return (
-        <div>
+        <div className="d-none d-lg-block">
           <input
             type="checkbox"
             className="checkbox"

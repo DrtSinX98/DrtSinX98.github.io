@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import ThemeSwitch from "./ThemeSwitch";
+import ThemeButton from "./ThemeButton";
 
 export const useActiveState = () => {
   const [active, setActive] = useState("home");
@@ -18,8 +19,9 @@ function Header(props) {
     <header className="header">
       <Container>
         <Navbar variant="dark" expand="lg" collapseOnSelect>
-          <Navbar.Brand href="#">Pritish's Dungeon</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Brand href="#">Pritish's Dungeon</Navbar.Brand>
+          <ThemeButton/>
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
             <Nav activeKey={active} onSelect={handleSelect}>
               <Nav.Item>
@@ -55,8 +57,8 @@ function Header(props) {
                 </Nav.Link>
               </Nav.Item>
             </Nav>
-            <ThemeSwitch/>
           </Navbar.Collapse>
+          <ThemeSwitch/>
         </Navbar>
       </Container>
     </header>
