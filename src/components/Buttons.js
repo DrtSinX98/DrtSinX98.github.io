@@ -33,10 +33,6 @@ function Buttons() {
             margin-top: 20px;
           }
 
-          .btn-primary {
-            color: #fafafa;
-          }
-
           .btn-primary:hover {
             color: #fff;
           }

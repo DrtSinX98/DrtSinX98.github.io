@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import ThemeSwitch from "./ThemeSwitch";
 
 export const useActiveState = () => {
   const [active, setActive] = useState("home");
@@ -54,6 +55,7 @@ function Header(props) {
                 </Nav.Link>
               </Nav.Item>
             </Nav>
+            <ThemeSwitch/>
           </Navbar.Collapse>
         </Navbar>
       </Container>
