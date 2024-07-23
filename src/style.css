@@ -97,37 +97,9 @@ a, a:hover {
 .btn-secondary:hover {
   cursor: pointer;
 }
-/* Navbar styles */
-.header {
-  background-color: rgba(48 25 52 / 0.9);
-  backdrop-filter: blur(3px);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-.navbar {
-  background-color: rgba(255 255 255 / 0);
-}
-
-.nav-link {
-  color: #fafafa;
-  font-size: 18px;
-}
-
-.navbar-nav .active {
-  background-color: var(--secondary-color);
-  border-radius: 5px;
-}
-
-@media (max-width: 767px) {
-  .nav-link {
-    text-align: center;
-    margin-top: 10px;
-    padding-left: 5px;
-  }
-}
 
 /* Main Styles */
+
 .container {
   position: relative;
   max-width: 1140px;

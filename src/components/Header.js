@@ -60,6 +60,38 @@ function Header(props) {
           </Navbar.Collapse>
           <ThemeSwitch/>
         </Navbar>
+        <style>
+          {`
+            .header {
+              background-color: rgba(48 25 52 / 0.9);
+              backdrop-filter: blur(3px);
+              position: sticky;
+              top: 0;
+              z-index: 999;
+            }
+            .navbar {
+              background-color: rgba(255 255 255 / 0);
+            }
+
+            .nav-link {
+              color: #fafafa;
+              font-size: 18px;
+            }
+
+            .navbar-nav .active {
+              background-color: var(--secondary-color);
+              border-radius: 5px;
+            }
+
+            @media (max-width: 767px) {
+              .nav-link {
+                text-align: center;
+                margin-top: 10px;
+                padding-left: 5px;
+              }
+            }
+          `}
+        </style>
       </Container>
     </header>
   );
