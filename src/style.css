@@ -56,7 +56,8 @@ html {
 
   .btn-secondary {
     --bs-btn-bg: var(--secondary-color);
-    --bs-btn-hover-bg: var(--primary-color);
+    --bs-btn-hover-color: var(--primary-color);
+    --bs-btn-hover-bg: var(--tertiary-color);
   }
 
   .btn-primary {

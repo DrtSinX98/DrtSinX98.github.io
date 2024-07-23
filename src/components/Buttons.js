@@ -33,10 +33,6 @@ function Buttons() {
             margin-top: 20px;
           }
 
-          .btn-primary:hover {
-            color: #fff;
-          }
-
           @media (max-width: 767px) {
             .button-container {
               display: flex;
