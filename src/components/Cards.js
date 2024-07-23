@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 import data from "../data.json";
+import ToastButton from "./ToastButton";
 
 function Cards() {
   return data.map((item, index) => (
@@ -15,9 +16,7 @@ function Cards() {
             {item.item3 && <li>{item.item3}</li>}
             {item.item4 && <li>{item.item4}</li>}
           </ul>
-          <Button variant="secondary" size="sm" href={item.more}>
-            More..
-          </Button>
+          <ToastButton/>
         </Card.Body>
       </Card>
       <style>
@@ -44,12 +43,6 @@ function Cards() {
         
         .card:hover {
           box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-secondary {
-          font-size: 18px;
-          padding: 6px 12px;
-          margin: 0;
         }
         `}
       </style>
