@@ -22,8 +22,7 @@ function Header(props) {
         <Navbar variant="dark" expand="lg" collapseOnSelect>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Brand href="#">
-            {' '}<Image src={logo} alt="logo-image" width="40" height="40" className="d-inline-block"/>
-            {' '}Pritish's Dungeon
+            <Image src={logo} alt="logo-image" height="65" className="d-inline-block"/>{' '}Dungeon
           </Navbar.Brand>
           <ThemeButton/>
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
@@ -70,12 +69,18 @@ function Header(props) {
               background-color: rgba(48 25 52 / 0.9);
               backdrop-filter: blur(3px);
               -webkit-backdrop-filter: blur(3px);
+              width: 100%;
               position: sticky;
               top: 0;
               z-index: 999;
             }
             .navbar {
               background-color: rgba(255 255 255 / 0);
+            }
+
+            .navbar-brand {
+              margin-right: 8px;
+              margin-left: 8px;
             }
 
             .nav-link {
