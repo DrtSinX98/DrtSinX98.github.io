@@ -65,6 +65,7 @@ function Header(props) {
             .header {
               background-color: rgba(48 25 52 / 0.9);
               backdrop-filter: blur(3px);
+              -webkit-backdrop-filter: blur(3px);
               position: sticky;
               top: 0;
               z-index: 999;
