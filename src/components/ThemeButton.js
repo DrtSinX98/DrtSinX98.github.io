@@ -27,7 +27,7 @@ function ThemeButton() {
             border: none;
             cursor: pointer;
             font-size: 1.5rem;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s ease;
           }
 
           .theme-button:active {
