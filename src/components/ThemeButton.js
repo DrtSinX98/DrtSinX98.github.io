@@ -18,7 +18,7 @@ function ThemeButton() {
   return (
     <div className="d-lg-none">
       <button onClick={switchTheme} aria-label="Switch between dark and light mode" className="theme-button">
-        <FontAwesomeIcon icon={theme === 'light' ? faMoon : faSun} />
+        <FontAwesomeIcon icon={theme === 'light' ? faSun : faMoon} />
       </button>
       <style>
         {`
