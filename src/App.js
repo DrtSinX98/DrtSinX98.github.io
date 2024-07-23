@@ -5,6 +5,7 @@ import About from "./components/About";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Header, { useActiveState } from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
   const { active, handleSelect } = useActiveState();
@@ -32,6 +33,7 @@ function App() {
           {active === "contact" && <Contact />}
         </Container>
       )}
+      <Footer/>
     </div>
   );
 }
