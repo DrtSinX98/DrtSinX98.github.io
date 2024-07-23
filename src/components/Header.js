@@ -93,7 +93,7 @@ function Header(props) {
               border-radius: 5px;
             }
 
-            @media (max-width: 767px) {
+            @media (max-width: 992px) {
               .nav-link {
                 text-align: center;
                 margin-top: 10px;
