@@ -88,7 +88,7 @@ function Blob(props) {
           <image
             width="80%"
             height="80%"
-            clip-path="url(#a)"
+            clipPath="url(#a)"
             xlinkHref={pfp}
             preserveAspectRatio="xMidYMid slice"
           />

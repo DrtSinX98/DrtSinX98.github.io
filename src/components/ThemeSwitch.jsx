@@ -22,10 +22,10 @@ function ThemeSwitch() {
             id="checkbox"
             onChange={switchTheme}
             aria-label="Switch between dark and light mode"/>
-            <label for="checkbox" className="checkbox-label">
+            <label htmlFor="checkbox" className="checkbox-label">
             <FontAwesomeIcon icon={faMoon} />
             <FontAwesomeIcon icon={faSun} />
-            <span class="ball"></span>
+            <span className="ball"></span>
             </label>
             <style>
               {`
