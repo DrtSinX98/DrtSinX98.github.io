@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Image , Container, Row } from "react-bootstrap";
-import pr from "../images/pr.svg";
 import AndroidProjects from "./AndroidProjects";
 import DesignProjects from "./DesignProjects";
 import CompProjects from "./CompProjects";
@@ -11,7 +10,7 @@ function Projects() {
       <Row>
       <Col lg={4} className="image-p">
       <div id="pr-img">
-      <Image src={pr} alt="project-pic" className="mb-4" fluid/>
+      <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pr.svg" alt="project-pic" className="mb-4" fluid/>
       </div>
       </Col>
       <Col>

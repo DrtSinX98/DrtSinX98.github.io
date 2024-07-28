@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import CarouselImage from './CaroselImage.jsx';
-import concetto from "../images/concetto.png";
-import stag from "../images/stag.png"
-import kj from "../images/kj.png";
 
 function DesignProjects() {
   const [index, setIndex] = useState(0);
@@ -16,7 +13,7 @@ function DesignProjects() {
     <div>
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-      <CarouselImage pic={concetto} />
+      <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/concetto.png' />
         <Carousel.Caption>
           <a href="http://www.concetto.in/" target="_blank">
             <h3>Concetto 2023</h3>
@@ -25,7 +22,7 @@ function DesignProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={stag} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/stag.png' />
         <Carousel.Caption>
           <a href="https://stag-os.org" target="_blank">
             <h3>Stag OS</h3>
@@ -34,7 +31,7 @@ function DesignProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={kj} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/kj.png' />
         <Carousel.Caption>
           <a href="https://karmajyoti.org" target="_blank">
             <h3>Karmajyoti</h3>

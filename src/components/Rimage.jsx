@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 import { Col } from "react-bootstrap";
-import pfp from "../images/pfp.jpg";
 import { useSpring, animated } from "react-spring";
 import blobshape from "blobshape";
 
@@ -89,7 +88,7 @@ function Blob(props) {
             width="80%"
             height="80%"
             clipPath="url(#a)"
-            xlinkHref={pfp}
+            xlinkHref="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp.jpg"
             preserveAspectRatio="xMidYMid slice"
           />
         </>

@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import CarouselImage from './CaroselImage.jsx';
-import cyan from "../images/cyan.png";
-import twrp from "../images/twrp.png";
-import kern from "../images/kern.png";
-import rui from "../images/rui.png";
 
 function AndroidProjects() {
   const [index, setIndex] = useState(0);
@@ -17,7 +13,7 @@ function AndroidProjects() {
     <div>
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-      <CarouselImage pic={cyan} />
+      <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/cyan.png' />
         <Carousel.Caption>
           <a href="https://github.com/Los-FE" target="_blank">
             <h3>Cyanide Project</h3>
@@ -26,7 +22,7 @@ function AndroidProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={twrp} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/twrp.png' />
         <Carousel.Caption>
           <a href="https://twrp.me/realme/realme8i.html" target="_blank">
             <h3>TWRP Spaced</h3>
@@ -35,7 +31,7 @@ function AndroidProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={kern} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/kern.png' />
         <Carousel.Caption>
           <a href="https://xdaforums.com/t/kernel-4-14-cyanide-kernel-1-0-for-realme-8i-spaced.4447145/" target="_blank">
             <h3>Cyanide Kernel</h3>
@@ -44,7 +40,7 @@ function AndroidProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={rui} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/rui.png' />
         <Carousel.Caption>
           <a href="https://github.com/DrtSinX98/Debloat" target="_blank">
             <h3>Realme Debloater</h3>

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import CarouselImage from './CaroselImage.jsx';
-import mexb from "../images/mexb.png";
-import erec from "../images/erec.png";
 
 function CompProjects() {
   const [index, setIndex] = useState(0);
@@ -15,7 +13,7 @@ function CompProjects() {
     <div>
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-      <CarouselImage pic={mexb} />
+      <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/mexb.png' />
         <Carousel.Caption>
           <a href="https://doi.org/10.1021/acs.jpcb.3c05845" target="_blank">
             <h3>MexB Inhibitors</h3>
@@ -26,7 +24,7 @@ function CompProjects() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <CarouselImage pic={erec} />
+        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/erec.png' />
         <Carousel.Caption>
           <a href="https://drive.google.com/file/d/1C5NlFdb0n3bDihn7Gv2fDqKNTCHAO9Iv/view?usp=share_link" target="_blank">
             <h3>EreC Dynamics</h3>

@@ -1,25 +1,13 @@
 import React from "react";
 import { Col, Image , Container, Row, Card, ListGroup, Button } from "react-bootstrap";
-import ab from "../images/ab.svg";
-import grad from "../images/grad.png";
-import work from "../images/work.png";
-import cert from "../images/cert.png";
-import code from "../images/code.png";
-import hobby from "../images/hobby.png";
-import res from "../images/res.png";
-import pub from "../images/pub.png";
-import teach from "../images/teach.png";
-import social from "../images/social.png";
-import soft from "../images/soft.png";
-import test from "../images/test.png";
-import thesis from "../images/thesis.png";
+
 function About() {
   return (
     <Container>
       <Row>
       <Col lg={4} className="image-p">
       <div id="ab-img">
-      <Image src={ab} alt="about-pic" className="mb-4" fluid/>
+      <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ab.svg" alt="about-pic" className="mb-4" fluid/>
       </div>
       </Col>
       <Col>
@@ -36,7 +24,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Education</Card.Header>
-            <Card.Img variant="top" src={grad} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/grad.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>IIT Dhanbad</Card.Title>
               <Card.Text className="card-text">
@@ -54,7 +42,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Work</Card.Header>
-            <Card.Img variant="top" src={work} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/work.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>RISE, TCG CREST</Card.Title>
               <Card.Text className="card-text">
@@ -72,7 +60,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Research</Card.Header>
-            <Card.Img variant="top" src={res} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/res.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Computational Chemistry</Card.Title>
               <Card.Text className="card-text">
@@ -90,7 +78,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Publications</Card.Header>
-            <Card.Img variant="top" src={pub} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pub.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Research articles</Card.Title>
               <Card.Text className="card-text">
@@ -110,7 +98,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Thesis</Card.Header>
-            <Card.Img variant="top" src={thesis} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/thesis.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Master's Thesis</Card.Title>
               <Card.Text className="card-text">
@@ -129,7 +117,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Test Scores</Card.Header>
-            <Card.Img variant="top" src={test} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/test.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>National Level Exams</Card.Title>
               <Card.Text className="card-text">
@@ -150,7 +138,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Coding</Card.Header>
-            <Card.Img variant="top" src={code} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/code.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Coding & Programming Skills</Card.Title>
               <Card.Text className="card-text">
@@ -168,7 +156,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Certificates</Card.Header>
-            <Card.Img variant="top" src={cert} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/cert.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Certification Courses</Card.Title>
               <Card.Text className="card-text">
@@ -232,7 +220,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Softwares</Card.Header>
-            <Card.Img variant="top" src={soft} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/soft.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Programs & Frameworks</Card.Title>
               <Card.Text className="card-text">
@@ -249,7 +237,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Teaching</Card.Header>
-            <Card.Img variant="top" src={teach} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/teach.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Teaching Experience</Card.Title>
               <Card.Text className="card-text">
@@ -267,7 +255,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Hobbies</Card.Header>
-            <Card.Img variant="top" src={hobby} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/hobby.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Liesure Activities</Card.Title>
               <Card.Text className="card-text">
@@ -287,7 +275,7 @@ function About() {
         <Col lg={4} md={6} className="mb-4">
           <Card>
           <Card.Header>Social Media</Card.Header>
-            <Card.Img variant="top" src={social} alt="Card cap" />
+            <Card.Img variant="top" src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/social.png" alt="Card cap" />
             <Card.Body>
               <Card.Title>Social life</Card.Title>
               <Card.Text className="card-text">

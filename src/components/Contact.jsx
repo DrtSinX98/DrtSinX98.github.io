@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Image , Container, Row, Card, Button } from "react-bootstrap";
-import ct from "../images/ct.svg";
 
 function Contact() {
   return (
@@ -8,7 +7,7 @@ function Contact() {
       <Row>
       <Col lg={4} className="image-p">
       <div id="ct-img">
-      <Image src={ct} alt="contact-pic" className="mb-4" fluid/>
+      <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ct.svg" alt="contact-pic" className="mb-4" fluid/>
       </div>
       </Col>
       <Col>
