@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Image , Container, Row, Card } from "react-bootstrap";
+import { Col, Image , Container, Row, Card, Button } from "react-bootstrap";
 import ct from "../images/ct.svg";
 
 function Contact() {
@@ -13,7 +13,7 @@ function Contact() {
       </Col>
       <Col>
       <h1>Reach out <span className="pink">to me!</span></h1>
-      <p className="lead">I'm available on <span className="pink">Linkedin</span>, Twitter, Telegram, Whatsapp, Discord, <span className="pink">Reddit</span> and Instagram. <br/>Below you can find my contact details, feel free to reach out.</p>
+      <p className="lead">I'm available on <span className="pink">Linkedin</span>, Twitter, Telegram, Whatsapp, Discord, <span className="pink">Reddit</span> and Instagram. <br/>You can <Button variant="secondary" size="sm" href="mailto:rjpritish@gmail.com" target="_blank">E-Mail</Button> me directly or find my contact details below, feel free to reach out.</p>
       </Col>
       </Row>
       <hr className="my-4" />

@@ -13,10 +13,10 @@ function Buttons() {
       </Button>
       <Button
         variant="primary"
-        href="https://twitter.com/rjpritish"
+        href="https://scholar.google.com/citations?user=jUdY7OcAAAAJ&hl=en"
         target="_blank"
       >
-        Twitter
+        Scholar
       </Button>
       <Button
         variant="primary"
