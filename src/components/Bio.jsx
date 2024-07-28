@@ -1,4 +1,5 @@
 import React from "react";
+import Typewriter from "typewriter-effect";
 
 function Bio() {
   const date = new Date();
@@ -18,7 +19,20 @@ function Bio() {
     <div>
       <div className="greet">
         <h1>
-          <span className="pink">{timeOfDay},</span> I'm Pritish Joshi
+          <span className="pink">{timeOfDay},</span>
+          <Typewriter
+            options={{
+              cursor: "_",
+            }}
+            onInit={(typewriter) => {
+              typewriter
+                .typeString("Welcome!")
+                .pauseFor(1000)
+                .deleteAll()
+                .typeString("I'm Pritish Joshi")
+                .start();
+            }}
+          />
         </h1>
       </div>
       <p className="lead">A Tech enthusiast, Researcher, Educator and Coder</p>

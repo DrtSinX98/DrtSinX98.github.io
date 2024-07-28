@@ -20,6 +20,7 @@
     "react-router-dom": "^6.25.1",
     "react-spring": "^9.7.4",
     "styled-jsx": "^5.1.6",
+    "typewriter-effect": "^2.21.0",
     "web-vitals": "^4.2.2"
   },
   "scripts": {
