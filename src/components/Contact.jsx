@@ -1,5 +1,13 @@
 import React from "react";
 import { Col, Image , Container, Row, Card, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faTelegram } from "@fortawesome/free-brands-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+
 
 function Contact() {
   return (
@@ -21,7 +29,7 @@ function Contact() {
       <a href="https://www.linkedin.com/in/pritish-joshi-b870bb242" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">LinkedIn</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faLinkedin} />{' '}LinkedIn</Card.Title>
           <Card.Text>
             Connect with me on LinkedIn
           </Card.Text>
@@ -33,7 +41,7 @@ function Contact() {
       <a href="https://x.com/rjpritish" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">Twitter</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faXTwitter} />{' '}Twitter</Card.Title>
           <Card.Text>
             Follow me on Twitter (<span className="pink">X</span>)
           </Card.Text>
@@ -45,7 +53,7 @@ function Contact() {
       <a href="https://t.me/rj_pritish" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">Telegram</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faTelegram} />{' '}Telegram</Card.Title>
           <Card.Text>
             Chat with me on Telegram
           </Card.Text>
@@ -57,7 +65,7 @@ function Contact() {
       <a href="https://whatsapp.com/channel/0029VaGxfUGDp2QAuZaTqp1G" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">Whatsapp</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faWhatsapp} />{' '}Whatsapp</Card.Title>
           <Card.Text>
             Join me on Whatsapp
           </Card.Text>
@@ -69,7 +77,7 @@ function Contact() {
       <a href="https://www.instagram.com/the_istreet" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">Instagram</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faInstagram} />{' '}Instagram</Card.Title>
           <Card.Text>
             Join my channel on Instagram
           </Card.Text>
@@ -81,7 +89,7 @@ function Contact() {
       <a href="https://discordapp.com/users/rjpritish_08301" target="_blank" rel="noreferrer">
       <Card>
         <Card.Body>
-          <Card.Title className ="pink">Discord</Card.Title>
+          <Card.Title className ="pink"><FontAwesomeIcon icon={faDiscord} />{' '}Discord</Card.Title>
           <Card.Text>
             Message me on Discord
           </Card.Text>

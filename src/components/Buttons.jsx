@@ -1,5 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogleScholar } from "@fortawesome/free-brands-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
 function Buttons() {
   return (
@@ -9,21 +13,21 @@ function Buttons() {
         href="https://github.com/DrtSinX98"
         target="_blank"
       >
-        GitHub
+        <FontAwesomeIcon icon={faGithub} />{' '}GitHub
       </Button>
       <Button
         variant="primary"
         href="https://scholar.google.com/citations?user=jUdY7OcAAAAJ&hl=en"
         target="_blank"
       >
-        Scholar
+        <FontAwesomeIcon icon={faGoogleScholar} />{' '}Scholar
       </Button>
       <Button
         variant="primary"
         href="https://linkedin.com/in/pritish-joshi-b870bb242"
         target="_blank"
       >
-        LinkedIn
+        <FontAwesomeIcon icon={faLinkedin} />{' '}LinkedIn
       </Button>
       <style>
         {`
