@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import FormControls from "../form-controls";
 
 const controls = [
@@ -18,7 +18,7 @@ const controls = [
   },
 ];
 
-function AdminProjectsView({formData, setFormData}) {
+function AdminProjectsView({formData, setFormData, handleSaveData}) {
   return (
     <Container>
       <Row>
@@ -34,6 +34,9 @@ function AdminProjectsView({formData, setFormData}) {
             formData={formData}
             setFormData={setFormData}
           />
+          <Button onClick={() => handleSaveData('projects')} variant="secondary">
+            Submit
+          </Button>
         </Col>
       </Row>
     </Container>

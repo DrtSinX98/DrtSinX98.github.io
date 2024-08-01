@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
 const AboutSchema = new mongoose.Schema({
-    heading : string,
-    summary : string
-},{timestamps : true})
+    heading : String,
+    summary : String,
+},
+{timestamps : true}
+);
 
 const About = mongoose.models.About || mongoose.model('About', AboutSchema)
 

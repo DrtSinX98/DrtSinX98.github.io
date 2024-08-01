@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 export default function FormControls({ controls, formData, setFormData }) {
   return (
@@ -23,9 +23,6 @@ export default function FormControls({ controls, formData, setFormData }) {
           />
         </Form.Group>
       ))}
-      <Button variant="secondary" type="submit">
-        Submit
-      </Button>
     </Form>
   );
 }
