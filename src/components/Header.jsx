@@ -22,7 +22,7 @@ function Header(props) {
         <Navbar variant="dark" expand="lg" collapseOnSelect>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Brand href="#">
-            <Image src={logo} alt="logo-image" height="65" className="d-inline-block"/>{' '}Dungeon
+            <Image src={logo} alt="logo-image" height="65" className="d-inline-block"/>{' '}Vortex
           </Navbar.Brand>
           <ThemeButton/>
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
@@ -79,6 +79,7 @@ function Header(props) {
             }
 
             .navbar-brand {
+              font-weight: 500;
               margin-right: 8px;
               margin-left: 8px;
             }
