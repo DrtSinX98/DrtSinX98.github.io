@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Container, Navbar, Nav, Image } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import ThemeSwitch from "./ThemeSwitch";
 import ThemeButton from "./ThemeButton";
-import logo from "../images/logo.svg"
+import Logo from "./Logo";
 
 export const useActiveState = () => {
   const [active, setActive] = useState("home");
@@ -19,10 +19,10 @@ function Header(props) {
   return (
     <header className="header">
       <Container>
-        <Navbar variant="dark" expand="lg" collapseOnSelect>
+        <Navbar expand="lg" collapseOnSelect>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Brand href="#">
-            <Image src={logo} alt="logo-image" height="65" className="d-inline-block"/>{' '}Vortex
+            <Logo alt="logo-image" height="65" width="100" className="d-inline-block"/>{' '}Vortex
           </Navbar.Brand>
           <ThemeButton/>
           <Navbar.Collapse id="basic-navbar-nav" className="col-nav">
@@ -66,7 +66,7 @@ function Header(props) {
         <style>
           {`
             .header {
-              background-color: rgba(48 25 52 / 0.9);
+              background-color: none;
               backdrop-filter: blur(3px);
               -webkit-backdrop-filter: blur(3px);
               width: 100%;
@@ -79,19 +79,32 @@ function Header(props) {
             }
 
             .navbar-brand {
+              color: var(--bs-body-color);
               font-weight: 500;
               margin-right: 8px;
               margin-left: 8px;
             }
 
             .nav-link {
-              color: #fafafa;
+              color: var(--bs-body-color);
               font-size: 18px;
+              font-weight: 450;
+              transition: transform 0.4s ease, color 0.4s ease;
             }
 
             .navbar-nav .active {
-              background-color: var(--secondary-color);
-              border-radius: 5px;
+              background-color: rgba(201 21 116 / 0.7);
+              border-radius: 30px;
+              padding: 8px;
+              transition: background-color 0.4s ease;
+            }
+
+            .navbar-nav .nav-link.active {
+              color: white;
+            }
+
+            .navbar {
+              --bs-navbar-toggler-border-color: none;
             }
 
             @media (max-width: 992px) {

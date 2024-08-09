@@ -36,7 +36,7 @@ function ThemeSwitch() {
                 }
 
                 .checkbox-label {
-                  background-color: #111;
+                  background-color: rgba(201 21 116 / 0.2);
                   width: 50px;
                   height: 26px;
                   border-radius: 50px;
@@ -49,11 +49,11 @@ function ThemeSwitch() {
                 }
 
                 .fa-moon {
-                  color: var(--tertiary-color);
+                  color: var(--bs-body-color);
                 }
 
                 .fa-sun {
-                  color: var(--tertiary-color);
+                  color: var(--bs-body-color);
                 }
 
                 .checkbox-label .ball {
