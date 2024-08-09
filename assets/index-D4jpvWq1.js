@@ -1082,7 +1082,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             }
         `})]}),i8=()=>{const[e,t]=w.useState("home");return{active:e,handleSelect:r=>{t(r)}}};function o8(e){const{active:t,handleSelect:n}=e;return c.jsx("header",{className:"header",children:c.jsxs(Fn,{children:[c.jsxs(Jo,{expand:"lg",collapseOnSelect:!0,children:[c.jsx(Jo.Toggle,{"aria-controls":"basic-navbar-nav"}),c.jsxs(Jo.Brand,{href:"#",children:[c.jsx(r8,{alt:"logo-image",height:"65",width:"100",className:"d-inline-block"})," ","Vortex"]}),c.jsx(n8,{}),c.jsx(Jo.Collapse,{id:"basic-navbar-nav",className:"col-nav",children:c.jsxs(Ut,{activeKey:t,onSelect:n,children:[c.jsx(Ut.Item,{children:c.jsx(Ut.Link,{eventKey:"home",className:t==="home"?"active-link":"",children:"Home"})}),c.jsx(Ut.Item,{children:c.jsx(Ut.Link,{eventKey:"about",className:t==="about"?"active-link":"",children:"About"})}),c.jsx(Ut.Item,{children:c.jsx(Ut.Link,{eventKey:"projects",className:t==="projects"?"active-link":"",children:"Projects"})}),c.jsx(Ut.Item,{children:c.jsx(Ut.Link,{eventKey:"contact",className:t==="contact"?"active-link":"",children:"Contact"})})]})}),c.jsx(t8,{})]}),c.jsx("style",{children:`
             .header {
-              background-color: rgba(255 255 255 / 0.0);
+              background-color: none;
               backdrop-filter: blur(3px);
               -webkit-backdrop-filter: blur(3px);
               width: 100%;
@@ -1091,7 +1091,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               z-index: 999;
             }
             .navbar {
-              background-color: none;
+              background-color: rgba(255 255 255 / 0);
             }
 
             .navbar-brand {
