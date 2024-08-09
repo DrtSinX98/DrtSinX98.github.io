@@ -34,7 +34,7 @@ function Rimage() {
         {`
           .blob{
           width:400px;
-          height:400px;
+          height:320px;
           position: relative;
           }
           
