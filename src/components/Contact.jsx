@@ -135,7 +135,7 @@ function Contact() {
           }
           
           .card:hover {
-            background-color: var(--primary-color);
+            background-color: rgba(48 25 52 / 0.8);
             --bs-card-color: var(--tertiary-color);
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
           }

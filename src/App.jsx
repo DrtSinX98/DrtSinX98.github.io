@@ -6,6 +6,7 @@ import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Header, { useActiveState } from "./components/Header";
 import Footer from "./components/Footer";
+import ParticlesBG from "./components/ParticlesBg";
 
 function App() {
   const { active, handleSelect } = useActiveState();
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <div>
+      <ParticlesBG/>
       <Header active={active} handleSelect={handleSelect} />
       {isLoading ? (
         <div className="spinner-container">

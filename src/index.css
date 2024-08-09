@@ -40,7 +40,7 @@ html {
   }
 
   .card {
-    --bs-card-bg: var(--tertiary-color);
+    --bs-card-bg: rgba(238 234 252 / 0.8);
     --bs-card-color: var(--primary-color);
   }
 }
@@ -67,7 +67,7 @@ html {
   }
 
   .card {
-    --bs-card-bg: var(--primary-color);
+    --bs-card-bg: rgba(48 25 52 / 0.8);
     --bs-card-color: var(--tertiary-color);
   }
 }
@@ -97,6 +97,11 @@ a, a:hover {
 
 .btn-secondary:hover {
   cursor: pointer;
+}
+
+.card {
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
 /* Main Styles */
