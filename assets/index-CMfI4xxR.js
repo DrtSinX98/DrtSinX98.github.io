@@ -1091,7 +1091,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               z-index: 999;
             }
             .navbar {
-              background-color: rgba(255 255 255 / 0);
+              background-color: none;
             }
 
             .navbar-brand {
