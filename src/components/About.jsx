@@ -320,7 +320,6 @@ function About() {
           .card {
             height: 590px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
           }
 
           .card-title {
@@ -358,12 +357,12 @@ function About() {
 
           .list-group-item {
             background-color: rgba(256, 256, 256, 0.0);
+            transition: background-color 0.3s ease, color 0.3s ease;
           }
 
           .list-group-item:hover {
-            background-color: var(--secondary-color);
+            background-color: rgba(201 21 116 / 0.8);
             color: white;
-            font-weight: bold;
           }
 
           .list-group-item.active {

@@ -102,6 +102,7 @@ a, a:hover {
 .card {
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  transition: background-color 2s ease, color 2s ease, box-shadow 0.5s ease;
 }
 
 /* Main Styles */
