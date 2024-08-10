@@ -68,7 +68,6 @@ function App() {
 
   return (
     <div>
-      <ParticlesBG/>
       <Header active={active} handleSelect={handleSelect} />
       {isLoading ? (
         <div className="spinner-container">
@@ -76,6 +75,7 @@ function App() {
         </div>
       ) : (
         <Container>
+          <ParticlesBG/>
           {active === "home" && <Home />}
           {active === "about" && <About />}
           {active === "projects" && <Projects />}
