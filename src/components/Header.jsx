@@ -103,6 +103,10 @@ function Header(props) {
               color: white;
             }
 
+            .navbar-nav .active:hover {
+              background-color: var(--secondary-color);
+            }
+
             .navbar {
               --bs-navbar-toggler-border-color: none;
             }
