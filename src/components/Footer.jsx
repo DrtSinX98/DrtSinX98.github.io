@@ -15,7 +15,9 @@ function Footer() {
             <style>
                 {`
                 .footer {
-                    background-color: var(--primary-color);
+                    background-color: rgba(48 25 52 / 0.8);
+                    backdrop-filter: blur(3px);
+                    -webkit-backdrop-filter: blur(3px);
                     color: var(--tertiary-color);
                     text-align: center;
                     width: 100%;
