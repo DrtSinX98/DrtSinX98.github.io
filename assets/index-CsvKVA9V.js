@@ -1134,7 +1134,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             }
           `})]})})}function Kb(){return h.jsx("footer",{className:"footer",children:h.jsxs(Di,{children:[h.jsx("div",{children:h.jsxs("p",{children:[h.jsx("span",{className:"pink",children:"©"})," 2024 Pritish Joshi",h.jsx("br",{}),h.jsx("br",{}),"Written in ",h.jsx(tt,{icon:Tb})," & ",h.jsx(tt,{icon:Mb})]})}),h.jsx("style",{children:`
                 .footer {
-                    background-color: var(--primary-color);
+                    background-color: rgba(48 25 52 / 0.8);
+                    backdrop-filter: blur(3px);
+                    -webkit-backdrop-filter: blur(3px);
                     color: var(--tertiary-color);
                     text-align: center;
                     width: 100%;
