@@ -3,6 +3,7 @@ import { Container, Spinner } from "react-bootstrap";
 import Home from "./components/Home";
 import About from "./components/About";
 import Projects from "./components/Projects";
+import Lectures from "./components/Lectures";
 import Contact from "./components/Contact";
 import Header, { useActiveState } from "./components/Header";
 import Footer from "./components/Footer";
@@ -79,6 +80,7 @@ function App() {
           {active === "home" && <Home />}
           {active === "about" && <About />}
           {active === "projects" && <Projects />}
+          {active === "lectures" && <Lectures />}
           {active === "contact" && <Contact />}
         </Container>
       )}
