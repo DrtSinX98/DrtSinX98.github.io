@@ -100,7 +100,7 @@ function Lectures() {
                                                 <ListGroup.Item>Amino acids</ListGroup.Item>
                                                 <ListGroup.Item>peptide linkages</ListGroup.Item>
                                                 <ListGroup.Item>primary, secondary and tertiary structures</ListGroup.Item>
-                                                <ListGroup.Item>Interaction of pproteins and ligands</ListGroup.Item>
+                                                <ListGroup.Item>Interaction of proteins and ligands</ListGroup.Item>
                                                 <ListGroup.Item>lipids and membranes</ListGroup.Item>
                                             </ListGroup>
                                         </Tab.Pane>
@@ -160,24 +160,21 @@ function Lectures() {
                                         Classical Force Fields
                                         </ListGroup.Item>
                                         <ListGroup.Item as="li" action href="#link2-9">
-                                        Free Energy Calculations
+                                        Free Energy Calculations & sampling Methods
                                         </ListGroup.Item>
                                         <ListGroup.Item as="li" action href="#link2-10">
-                                        Sampling Methods
-                                        </ListGroup.Item>
-                                        <ListGroup.Item as="li" action href="#link2-11">
                                         Entropy corrections
                                         </ListGroup.Item>
-                                        <ListGroup.Item as="li" action href="#link2-12">
-                                        Nudge Elastic Band Method
+                                        <ListGroup.Item as="li" action href="#link2-11">
+                                        Minimum Energy Paths of Transition
                                         </ListGroup.Item>
-                                        <ListGroup.Item as="li" action href="#link2-13">
+                                        <ListGroup.Item as="li" action href="#link2-12">
                                         QM/MM methods
                                         </ListGroup.Item>
-                                        <ListGroup.Item as="li" action href="#link2-14">
+                                        <ListGroup.Item as="li" action href="#link2-13">
                                         Hands on CMD soft matter
                                         </ListGroup.Item>
-                                        <ListGroup.Item as="li" action href="#link2-15">
+                                        <ListGroup.Item as="li" action href="#link2-14">
                                         Hands on CMD hard matter
                                         </ListGroup.Item>
                                     </ListGroup>
@@ -228,6 +225,82 @@ function Lectures() {
                                                 <ListGroup.Item>Ergodicity</ListGroup.Item>
                                                 <ListGroup.Item>Noether's Theorem</ListGroup.Item>
                                                 <ListGroup.Item>Dynamical symmetry groups</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-5">
+                                            <ListGroup>
+                                                <ListGroup.Item>Introduction</ListGroup.Item>
+                                                <ListGroup.Item>Probability Distributions</ListGroup.Item>
+                                                <ListGroup.Item>Ensembles</ListGroup.Item>
+                                                <ListGroup.Item>Thermodynamics & Statistical Mechanics Relation</ListGroup.Item>
+                                                <ListGroup.Item>Phase Transitions</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-6">
+                                            <ListGroup>
+                                                <ListGroup.Item>The Langevin Model</ListGroup.Item>
+                                                <ListGroup.Item>Linear Response Theory</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-7">
+                                            <ListGroup>
+                                                <ListGroup.Item>Applicability</ListGroup.Item>
+                                                <ListGroup.Item>Short & Long range interactions</ListGroup.Item>
+                                                <ListGroup.Item>Integrators</ListGroup.Item>
+                                                <ListGroup.Item>Thermodynamic Ensembles</ListGroup.Item>
+                                                <ListGroup.Item>Thermostats and Barostats</ListGroup.Item>
+                                                <ListGroup.Item>Boundary Conditions</ListGroup.Item>
+                                                <ListGroup.Item>Parallel MD</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-8">
+                                            <ListGroup>
+                                                <ListGroup.Item>Structure of a Force Field</ListGroup.Item>
+                                                <ListGroup.Item>Intramolecular Terms</ListGroup.Item>
+                                                <ListGroup.Item>Intermolecular Terms</ListGroup.Item>
+                                                <ListGroup.Item>Special Terms</ListGroup.Item>
+                                                <ListGroup.Item>Popular Force Fields</ListGroup.Item>
+                                                <ListGroup.Item>Parametrizing a Force Field</ListGroup.Item>
+                                                <ListGroup.Item>Beyond empirical Force Field</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-9">
+                                            <ListGroup>
+                                                <ListGroup.Item>Solvation/Transfer Free Energy</ListGroup.Item>
+                                                <ListGroup.Item>Binding Free Energy</ListGroup.Item>
+                                                <ListGroup.Item>Conformational Free Energy</ListGroup.Item>
+                                                <ListGroup.Item>Calculation of Free Energy</ListGroup.Item>
+                                                <ListGroup.Item>Brute Force Method</ListGroup.Item>
+                                                <ListGroup.Item>Thermodynamical Integration</ListGroup.Item>
+                                                <ListGroup.Item>Free Energy Perturbation</ListGroup.Item>
+                                                <ListGroup.Item>Umbrella Sampling</ListGroup.Item>
+                                                <ListGroup.Item>Potential of Mean Force</ListGroup.Item>
+                                                <ListGroup.Item>Steered Molecular Dynamics</ListGroup.Item>
+                                                <ListGroup.Item>Adaptive Biased Force</ListGroup.Item>
+                                                <ListGroup.Item>Replica Exchange/Parallel Tempering</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-10">
+                                            <ListGroup>
+                                                <ListGroup.Item>Harmonic and Quasi-harmonic techniques</ListGroup.Item>
+                                                <ListGroup.Item>Step-by-step reconstruction</ListGroup.Item>
+                                                <ListGroup.Item>Normal Mode Analysis</ListGroup.Item>
+                                                <ListGroup.Item>Interaction Entropy</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-11">
+                                            <ListGroup>
+                                                <ListGroup.Item>Chain-of-states/Plain Elastic Bands</ListGroup.Item>
+                                                <ListGroup.Item>Nudge Elastic Bands</ListGroup.Item>
+                                                <ListGroup.Item>Implementation of NEB</ListGroup.Item>
+                                            </ListGroup>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2-12">
+                                            <ListGroup>
+                                                <ListGroup.Item>Hybrid QM/MM Methods</ListGroup.Item>
+                                                <ListGroup.Item>Subtractive QM/MM Methods</ListGroup.Item>
+                                                <ListGroup.Item>Additive QM/MM Methods</ListGroup.Item>
+                                                <ListGroup.Item>Capping bonds at QM/MM boundary</ListGroup.Item>
                                             </ListGroup>
                                         </Tab.Pane>
                                     </Tab.Content>
