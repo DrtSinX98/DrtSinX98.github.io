@@ -588,12 +588,6 @@ function Lectures() {
                     justify-content: center;
                     }
                 }
-
-                @media (max-width: 1107px) {
-                    .card {
-                    height: 610px;
-                    }
-                }
                 `}
             </style>
         </Container>
