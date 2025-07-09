@@ -29,6 +29,8 @@ function App() {
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ab.svg',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pr.svg',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ct.svg',
+      'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/lc.svg',
+      'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/gl.svg',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/grad.png',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/work.png',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/cert.png',
