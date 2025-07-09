@@ -61,6 +61,14 @@ function Header(props) {
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link
+                  eventKey="gallery"
+                  className={active === "gallery" ? "active-link" : ""}
+                >
+                  Gallery
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link
                   eventKey="contact"
                   className={active === "contact" ? "active-link" : ""}
                 >

@@ -42,7 +42,7 @@ const ParticlesBG = () => {
             quantity: 4,
           },
           repulse: {
-            distance: 130,
+            distance: 80,
             duration: 0.4,
           },
         },
@@ -55,7 +55,7 @@ const ParticlesBG = () => {
           color: "#c91574",
           distance: 150,
           enable: true,
-          opacity: 0.5,
+          opacity: 0.3,
           width: 1,
         },
         move: {
@@ -72,16 +72,16 @@ const ParticlesBG = () => {
           density: {
             enable: true,
           },
-          value: 250,
+          value: 150,
         },
         opacity: {
-          value: 0.5,
+          value: 0.4,
         },
         shape: {
           type: "circle",
         },
         size: {
-          value: { min: 1, max: 5 },
+          value: { min: 2, max: 5 },
         },
       },
       detectRetina: true,
