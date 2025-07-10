@@ -165,6 +165,14 @@ import img155 from '../images/gallery/img155.jpg';
 import img156 from '../images/gallery/img156.jpg';
 import img157 from '../images/gallery/img157.jpg';
 import img158 from '../images/gallery/img158.jpg';
+import img159 from '../images/gallery/img159.jpg';
+import img160 from '../images/gallery/img160.jpg';
+import img161 from '../images/gallery/img161.jpg';
+import img162 from '../images/gallery/img162.jpg';
+import img163 from '../images/gallery/img163.jpg';
+import img164 from '../images/gallery/img164.jpg';
+import img165 from '../images/gallery/img165.jpg';
+import img166 from '../images/gallery/img166.jpg';
 
 const swedenImages = [
   { src: img1, width: 4032, height: 3024, alt: 'img1', title: 'img1' },
@@ -344,6 +352,16 @@ const sambalpurImages = [
   { src: img153, width: 2432, height: 4541, alt: 'img153', title: 'img153' },
   { src: img154, width: 2710, height: 4535, alt: 'img154', title: 'img154' }
 ];
+const chennaiImages = [
+  { src: img159, width: 3024, height: 4032, alt: 'img159', title: 'img159' },
+  { src: img160, width: 3024, height: 4032, alt: 'img160', title: 'img160' },
+  { src: img161, width: 3024, height: 4032, alt: 'img161', title: 'img161' },
+  { src: img162, width: 3024, height: 4032, alt: 'img162', title: 'img162' },
+  { src: img163, width: 3024, height: 4032, alt: 'img163', title: 'img163' },
+  { src: img164, width: 4032, height: 3024, alt: 'img164', title: 'img164' },
+  { src: img165, width: 3024, height: 4032, alt: 'img165', title: 'img165' },
+  { src: img166, width: 4032, height: 3024, alt: 'img166', title: 'img166' },
+];
 
 
 function Gallery() {
@@ -358,6 +376,7 @@ function Gallery() {
   const [index9, setIndex9] = useState(-1);
   const [index10, setIndex10] = useState(-1);
   const [index11, setIndex11] = useState(-1);
+  const [index12, setIndex12] = useState(-1);
 
   return (
     <Container>
@@ -478,43 +497,56 @@ function Gallery() {
           close={() => setIndex8(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
-        <h2 className='place'>Puducherry</h2>
+        <h2 className='place'>Chennai</h2>
         <RowsPhotoAlbum
-          photos={puduImages}
+          photos={chennaiImages}
           targetRowHeight={300}
           onClick={({ index }) => setIndex9(index)}
         />
         <Lightbox
-          slides={puduImages}
+          slides={chennaiImages}
           open={index9 >= 0}
           index={index9}
           close={() => setIndex9(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Puducherry</h2>
+        <RowsPhotoAlbum
+          photos={puduImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex10(index)}
+        />
+        <Lightbox
+          slides={puduImages}
+          open={index10 >= 0}
+          index={index10}
+          close={() => setIndex10(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
         <h2 className='place'>Dhanbad</h2>
         <RowsPhotoAlbum
           photos={dhanbadImages}
           targetRowHeight={300}
-          onClick={({ index }) => setIndex10(index)}
+          onClick={({ index }) => setIndex11(index)}
         />
         <Lightbox
           slides={dhanbadImages}
-          open={index10 >= 0}
-          index={index10}
-          close={() => setIndex10(-1)}
+          open={index11 >= 0}
+          index={index11}
+          close={() => setIndex11(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
         <h2 className='place'>Sambalpur</h2>
         <RowsPhotoAlbum
           photos={sambalpurImages}
           targetRowHeight={300}
-          onClick={({ index }) => setIndex11(index)}
+          onClick={({ index }) => setIndex12(index)}
         />
         <Lightbox
           slides={sambalpurImages}
-          open={index11 >= 0}
-          index={index11}
-          close={() => setIndex11(-1)}
+          open={index12 >= 0}
+          index={index12}
+          close={() => setIndex12(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
         <style>{`
