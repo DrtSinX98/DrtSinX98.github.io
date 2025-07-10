@@ -53,7 +53,6 @@ import img41 from '../images/gallery/img41.jpg';
 import img42 from '../images/gallery/img42.jpg';
 import img43 from '../images/gallery/img43.jpg';
 import img44 from '../images/gallery/img44.jpg';
-import img45 from '../images/gallery/img45.jpg';
 import img46 from '../images/gallery/img46.jpg';
 import img47 from '../images/gallery/img47.jpg';
 import img48 from '../images/gallery/img48.jpg';
@@ -102,7 +101,6 @@ import img90 from '../images/gallery/img90.jpg';
 import img91 from '../images/gallery/img91.jpg';
 import img92 from '../images/gallery/img92.jpg';
 import img93 from '../images/gallery/img93.jpg';
-import img94 from '../images/gallery/img94.jpg';
 import img95 from '../images/gallery/img95.jpg';
 import img96 from '../images/gallery/img96.jpg';
 import img97 from '../images/gallery/img97.jpg';
@@ -213,7 +211,6 @@ const galleryImages = [
   { src: img42, width: 3024, height: 4032, alt: 'img42', title: 'img42' },
   { src: img43, width: 3024, height: 4032, alt: 'img43', title: 'img43' },
   { src: img44, width: 2649, height: 4029, alt: 'img44', title: 'img44' },
-  { src: img45, width: 3024, height: 4032, alt: 'img45', title: 'img45' },
   { src: img46, width: 3024, height: 4032, alt: 'img46', title: 'img46' },
   { src: img47, width: 2079, height: 2697, alt: 'img47', title: 'img47' },
   { src: img48, width: 1058, height: 1417, alt: 'img48', title: 'img48' },
@@ -262,7 +259,6 @@ const galleryImages = [
   { src: img91, width: 4032, height: 3024, alt: 'img91', title: 'img91' },
   { src: img92, width: 4032, height: 3024, alt: 'img92', title: 'img92' },
   { src: img93, width: 3024, height: 4032, alt: 'img93', title: 'img93' },
-  { src: img94, width: 3024, height: 4032, alt: 'img94', title: 'img94' },
   { src: img95, width: 4032, height: 3024, alt: 'img95', title: 'img95' },
   { src: img96, width: 3024, height: 4032, alt: 'img96', title: 'img96' },
   { src: img97, width: 3024, height: 4032, alt: 'img97', title: 'img97' },
