@@ -166,10 +166,12 @@ import img156 from '../images/gallery/img156.jpg';
 import img157 from '../images/gallery/img157.jpg';
 import img158 from '../images/gallery/img158.jpg';
 
-const galleryImages = [
+const swedenImages = [
   { src: img1, width: 4032, height: 3024, alt: 'img1', title: 'img1' },
   { src: img2, width: 4032, height: 3024, alt: 'img2', title: 'img2' },
-  { src: img3, width: 3024, height: 4032, alt: 'img3', title: 'img3' },
+  { src: img3, width: 3024, height: 4032, alt: 'img3', title: 'img3' }
+];
+const thailandImages = [
   { src: img4, width: 3024, height: 4032, alt: 'img4', title: 'img4' },
   { src: img5, width: 4032, height: 3024, alt: 'img5', title: 'img5' },
   { src: img6, width: 3024, height: 4032, alt: 'img6', title: 'img6' },
@@ -180,7 +182,9 @@ const galleryImages = [
   { src: img11, width: 3024, height: 4032, alt: 'img11', title: 'img11' },
   { src: img12, width: 3024, height: 4032, alt: 'img12', title: 'img12' },
   { src: img13, width: 1242, height: 2208, alt: 'img13', title: 'img13' },
-  { src: img14, width: 3024, height: 4032, alt: 'img14', title: 'img14' },
+  { src: img14, width: 3024, height: 4032, alt: 'img14', title: 'img14' }
+];
+const mumbaiImages = [
   { src: img15, width: 4032, height: 3024, alt: 'img15', title: 'img15' },
   { src: img16, width: 3024, height: 4032, alt: 'img16', title: 'img16' },
   { src: img17, width: 4032, height: 3024, alt: 'img17', title: 'img17' },
@@ -196,14 +200,18 @@ const galleryImages = [
   { src: img27, width: 3024, height: 4032, alt: 'img27', title: 'img27' },
   { src: img28, width: 4032, height: 3024, alt: 'img28', title: 'img28' },
   { src: img29, width: 3024, height: 4032, alt: 'img29', title: 'img29' },
-  { src: img30, width: 2852, height: 3024, alt: 'img30', title: 'img30' },
+  { src: img30, width: 2852, height: 3024, alt: 'img30', title: 'img30' }
+];
+const puneImages = [
   { src: img31, width: 4032, height: 3024, alt: 'img31', title: 'img31' },
   { src: img32, width: 3024, height: 4032, alt: 'img32', title: 'img32' },
   { src: img33, width: 4032, height: 3024, alt: 'img33', title: 'img33' },
   { src: img34, width: 3024, height: 4032, alt: 'img34', title: 'img34' },
   { src: img35, width: 3024, height: 4032, alt: 'img35', title: 'img35' },
   { src: img36, width: 3024, height: 4032, alt: 'img36', title: 'img36' },
-  { src: img37, width: 3752, height: 2814, alt: 'img37', title: 'img37' },
+  { src: img37, width: 3752, height: 2814, alt: 'img37', title: 'img37' }
+];
+const darjeelingImages = [
   { src: img38, width: 1845, height: 3048, alt: 'img38', title: 'img38' },
   { src: img39, width: 3024, height: 4032, alt: 'img39', title: 'img39' },
   { src: img40, width: 3024, height: 4032, alt: 'img40', title: 'img40' },
@@ -217,7 +225,9 @@ const galleryImages = [
   { src: img49, width: 3024, height: 4032, alt: 'img49', title: 'img49' },
   { src: img50, width: 3024, height: 4032, alt: 'img50', title: 'img50' },
   { src: img51, width: 1734, height: 2312, alt: 'img51', title: 'img51' },
-  { src: img52, width: 4032, height: 3024, alt: 'img52', title: 'img52' },
+  { src: img52, width: 4032, height: 3024, alt: 'img52', title: 'img52' }
+];
+const kolkataImages = [
   { src: img53, width: 3289, height: 2701, alt: 'img53', title: 'img53' },
   { src: img54, width: 3024, height: 4032, alt: 'img54', title: 'img54' },
   { src: img55, width: 1581, height: 3024, alt: 'img55', title: 'img55' },
@@ -275,6 +285,12 @@ const galleryImages = [
   { src: img108, width: 3024, height: 4032, alt: 'img108', title: 'img108' },
   { src: img109, width: 3024, height: 4032, alt: 'img109', title: 'img109' },
   { src: img110, width: 2697, height: 3596, alt: 'img110', title: 'img110' },
+  { src: img155, width: 3022, height: 3980, alt: 'img155', title: 'img155' },
+  { src: img156, width: 3024, height: 4032, alt: 'img156', title: 'img156' },
+  { src: img157, width: 4032, height: 3024, alt: 'img157', title: 'img157' },
+  { src: img158, width: 3024, height: 4032, alt: 'img158', title: 'img158' }
+];
+const gayaImages = [
   { src: img111, width: 1909, height: 1719, alt: 'img111', title: 'img111' },
   { src: img112, width: 3917, height: 2939, alt: 'img112', title: 'img112' },
   { src: img113, width: 665, height: 2206, alt: 'img113', title: 'img113' },
@@ -286,11 +302,15 @@ const galleryImages = [
   { src: img119, width: 3021, height: 3220, alt: 'img119', title: 'img119' },
   { src: img120, width: 3214, height: 2443, alt: 'img120', title: 'img120' },
   { src: img121, width: 2133, height: 1466, alt: 'img121', title: 'img121' },
-  { src: img122, width: 3264, height: 3264, alt: 'img122', title: 'img122' },
+  { src: img122, width: 3264, height: 3264, alt: 'img122', title: 'img122' }
+];
+const shantiImages = [
   { src: img123, width: 4030, height: 2385, alt: 'img123', title: 'img123' },
   { src: img124, width: 3024, height: 4032, alt: 'img124', title: 'img124' },
   { src: img125, width: 3024, height: 4032, alt: 'img125', title: 'img125' },
-  { src: img126, width: 3024, height: 4032, alt: 'img126', title: 'img126' },
+  { src: img126, width: 3024, height: 4032, alt: 'img126', title: 'img126' }
+];
+const puduImages = [
   { src: img127, width: 3024, height: 4032, alt: 'img127', title: 'img127' },
   { src: img128, width: 2664, height: 4096, alt: 'img128', title: 'img128' },
   { src: img129, width: 4032, height: 3024, alt: 'img129', title: 'img129' },
@@ -301,7 +321,9 @@ const galleryImages = [
   { src: img134, width: 3024, height: 4032, alt: 'img134', title: 'img134' },
   { src: img135, width: 4032, height: 3024, alt: 'img135', title: 'img135' },
   { src: img136, width: 3024, height: 4032, alt: 'img136', title: 'img136' },
-  { src: img137, width: 4032, height: 3024, alt: 'img137', title: 'img137' },
+  { src: img137, width: 4032, height: 3024, alt: 'img137', title: 'img137' }
+];
+const dhanbadImages = [
   { src: img138, width: 3024, height: 4032, alt: 'img138', title: 'img138' },
   { src: img139, width: 3024, height: 4032, alt: 'img139', title: 'img139' },
   { src: img140, width: 3024, height: 4032, alt: 'img140', title: 'img140' },
@@ -311,22 +333,31 @@ const galleryImages = [
   { src: img144, width: 2705, height: 3607, alt: 'img144', title: 'img144' },
   { src: img145, width: 3024, height: 4032, alt: 'img145', title: 'img145' },
   { src: img146, width: 3024, height: 4032, alt: 'img146', title: 'img146' },
-  { src: img147, width: 1978, height: 2640, alt: 'img147', title: 'img147' },
+  { src: img147, width: 1978, height: 2640, alt: 'img147', title: 'img147' }
+];
+const sambalpurImages = [
   { src: img148, width: 3021, height: 3604, alt: 'img148', title: 'img148' },
   { src: img149, width: 3022, height: 3305, alt: 'img149', title: 'img149' },
   { src: img150, width: 4032, height: 3024, alt: 'img150', title: 'img150' },
   { src: img151, width: 3024, height: 4032, alt: 'img151', title: 'img151' },
   { src: img152, width: 3024, height: 4032, alt: 'img152', title: 'img152' },
   { src: img153, width: 2432, height: 4541, alt: 'img153', title: 'img153' },
-  { src: img154, width: 2710, height: 4535, alt: 'img154', title: 'img154' },
-  { src: img155, width: 3022, height: 3980, alt: 'img155', title: 'img155' },
-  { src: img156, width: 3024, height: 4032, alt: 'img156', title: 'img156' },
-  { src: img157, width: 4032, height: 3024, alt: 'img157', title: 'img157' },
-  { src: img158, width: 3024, height: 4032, alt: 'img158', title: 'img158' },
+  { src: img154, width: 2710, height: 4535, alt: 'img154', title: 'img154' }
 ];
 
+
 function Gallery() {
-  const [index, setIndex] = useState(-1);
+  const [index1, setIndex1] = useState(-1);
+  const [index2, setIndex2] = useState(-1);
+  const [index3, setIndex3] = useState(-1);
+  const [index4, setIndex4] = useState(-1);
+  const [index5, setIndex5] = useState(-1);
+  const [index6, setIndex6] = useState(-1);
+  const [index7, setIndex7] = useState(-1);
+  const [index8, setIndex8] = useState(-1);
+  const [index9, setIndex9] = useState(-1);
+  const [index10, setIndex10] = useState(-1);
+  const [index11, setIndex11] = useState(-1);
 
   return (
     <Container>
@@ -343,16 +374,147 @@ function Gallery() {
       </Row>
       <hr className="my-4" />
       <>
+        <h2 className='place'>Sweden</h2>
         <RowsPhotoAlbum
-          photos={galleryImages}
+          photos={swedenImages}
           targetRowHeight={300}
-          onClick={({ index }) => setIndex(index)}
+          onClick={({ index }) => setIndex1(index)}
         />
         <Lightbox
-          slides={galleryImages}
-          open={index >= 0}
-          index={index}
-          close={() => setIndex(-1)}
+          slides={swedenImages}
+          open={index1 >= 0}
+          index={index1}
+          close={() => setIndex1(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Thailand</h2>
+        <RowsPhotoAlbum
+          photos={thailandImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex2(index)}
+        />
+        <Lightbox
+          slides={thailandImages}
+          open={index2 >= 0}
+          index={index2}
+          close={() => setIndex2(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Mumbai</h2>
+        <RowsPhotoAlbum
+          photos={mumbaiImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex3(index)}
+        />
+        <Lightbox
+          slides={mumbaiImages}
+          open={index3 >= 0}
+          index={index3}
+          close={() => setIndex3(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Pune</h2>
+        <RowsPhotoAlbum
+          photos={puneImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex4(index)}
+        />
+        <Lightbox
+          slides={puneImages}
+          open={index4 >= 0}
+          index={index4}
+          close={() => setIndex4(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Darjeeling</h2>
+        <RowsPhotoAlbum
+          photos={darjeelingImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex5(index)}
+        />
+        <Lightbox
+          slides={darjeelingImages}
+          open={index5 >= 0}
+          index={index5}
+          close={() => setIndex5(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Kolkata</h2>
+        <RowsPhotoAlbum
+          photos={kolkataImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex6(index)}
+        />
+        <Lightbox
+          slides={kolkataImages}
+          open={index6 >= 0}
+          index={index6}
+          close={() => setIndex6(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Gaya</h2>
+        <RowsPhotoAlbum
+          photos={gayaImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex7(index)}
+        />
+        <Lightbox
+          slides={gayaImages}
+          open={index7 >= 0}
+          index={index7}
+          close={() => setIndex7(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Shantiniketan</h2>
+        <RowsPhotoAlbum
+          photos={shantiImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex8(index)}
+        />
+        <Lightbox
+          slides={shantiImages}
+          open={index8 >= 0}
+          index={index8}
+          close={() => setIndex8(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Puducherry</h2>
+        <RowsPhotoAlbum
+          photos={puduImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex9(index)}
+        />
+        <Lightbox
+          slides={puduImages}
+          open={index9 >= 0}
+          index={index9}
+          close={() => setIndex9(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Dhanbad</h2>
+        <RowsPhotoAlbum
+          photos={dhanbadImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex10(index)}
+        />
+        <Lightbox
+          slides={dhanbadImages}
+          open={index10 >= 0}
+          index={index10}
+          close={() => setIndex10(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Sambalpur</h2>
+        <RowsPhotoAlbum
+          photos={sambalpurImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex11(index)}
+        />
+        <Lightbox
+          slides={sambalpurImages}
+          open={index11 >= 0}
+          index={index11}
+          close={() => setIndex11(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
         <style>{`
@@ -373,6 +535,15 @@ function Gallery() {
 
           .pink {
             color: var(--secondary-color);
+          }
+
+          .place {
+            color: var(--tertiary-color);
+            text-align: center;
+            background-color: var(--secondary-color);
+            border-radius: var(--bs-border-radius);
+            padding: 5px;
+            margin-top: 10px;
           }
           .react-photo-album--photo img {
             border-radius: var(--bs-border-radius);
