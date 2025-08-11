@@ -173,6 +173,23 @@ import img163 from '../images/gallery/img163.jpg';
 import img164 from '../images/gallery/img164.jpg';
 import img165 from '../images/gallery/img165.jpg';
 import img166 from '../images/gallery/img166.jpg';
+import img167 from '../images/gallery/img167.jpg';
+import img168 from '../images/gallery/img168.jpg';
+import img169 from '../images/gallery/img169.jpg';
+import img170 from '../images/gallery/img170.jpg';
+import img171 from '../images/gallery/img171.jpg';
+import img172 from '../images/gallery/img172.jpg';
+import img173 from '../images/gallery/img173.jpg';
+import img174 from '../images/gallery/img174.jpg';
+import img175 from '../images/gallery/img175.jpg';
+import img176 from '../images/gallery/img176.jpg';
+import img177 from '../images/gallery/img177.jpg';
+import img178 from '../images/gallery/img178.jpg';
+import img179 from '../images/gallery/img179.jpg';
+import img180 from '../images/gallery/img180.jpg';
+import img181 from '../images/gallery/img181.jpg';
+import img182 from '../images/gallery/img182.jpg';
+import img183 from '../images/gallery/img183.jpg';
 
 const swedenImages = [
   { src: img1, width: 4032, height: 3024, alt: 'img1', title: 'img1' },
@@ -350,7 +367,14 @@ const sambalpurImages = [
   { src: img151, width: 3024, height: 4032, alt: 'img151', title: 'img151' },
   { src: img152, width: 3024, height: 4032, alt: 'img152', title: 'img152' },
   { src: img153, width: 2432, height: 4541, alt: 'img153', title: 'img153' },
-  { src: img154, width: 2710, height: 4535, alt: 'img154', title: 'img154' }
+  { src: img154, width: 2710, height: 4535, alt: 'img154', title: 'img154' },
+  { src: img167, width: 3760, height: 5009, alt: 'img167', title: 'img167' },
+  { src: img168, width: 4032, height: 3024, alt: 'img168', title: 'img168' },
+  { src: img170, width: 3024, height: 4032, alt: 'img170', title: 'img170' },
+  { src: img171, width: 3024, height: 4032, alt: 'img171', title: 'img171' },
+  { src: img172, width: 3024, height: 4032, alt: 'img172', title: 'img172' },
+  { src: img169, width: 4032, height: 3024, alt: 'img169', title: 'img169' },
+  { src: img173, width: 3024, height: 4032, alt: 'img173', title: 'img173' },
 ];
 const chennaiImages = [
   { src: img159, width: 3024, height: 4032, alt: 'img159', title: 'img159' },
@@ -361,6 +385,18 @@ const chennaiImages = [
   { src: img164, width: 4032, height: 3024, alt: 'img164', title: 'img164' },
   { src: img165, width: 3024, height: 4032, alt: 'img165', title: 'img165' },
   { src: img166, width: 4032, height: 3024, alt: 'img166', title: 'img166' },
+];
+const delhiImages = [
+  { src: img174, width: 3024, height: 4032, alt: 'img174', title: 'img174' },
+  { src: img175, width: 4032, height: 3024, alt: 'img175', title: 'img175' },
+  { src: img176, width: 3024, height: 4032, alt: 'img176', title: 'img176' },
+  { src: img177, width: 2219, height: 2959, alt: 'img177', title: 'img177' },
+  { src: img178, width: 3946, height: 3022, alt: 'img178', title: 'img178' },
+  { src: img179, width: 3024, height: 4032, alt: 'img179', title: 'img179' },
+  { src: img180, width: 2230, height: 2973, alt: 'img180', title: 'img180' },
+  { src: img181, width: 3024, height: 4032, alt: 'img181', title: 'img181' },
+  { src: img182, width: 3705, height: 2679, alt: 'img182', title: 'img182' },
+  { src: img183, width: 1158, height: 1873, alt: 'img183', title: 'img183' },
 ];
 
 
@@ -377,6 +413,7 @@ function Gallery() {
   const [index10, setIndex10] = useState(-1);
   const [index11, setIndex11] = useState(-1);
   const [index12, setIndex12] = useState(-1);
+  const [index13, setIndex13] = useState(-1);
 
   return (
     <Container>
@@ -417,6 +454,19 @@ function Gallery() {
           open={index2 >= 0}
           index={index2}
           close={() => setIndex2(-1)}
+          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+        />
+        <h2 className='place'>Delhi</h2>
+        <RowsPhotoAlbum
+          photos={delhiImages}
+          targetRowHeight={300}
+          onClick={({ index }) => setIndex13(index)}
+        />
+        <Lightbox
+          slides={delhiImages}
+          open={index13 >= 0}
+          index={index13}
+          close={() => setIndex13(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
         <h2 className='place'>Mumbai</h2>
