@@ -190,13 +190,25 @@ import img180 from '../images/gallery/img180.jpg';
 import img181 from '../images/gallery/img181.jpg';
 import img182 from '../images/gallery/img182.jpg';
 import img183 from '../images/gallery/img183.jpg';
+import img184 from '../images/gallery/img184.jpg';
+import img185 from '../images/gallery/img185.jpg';
+import img186 from '../images/gallery/img186.jpg';
+import img187 from '../images/gallery/img187.jpg';
+import img188 from '../images/gallery/img188.jpg';
+import img189 from '../images/gallery/img189.jpg';
+import img190 from '../images/gallery/img190.jpg';
 
 const swedenImages = [
   { src: img1, width: 4032, height: 3024, alt: 'img1', title: 'img1' },
   { src: img2, width: 4032, height: 3024, alt: 'img2', title: 'img2' },
-  { src: img3, width: 3024, height: 4032, alt: 'img3', title: 'img3' }
+  { src: img3, width: 3024, height: 4032, alt: 'img3', title: 'img3' },
+  { src: img184, width: 2778, height: 3705, alt: 'img184', title: 'img184' },
+  { src: img185, width: 3024, height: 4032, alt: 'img185', title: 'img185' },
+  { src: img186, width: 4032, height: 3024, alt: 'img186', title: 'img186' },
+  { src: img187, width: 4032, height: 3024, alt: 'img187', title: 'img187' },
 ];
 const thailandImages = [
+  { src: img188, width: 3024, height: 4032, alt: 'img188', title: 'img188' },
   { src: img4, width: 3024, height: 4032, alt: 'img4', title: 'img4' },
   { src: img5, width: 4032, height: 3024, alt: 'img5', title: 'img5' },
   { src: img6, width: 3024, height: 4032, alt: 'img6', title: 'img6' },
@@ -207,7 +219,9 @@ const thailandImages = [
   { src: img11, width: 3024, height: 4032, alt: 'img11', title: 'img11' },
   { src: img12, width: 3024, height: 4032, alt: 'img12', title: 'img12' },
   { src: img13, width: 1242, height: 2208, alt: 'img13', title: 'img13' },
-  { src: img14, width: 3024, height: 4032, alt: 'img14', title: 'img14' }
+  { src: img14, width: 3024, height: 4032, alt: 'img14', title: 'img14' },
+  { src: img189, width: 3024, height: 4032, alt: 'img189', title: 'img189' },
+  { src: img190, width: 2662, height: 3125, alt: 'img190', title: 'img190' },
 ];
 const mumbaiImages = [
   { src: img15, width: 4032, height: 3024, alt: 'img15', title: 'img15' },
