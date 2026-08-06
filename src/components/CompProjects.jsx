@@ -1,83 +1,67 @@
-import { useState } from 'react';
-import { Carousel } from 'react-bootstrap';
-import CarouselImage from './CaroselImage.jsx';
+import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDna, faAtom } from "@fortawesome/free-solid-svg-icons";
 
 function CompProjects() {
-  const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
+  const projects = [
+    {
+      title: "MexB Inhibitors",
+      desc: "DST (SERB) Funded Project: Prediction of MexB Efflux Pump Inhibitors: A complete Machine Learning and Molecular Dynamics approach",
+      icon: faDna,
+      link: "https://doi.org/10.1021/acs.jpcb.3c05845"
+    },
+    {
+      title: "EreC Dynamics",
+      desc: "MSc Thesis Project: Molecular Dynamics of Erethromycin Esterase (EreC): Binding Mechanism with Erythromycin and Azithromycin",
+      icon: faAtom,
+      link: "https://drive.google.com/file/d/1C5NlFdb0n3bDihn7Gv2fDqKNTCHAO9Iv/view?usp=share_link"
+    }
+  ];
 
   return (
-    <div>
-    <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item>
-      <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/mexb.png' />
-        <Carousel.Caption>
-          <a href="https://doi.org/10.1021/acs.jpcb.3c05845" target="_blank">
-            <h3>MexB Inhibitors</h3>
-            <p>DST (SERB) Funded Project: 
-            <br/>Prediction of MexB Efflux Pump Inhibitors: A complete Machine Learning and Molecular Dynamics approach
-            </p>
-          </a>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/erec.png' />
-        <Carousel.Caption>
-          <a href="https://drive.google.com/file/d/1C5NlFdb0n3bDihn7Gv2fDqKNTCHAO9Iv/view?usp=share_link" target="_blank">
-            <h3>EreC Dynamics</h3>
-            <p>MSc Thesis Project:
-            <br/>Molecular Dynamics of Erethromycin Esterase (EreC): Binding Mechanism with Erythromycin and Azithromycin
-            </p>
-          </a>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
-    <style>
+    <div className="project-list">
+      {projects.map((project, index) => (
+        <a href={project.link} target="_blank" rel="noreferrer" className="project-card d-flex mb-3 text-decoration-none" key={index}>
+          <div className="project-icon-wrapper">
+            <FontAwesomeIcon icon={project.icon} size="3x" />
+          </div>
+          <div className="project-content p-3 text-start d-flex flex-column justify-content-center">
+            <h4 className="fw-bold pink mb-2">{project.title}</h4>
+            <p className="text-muted mb-0">{project.desc}</p>
+          </div>
+        </a>
+      ))}
+      <style>
         {`
-        .carousel, .carousel-inner {
-            border-radius: var(--bs-border-radius);
+        .project-card {
+          background-color: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          color: var(--bs-body-color);
         }
-
-        .carousel {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            height: 483px;
+        .project-card:hover {
+          background-color: rgba(201, 21, 116, 0.1);
+          border-color: rgba(201, 21, 116, 0.3);
+          transform: translateX(5px);
         }
-
-        .carousel-caption {
-            background-color: var(--bs-body-bg);
-            border-radius: var(--bs-border-radius);
-            padding: 10px;
-            position: absolute;
-            right: 10%;
-            left: 10%;
-            height: 40%;
+        .project-icon-wrapper {
+          flex: 0 0 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, rgba(201, 21, 116, 0.1), rgba(201, 21, 116, 0.05));
+          border-right: 1px solid rgba(255, 255, 255, 0.05);
+          color: var(--secondary-color);
+          transition: all 0.3s ease;
         }
-
-        .carousel-caption h3 {
-            background-color: var(--secondary-color);
-            border-radius: var(--bs-border-radius);
-            color: var(--tertiary-color) !important;
+        .project-card:hover .project-icon-wrapper {
+          background: linear-gradient(135deg, var(--secondary-color), #ff4d94);
+          color: white;
         }
-
-        .carousel-caption p {
-            margin-bottom: 0;
-            color: var(--bs-body-color);
-            font-weight: bold;
-        }
-
-        .carousel-indicators {
-            margin-bottom: 0;
-        }
-
-        .carousel-control-prev-icon {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" fill="%23fff"><path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z"/></svg>');
-        }
-
-        .carousel-control-next-icon {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" fill="%23fff"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/></svg>');
+        .pink {
+          color: var(--secondary-color);
         }
         `}
       </style>

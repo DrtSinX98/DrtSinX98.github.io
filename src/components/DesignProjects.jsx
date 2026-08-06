@@ -1,88 +1,73 @@
-import { useState } from 'react';
-import { Carousel } from 'react-bootstrap';
-import CarouselImage from './CaroselImage.jsx';
+import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPalette, faMobileScreen, faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons";
 
 function DesignProjects() {
-  const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
+  const projects = [
+    {
+      title: "Concetto 2023",
+      desc: "Co-head of Design & Content Team in Concetto 2023. Concetto is the annual Techno-management fest of IIT Dhanbad",
+      icon: faPalette,
+      link: "http://www.concetto.in/"
+    },
+    {
+      title: "Stag OS",
+      desc: "Designer and Device Maintainer at Stag OS. Stag OS is a custom ROM project based on Android Open Source Project with various features",
+      icon: faMobileScreen,
+      link: "https://stag-os.org"
+    },
+    {
+      title: "Karmajyoti",
+      desc: "Head of Media & Branding and Web Developer at KarmaJyoti. KarmaJyoti is a Philanthropic organisation under CSM, IIT (ISM) Dhanbad",
+      icon: faHandHoldingHeart,
+      link: "https://karmajyoti.org"
+    }
+  ];
 
   return (
-    <div>
-    <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item>
-      <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/concetto.png' />
-        <Carousel.Caption>
-          <a href="http://www.concetto.in/" target="_blank">
-            <h3>Concetto 2023</h3>
-            <p>Co-head of Design & Content Team in Concetto 2023. Concetto is the annual Techno-management fest of IIT Dhanbad</p>
-          </a>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/stag.png' />
-        <Carousel.Caption>
-          <a href="https://stag-os.org" target="_blank">
-            <h3>Stag OS</h3>
-            <p>Designer and Device Maintainer at Stag OS. Stag OS is a custom ROM project based on Android Open Source Project with various features</p>
-          </a>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <CarouselImage pic='https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/kj.png' />
-        <Carousel.Caption>
-          <a href="https://karmajyoti.org" target="_blank">
-            <h3>Karmajyoti</h3>
-            <p>Head of Media & Branding and Web Developer at KarmaJyoti. KarmaJyoti is a Philanthropic organisation under CSM, IIT (ISM) Dhanbad</p>
-          </a>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
-    <style>
+    <div className="project-list">
+      {projects.map((project, index) => (
+        <a href={project.link} target="_blank" rel="noreferrer" className="project-card d-flex mb-3 text-decoration-none" key={index}>
+          <div className="project-icon-wrapper">
+            <FontAwesomeIcon icon={project.icon} size="3x" />
+          </div>
+          <div className="project-content p-3 text-start d-flex flex-column justify-content-center">
+            <h4 className="fw-bold pink mb-2">{project.title}</h4>
+            <p className="text-muted mb-0">{project.desc}</p>
+          </div>
+        </a>
+      ))}
+      <style>
         {`
-        .carousel, .carousel-inner {
-            border-radius: var(--bs-border-radius);
+        .project-card {
+          background-color: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          color: var(--bs-body-color);
         }
-
-        .carousel {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            height: 483px;
+        .project-card:hover {
+          background-color: rgba(201, 21, 116, 0.1);
+          border-color: rgba(201, 21, 116, 0.3);
+          transform: translateX(5px);
         }
-
-        .carousel-caption {
-            background-color: var(--bs-body-bg);
-            border-radius: var(--bs-border-radius);
-            padding: 10px;
-            position: absolute;
-            right: 10%;
-            left: 10%;
-            height: 40%;
+        .project-icon-wrapper {
+          flex: 0 0 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, rgba(201, 21, 116, 0.1), rgba(201, 21, 116, 0.05));
+          border-right: 1px solid rgba(255, 255, 255, 0.05);
+          color: var(--secondary-color);
+          transition: all 0.3s ease;
         }
-
-        .carousel-caption h3 {
-            background-color: var(--secondary-color);
-            border-radius: var(--bs-border-radius);
-            color: var(--tertiary-color) !important;
+        .project-card:hover .project-icon-wrapper {
+          background: linear-gradient(135deg, var(--secondary-color), #ff4d94);
+          color: white;
         }
-
-        .carousel-caption p {
-            margin-bottom: 0;
-            color: var(--bs-body-color);
-            font-weight: bold;
-        }
-
-        .carousel-indicators {
-            margin-bottom: 0;
-        }
-
-        .carousel-control-prev-icon {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" fill="%23fff"><path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z"/></svg>');
-        }
-
-        .carousel-control-next-icon {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" fill="%23fff"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/></svg>');
+        .pink {
+          color: var(--secondary-color);
         }
         `}
       </style>
