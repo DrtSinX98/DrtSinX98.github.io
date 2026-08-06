@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Home from "./components/Home";
 import About from "./components/About";
-import Projects from "./components/Projects";
 import Lectures from "./components/Lectures";
 import Gallery from "./components/Gallery";
 import Contact from "./components/Contact";
@@ -82,7 +81,6 @@ function App() {
           <ParticlesBG/>
           {active === "home" && <Home />}
           {active === "about" && <About />}
-          {active === "projects" && <Projects />}
           {active === "lectures" && <Lectures />}
           {active === "gallery" && <Gallery />}
           {active === "contact" && <Contact />}
