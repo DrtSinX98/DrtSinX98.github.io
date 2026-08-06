@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Col, Image , Container, Row } from "react-bootstrap";
+import { Col, Image , Container, Row, Button } from "react-bootstrap";
+import { ComposableMap, Geographies, Geography, Graticule, ZoomableGroup } from "react-simple-maps";
+import { Tooltip } from "react-tooltip";
 import { RowsPhotoAlbum } from 'react-photo-album';
 import 'react-photo-album/rows.css';
 import Lightbox from 'yet-another-react-lightbox';
@@ -414,7 +416,10 @@ const delhiImages = [
 ];
 
 
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
 function Gallery() {
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const [index1, setIndex1] = useState(-1);
   const [index2, setIndex2] = useState(-1);
   const [index3, setIndex3] = useState(-1);
@@ -443,8 +448,15 @@ function Gallery() {
         </Col>
       </Row>
       <hr className="my-4" />
-      <>
-        <h2 className='place'>Sweden</h2>
+      {selectedCountry ? (
+        <>
+          <Button variant="secondary" className="mb-4 back-btn" onClick={() => setSelectedCountry(null)}>
+            ← Back to Map
+          </Button>
+
+          {selectedCountry === "Sweden" && (
+            <>
+              <h2 className='place'>Sweden</h2>
         <RowsPhotoAlbum
           photos={swedenImages}
           targetRowHeight={300}
@@ -457,7 +469,12 @@ function Gallery() {
           close={() => setIndex1(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
-        <h2 className='place'>Thailand</h2>
+            </>
+          )}
+
+          {selectedCountry === "Thailand" && (
+            <>
+              <h2 className='place'>Thailand</h2>
         <RowsPhotoAlbum
           photos={thailandImages}
           targetRowHeight={300}
@@ -470,7 +487,12 @@ function Gallery() {
           close={() => setIndex2(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
-        <h2 className='place'>Delhi</h2>
+            </>
+          )}
+
+          {selectedCountry === "India" && (
+            <>
+              <h2 className='place'>Delhi</h2>
         <RowsPhotoAlbum
           photos={delhiImages}
           targetRowHeight={300}
@@ -613,7 +635,65 @@ function Gallery() {
           close={() => setIndex12(-1)}
           plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
         />
-        <style>{`
+            </>
+          )}
+        </>
+      ) : (
+        <div className="map-container glass-card p-4 mb-4">
+          <div className="d-flex align-items-center justify-content-center mb-4 gap-4 flex-wrap flex-md-nowrap">
+            <div className="visited-counter">
+              <span className="visited-count">3</span>
+              <span className="total-count">/ 195</span>
+            </div>
+            <h4 className="text-md-start text-center m-0" style={{ color: "var(--bs-body-color)", fontWeight: "300", lineHeight: "1.6" }}>
+              <span className="pink fw-bold">Explore the world through my lens.</span><br/> 
+              Click on my highlighted visited countries to see some wonderful pictures!
+            </h4>
+          </div>
+          <ComposableMap projectionConfig={{ scale: 140 }}>
+            <ZoomableGroup zoom={1}>
+              <Graticule stroke="rgba(255, 255, 255, 0.05)" strokeWidth={0.5} />
+              <Geographies geography={geoUrl}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const isVisited = ["India", "Sweden", "Thailand"].includes(geo.properties.name);
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        data-tooltip-id={isVisited ? "map-tooltip" : undefined}
+                        data-tooltip-content={isVisited ? geo.properties.name : undefined}
+                        onClick={() => {
+                          if (isVisited) setSelectedCountry(geo.properties.name);
+                        }}
+                        style={{
+                          default: {
+                            fill: isVisited ? "var(--bs-body-color)" : "rgba(128, 128, 128, 0.2)",
+                            outline: "none",
+                            transition: "all 0.3s ease",
+                            cursor: isVisited ? "pointer" : "default"
+                          },
+                          hover: {
+                            fill: isVisited ? "var(--secondary-color)" : "rgba(128, 128, 128, 0.3)",
+                            outline: "none",
+                            cursor: isVisited ? "pointer" : "default"
+                          },
+                          pressed: {
+                            fill: isVisited ? "var(--secondary-color)" : "rgba(128, 128, 128, 0.2)",
+                            outline: "none"
+                          }
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ZoomableGroup>
+          </ComposableMap>
+          <Tooltip id="map-tooltip" style={{ background: "linear-gradient(135deg, var(--secondary-color), #ff4d94)", color: "white", padding: "8px 20px", borderRadius: "20px", fontWeight: "600", boxShadow: "0 4px 10px rgba(201, 21, 116, 0.3)", border: "none", zIndex: 1000 }} />
+        </div>
+      )}
+      <style>{`
          #gl-img {
             width: 350px;
             height: 250px;
@@ -644,8 +724,37 @@ function Gallery() {
           .react-photo-album--photo img {
             border-radius: var(--bs-border-radius);
           }
+          .map-container {
+            background-color: var(--bs-card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+          }
+          .visited-counter {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(201, 21, 116, 0.2), rgba(201, 21, 116, 0.05));
+            border: 2px solid var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--bs-body-color);
+            box-shadow: 0 4px 10px rgba(201, 21, 116, 0.2);
+            flex-shrink: 0;
+          }
+          .visited-count {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            line-height: 1;
+          }
+          .total-count {
+            font-size: 0.9rem;
+            opacity: 0.8;
+          }
         `}</style>
-      </>
     </Container>
   );
 }
