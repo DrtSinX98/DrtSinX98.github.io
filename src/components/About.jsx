@@ -56,6 +56,19 @@ function About() {
             <div className="timeline-item">
               <div className="timeline-dot work-dot"></div>
               <div className="timeline-content glass-card">
+                <h4>Uppsala University</h4>
+                <p className="text-muted mb-2">PhD Candidate | Machine Learning-Information Technology</p>
+                <div className="tags">
+                  <Badge bg="secondary" className="custom-badge">Machine Learning</Badge>
+                  <Badge bg="secondary" className="custom-badge">Battery Modeling</Badge>
+                  <Badge bg="secondary" className="custom-badge">Deep Learning</Badge>
+                </div>
+              </div>
+            </div>
+
+            <div className="timeline-item">
+              <div className="timeline-dot edu-dot"></div>
+              <div className="timeline-content glass-card">
                 <h4>RISE, TCG CREST</h4>
                 <p className="text-muted mb-2">Project Associate | Computational Materials Discovery</p>
                 <div className="tags">
@@ -67,27 +80,14 @@ function About() {
             </div>
 
             <div className="timeline-item">
-              <div className="timeline-dot edu-dot"></div>
+              <div className="timeline-dot res-dot"></div>
               <div className="timeline-content glass-card">
                 <h4>IIT Dhanbad</h4>
-                <p className="text-muted mb-2">Master of Science | Chemistry and Chemical Biology</p>
+                <p className="text-muted mb-2">Master of Science | Computational Chemistry-Chemical Biology</p>
                 <div className="tags">
                   <Badge bg="secondary" className="custom-badge">Computational Chemistry</Badge>
                   <Badge bg="secondary" className="custom-badge">Machine Learning</Badge>
                   <Badge bg="secondary" className="custom-badge">Molecular Dynamics</Badge>
-                </div>
-              </div>
-            </div>
-
-            <div className="timeline-item">
-              <div className="timeline-dot res-dot"></div>
-              <div className="timeline-content glass-card">
-                <h4>Research Focus</h4>
-                <p className="text-muted mb-2">Computational studies of various physical systems</p>
-                <div className="tags">
-                  <Badge bg="secondary" className="custom-badge">Computational Biophysics</Badge>
-                  <Badge bg="secondary" className="custom-badge">Materials Design</Badge>
-                  <Badge bg="secondary" className="custom-badge">Battery Materials</Badge>
                 </div>
               </div>
             </div>
@@ -101,14 +101,19 @@ function About() {
           <h5 className="mt-3 mb-3"><FontAwesomeIcon icon={faDesktop} className="me-2" /> Programming Languages</h5>
           <div className="skill-grid">
             <div className="skill-chip">Python</div>
+            <div className="skill-chip">C++</div>
             <div className="skill-chip">JavaScript</div>
             <div className="skill-chip">React.js</div>
             <div className="skill-chip">HTML5</div>
             <div className="skill-chip">CSS3</div>
           </div>
 
-          <h5 className="mt-4 mb-3"><FontAwesomeIcon icon={faMicroscope} className="me-2" /> Scientific Software</h5>
+          <h5 className="mt-4 mb-3"><FontAwesomeIcon icon={faMicroscope} className="me-2" /> Machine Learning & Scientific Software</h5>
           <div className="skill-grid">
+            <div className="skill-chip outline">PyTorch</div>
+            <div className="skill-chip outline">Tensorflow</div>
+            <div className="skill-chip outline">Transformers</div>
+            <div className="skill-chip outline">PINNs</div>
             <div className="skill-chip outline">AMBER</div>
             <div className="skill-chip outline">GROMACS</div>
             <div className="skill-chip outline">NAMD</div>
@@ -160,6 +165,18 @@ function About() {
               <Accordion.Header>Publications & Thesis</Accordion.Header>
               <Accordion.Body>
                 <div className="d-flex flex-column gap-3">
+                  <a className="glass-link" href="#" target="_blank" rel="noreferrer">
+                    <div className="title fw-bold">"Inverse Design of Next-generation Battery Materials via Diffusion-Seeded Evolutionary Optimization"</div>
+                    <div className="subtitle text-muted">Submitted</div>
+                  </a>
+                  <a className="glass-link" href="#" target="_blank" rel="noreferrer">
+                    <div className="title fw-bold">"Reactive dynamics study of solid electrolytes Li6PS5Cl|Li3InCl6 interface: an ab initio molecular dynamics simulation"</div>
+                    <div className="subtitle text-muted">Submitted</div>
+                  </a>
+                  <a className="glass-link" href="https://doi.org/10.1021/acs.jcim.4c01523" target="_blank" rel="noreferrer">
+                    <div className="title fw-bold">"Delving into Macrolide Binding Affinities and Associated Structural Modulations in Erythromycin Esterase C: Insights into the Venus Flytrap Mechanism"</div>
+                    <div className="subtitle text-muted">Journal of Chemical Information and Modeling | Nov 20, 2024</div>
+                  </a>
                   <a className="glass-link" href="https://doi.org/10.1021/acs.jpcb.3c05845" target="_blank" rel="noreferrer">
                     <div className="title fw-bold">"Machine Learning-Guided Discovery of AcrB and MexB Efflux Pump Inhibitors"</div>
                     <div className="subtitle text-muted">Journal of Physical Chemistry B | ACS | Jan 10, 2024</div>
@@ -176,9 +193,17 @@ function About() {
               <Accordion.Header>National Level Exams</Accordion.Header>
               <Accordion.Body>
                 <div className="d-flex flex-column gap-3">
+                  <a className="glass-link" href="#" target="_blank" rel="noreferrer">
+                    <div className="title fw-bold">GATE (CY) 2025</div>
+                    <div className="subtitle text-muted">All India Rank 951</div>
+                  </a>
                   <a className="glass-link" href="https://drive.google.com/file/d/1-9eYgxvBIuBHXsMnHDHcUEjxhlNe0YXe/view?usp=sharing" target="_blank" rel="noreferrer">
                     <div className="title fw-bold">GATE (CY) 2024</div>
                     <div className="subtitle text-muted">All India Rank 569</div>
+                  </a>
+                  <a className="glass-link" href="#" target="_blank" rel="noreferrer">
+                    <div className="title fw-bold">CSIR NET 2024</div>
+                    <div className="subtitle text-muted">Qualified</div>
                   </a>
                   <a className="glass-link" href="https://drive.google.com/file/d/11UGuILn-M0cD1Z3E6P09FomcU2I_5nPV/view?usp=sharing" target="_blank" rel="noreferrer">
                     <div className="title fw-bold">IIT JAM (CY) 2022</div>

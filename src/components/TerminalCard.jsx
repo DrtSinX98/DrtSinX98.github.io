@@ -10,7 +10,7 @@ function TerminalCard() {
           <span className="terminal-btn minimize"></span>
           <span className="terminal-btn maximize"></span>
         </div>
-        <div className="terminal-title">guest@pritish-joshi:~</div>
+        <div className="terminal-title">root@pritish:~</div>
       </div>
       <div className="terminal-body">
         <Typewriter
@@ -20,23 +20,25 @@ function TerminalCard() {
           }}
           onInit={(typewriter) => {
             typewriter
-              .typeString('<span class="prompt">guest@pritish-joshi:~$</span> cat details.json<br/>')
+              .typeString('<span class="prompt">root@pritish:~#</span> cat whoami.json<br/>')
               .pauseFor(500)
               .typeString('{<br/>')
               .typeString('&nbsp;&nbsp;<span class="key">"name"</span>: <span class="string">"Pritish Joshi"</span>,<br/>')
               .typeString('&nbsp;&nbsp;<span class="key">"education"</span>: [<br/>')
+              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"PhD Machine Learning - Uppsala University"</span>,<br/>')
               .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"M.Sc Computational Chemistry - IIT Dhanbad"</span>,<br/>')
               .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"B.Sc Chemistry Majors - IGNOU New Delhi"</span><br/>')
               .typeString('&nbsp;&nbsp;],<br/>')
               .typeString('&nbsp;&nbsp;<span class="key">"interests"</span>: [<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Coding"</span>, <span class="string">"Teaching"</span>, <span class="string">"Research"</span>, <span class="string">"Anime"</span><br/>')
+              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Machine Learning"</span>, <span class="string">"Battery Modeling"</span>, <span class="string">"Coding"</span>, <span class="string">"Anime"</span>,<br/>')
+              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Photography"</span>, <span class="string">"Classical Music"</span>, <span class="string">"Philosophy"</span><br/>')
               .typeString('&nbsp;&nbsp;],<br/>')
               .typeString('&nbsp;&nbsp;<span class="key">"works"</span>: [<br/>')
               .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Research Project"</span>, <span class="string">"Custom ROM Development"</span>, <span class="string">"Web Development"</span>, <span class="string">"Education"</span><br/>')
               .typeString('&nbsp;&nbsp;]<br/>')
               .typeString('}<br/>')
               .pauseFor(500)
-              .typeString('<span class="prompt">guest@pritish-joshi:~$</span> ')
+              .typeString('<span class="prompt">root@pritish:~#</span> ')
               .start();
           }}
         />

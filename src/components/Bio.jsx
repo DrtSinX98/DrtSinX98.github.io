@@ -37,11 +37,9 @@ function Bio() {
       </div>
       <p className="lead">A Tech enthusiast, Researcher, Educator and Coder</p>
       <p className="lead">
-        Even though I enjoy coding and techie stuff, I'm currently a researcher in 
-        Computational Materials Design at <span className="pink">TCG CREST</span>. 
-        I've done my postgraduation in Chemistry, specializing 
-        in Computational Chemistry and molecular dynamics 
-        from <span className="pink">IIT Dhanbad</span>.
+        I'm currently a <span className="pink">PhD Candidate</span> in Machine Learning at <span className="pink">Uppsala University</span>, Sweden. 
+        Previously, I worked on Computational Materials Discovery at <span className="pink">TCG CREST</span> and 
+        completed my Master's at <span className="pink">IIT Dhanbad</span>.
       </p>
       <style>
         {`
