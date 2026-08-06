@@ -529,9 +529,7 @@ function Lectures() {
                     color: var(--secondary-color);
                 }
 
-                .card {
-                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                }
+
 
                 .card-title {
                     color: var(--secondary-color);
@@ -576,11 +574,6 @@ function Lectures() {
                     background-color: var(--secondary-color);
                 }
 
-                .btn-secondary {
-                    font-size: 18px;
-                    padding: 6px 12px;
-                    margin: 0;
-                }
 
                 @media (max-width: 767px) {
                     .image-p {
