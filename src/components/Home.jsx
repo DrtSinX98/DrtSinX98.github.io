@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Cards from "./Cards";
+import TerminalCard from "./TerminalCard";
 import Rimage from "./Rimage";
 import Bio from "./Bio";
 import Buttons from "./Buttons";
@@ -17,7 +17,7 @@ function Home() {
       </Row>
       <hr className="my-4" />
       <Row>
-        <Cards />
+        <TerminalCard />
       </Row>
     </Container>
   );

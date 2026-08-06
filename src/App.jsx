@@ -24,7 +24,8 @@ function App() {
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/kj.png',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/mexb.png',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/erec.png',
-      'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp.jpg',
+      'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp_l.png',
+      'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp_d.png',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ab.svg',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pr.svg',
       'https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/ct.svg',
@@ -57,7 +58,7 @@ function App() {
 
         img.src = src;
         img.onload = () => resolve();
-        img.onerror = () => reject();
+        img.onerror = () => resolve(); // Prevent site from infinite loading on image failure
       });
     });
 

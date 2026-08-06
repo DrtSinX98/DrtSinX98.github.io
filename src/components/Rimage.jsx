@@ -85,10 +85,19 @@ function Blob(props) {
             </clipPath>
           </defs>
           <image
+            className="pfp-light"
             width="80%"
             height="80%"
             clipPath="url(#a)"
-            xlinkHref="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp.jpg"
+            xlinkHref="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp_l.png"
+            preserveAspectRatio="xMidYMid slice"
+          />
+          <image
+            className="pfp-dark"
+            width="80%"
+            height="80%"
+            clipPath="url(#a)"
+            xlinkHref="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/pfp_d.png"
             preserveAspectRatio="xMidYMid slice"
           />
         </>
