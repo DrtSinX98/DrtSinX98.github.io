@@ -1,27 +1,29 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faReact, faBootstrap} from "@fortawesome/free-brands-svg-icons";
+import { faReact, faBootstrap } from "@fortawesome/free-brands-svg-icons";
 
 function Footer() {
-  return (
-    <footer className="footer">
-        <Container>
-            <div>
-                <p><span className='pink'>&copy;</span> 2024 Pritish Joshi
-                <br/>
-                <br/>Written in <FontAwesomeIcon icon={faReact} /> & <FontAwesomeIcon icon={faBootstrap} /></p>
-            </div>
-            <style>
-                {`
+    return (
+        <footer className="footer">
+            <Container>
+                <div>
+                    <p><span className='pink'>&copy;</span> {new Date().getFullYear()} Pritish Joshi
+                        <br />
+                        <br />Written in <FontAwesomeIcon icon={faReact} /> & <FontAwesomeIcon icon={faBootstrap} /></p>
+                </div>
+                <style>
+                    {`
                 .footer {
-                    background-color: rgba(48 25 52 / 0.8);
+                    background-color: transparent;
                     backdrop-filter: blur(3px);
                     -webkit-backdrop-filter: blur(3px);
-                    color: var(--tertiary-color);
+                    color: var(--bs-body-color);
                     text-align: center;
                     width: 100%;
                     bottom: 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.1);
+                    padding-top: 20px;
                 }
 
                 .pink {
@@ -36,10 +38,10 @@ function Footer() {
                     color: var(--secondary-color);
                 }
                 `}
-            </style>
-        </Container>
-    </footer>
-  );
+                </style>
+            </Container>
+        </footer>
+    );
 }
 
 export default Footer;
