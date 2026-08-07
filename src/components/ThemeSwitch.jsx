@@ -5,13 +5,25 @@ import {faSun, faMoon} from "@fortawesome/free-solid-svg-icons";
 function ThemeSwitch() {
 
   const [theme, setTheme] = useState('light');
+  
   useEffect(() => {
-    document.documentElement.setAttribute('data-bs-theme', 'light');
+    const manualOverride = sessionStorage.getItem('darkModeManual');
+    let initialTheme = 'light';
+    if (manualOverride) {
+      initialTheme = manualOverride;
+    } else {
+      const hour = new Date().getHours();
+      initialTheme = (hour >= 6 && hour < 18) ? 'light' : 'dark';
+    }
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-bs-theme', initialTheme);
   }, []);
+
   const switchTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-bs-theme', newTheme);
     setTheme(newTheme);
+    sessionStorage.setItem('darkModeManual', newTheme);
   };
   
     return (
@@ -20,6 +32,7 @@ function ThemeSwitch() {
             type="checkbox"
             className="checkbox"
             id="checkbox"
+            checked={theme === 'dark'}
             onChange={switchTheme}
             aria-label="Switch between dark and light mode"/>
             <label htmlFor="checkbox" className="checkbox-label">
