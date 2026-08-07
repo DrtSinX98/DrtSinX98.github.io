@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Col, Image , Container, Row, Button } from "react-bootstrap";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Col, Image, Container, Row, Button, Modal, ListGroup } from "react-bootstrap";
 import { ComposableMap, Geographies, Geography, Graticule, ZoomableGroup } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
 import { RowsPhotoAlbum } from 'react-photo-album';
@@ -418,6 +418,218 @@ const delhiImages = [
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
+const visitedCountries = [
+  "India", "Sweden", "Thailand", 
+  "Turkey", "Qatar", "Finland", "Norway", 
+  "Estonia", "Latvia", "Lithuania", "Poland", 
+  "Denmark", "Germany", "Hungary", "Italy"
+];
+
+const countryFlags = {
+  "India": "🇮🇳", "Sweden": "🇸🇪", "Thailand": "🇹🇭", 
+  "Turkey": "🇹🇷", "Qatar": "🇶🇦", "Finland": "🇫🇮", "Norway": "🇳🇴", 
+  "Estonia": "🇪🇪", "Latvia": "🇱🇻", "Lithuania": "🇱🇹", "Poland": "🇵🇱", 
+  "Denmark": "🇩🇰", "Germany": "🇩🇪", "Hungary": "🇭🇺", "Italy": "🇮🇹"
+};
+
+const dummyImages = [
+  { src: "https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/gl.svg", width: 800, height: 600, alt: 'Coming Soon', title: 'Coming Soon' }
+];
+
+const visitedStyle = {
+  default: { fill: "var(--bs-body-color)", outline: "none", transition: "all 0.3s ease", cursor: "pointer" },
+  hover: { fill: "var(--secondary-color)", outline: "none", cursor: "pointer" },
+  pressed: { fill: "var(--secondary-color)", outline: "none" }
+};
+
+const defaultStyle = {
+  default: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", transition: "all 0.3s ease", cursor: "default" },
+  hover: { fill: "rgba(201, 21, 116, 0.25)", outline: "none", cursor: "default" },
+  pressed: { fill: "rgba(201, 21, 116, 0.15)", outline: "none" }
+};
+
+function InteractiveGlobe({ setSelectedCountry }) {
+  const [rotation, setRotation] = useState([-40, -30, 0]);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState([0, 0]);
+  const [zoomConfig, setZoomConfig] = useState({ isZoomed: false, x: 50, y: 50 });
+  const [showList, setShowList] = useState(false);
+  const animationRef = useRef(null);
+
+  const rotateGlobe = useCallback(() => {
+    if (!isInteracting && !isDragging) {
+      setRotation((prev) => [(prev[0] + 0.15) % 360, prev[1], prev[2]]);
+    }
+    animationRef.current = requestAnimationFrame(rotateGlobe);
+  }, [isInteracting, isDragging]);
+
+  useEffect(() => {
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (!isChrome) {
+      animationRef.current = requestAnimationFrame(rotateGlobe);
+      return () => cancelAnimationFrame(animationRef.current);
+    }
+  }, [rotateGlobe]);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragStart([e.clientX, e.clientY]);
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      const deltaX = e.clientX - dragStart[0];
+      const deltaY = e.clientY - dragStart[1];
+      setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      setDragStart([e.clientX, e.clientY]);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setDragStart([e.touches[0].clientX, e.touches[0].clientY]);
+  };
+
+  const handleTouchMove = (e) => {
+    if (isDragging) {
+      const deltaX = e.touches[0].clientX - dragStart[0];
+      const deltaY = e.touches[0].clientY - dragStart[1];
+      setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      setDragStart([e.touches[0].clientX, e.touches[0].clientY]);
+    }
+  };
+
+  const handleDoubleClick = (e) => {
+    if (zoomConfig.isZoomed) {
+      setZoomConfig({ isZoomed: false, x: 50, y: 50 });
+    } else {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setZoomConfig({ isZoomed: true, x, y });
+    }
+  };
+
+  return (
+    <div 
+      className="map-container glass-card p-4 mb-4" 
+      style={{ overflow: 'hidden' }}
+    >
+      <div className="d-flex align-items-center justify-content-center mb-4 gap-4 flex-wrap flex-md-nowrap">
+        <div 
+          className="visited-counter" 
+          onClick={() => setShowList(true)}
+          style={{ cursor: 'pointer', transition: 'transform 0.2s ease' }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          title="View list of visited countries"
+        >
+          <span className="visited-count">15</span>
+          <span className="total-count">/ 195</span>
+        </div>
+        <h4 className="text-md-start text-center m-0" style={{ color: "var(--bs-body-color)", fontWeight: "300", lineHeight: "1.6" }}>
+          <span className="pink fw-bold">Explore the world through my lens.</span><br />
+          Click on my highlighted visited countries to see some wonderful pictures!
+        </h4>
+      </div>
+      <div 
+        onDoubleClick={handleDoubleClick}
+        onMouseEnter={() => setIsInteracting(true)}
+        onMouseLeave={() => { setIsInteracting(false); handleMouseUp(); }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onTouchStart={(e) => { setIsInteracting(true); handleTouchStart(e); }}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={() => { setIsInteracting(false); handleMouseUp(); }}
+        style={{ 
+          cursor: isDragging ? 'grabbing' : 'grab', 
+          width: '100%', 
+          height: '100%',
+          transform: zoomConfig.isZoomed ? 'scale(2)' : 'scale(1)',
+          transformOrigin: `${zoomConfig.x}% ${zoomConfig.y}%`,
+          transition: 'transform 0.4s ease'
+        }}
+      >
+        <ComposableMap projection="geoOrthographic" projectionConfig={{ scale: 280, rotate: rotation }}>
+          <Graticule stroke="var(--bs-body-color)" strokeWidth={0.5} style={{ opacity: 0.15 }} />
+          <Geographies geography={geoUrl}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const isVisited = visitedCountries.includes(geo.properties.name);
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    data-tooltip-id={isVisited ? "map-tooltip" : undefined}
+                    data-tooltip-content={isVisited ? geo.properties.name : undefined}
+                    onClick={() => {
+                      if (isVisited) setSelectedCountry(geo.properties.name);
+                    }}
+                    style={isVisited ? visitedStyle : defaultStyle}
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ComposableMap>
+      </div>
+      <Tooltip id="map-tooltip" style={{ background: "linear-gradient(135deg, var(--secondary-color), #ff4d94)", color: "white", padding: "8px 20px", borderRadius: "20px", fontWeight: "600", boxShadow: "0 4px 10px rgba(201, 21, 116, 0.3)", border: "none", zIndex: 1000 }} />
+      
+      <Modal show={showList} onHide={() => setShowList(false)} centered>
+        <Modal.Header closeButton style={{ backgroundColor: 'var(--bs-card-bg)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <Modal.Title style={{ color: 'var(--secondary-color)', fontWeight: 'bold' }}>Visited Countries</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: 'var(--bs-card-bg)', maxHeight: '60vh', overflowY: 'auto' }}>
+          <Row className="g-2">
+            {visitedCountries.sort().map(country => (
+              <Col xs={4} key={country}>
+                <div 
+                  onClick={() => {
+                    setSelectedCountry(country);
+                    setShowList(false);
+                  }}
+                  style={{ 
+                    backgroundColor: 'rgba(255,255,255,0.02)', 
+                    color: 'var(--bs-body-color)', 
+                    border: '1px solid rgba(255,255,255,0.05)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '5px',
+                    padding: '15px 5px',
+                    textAlign: 'center'
+                  }}
+                  className="country-list-item h-100"
+                >
+                  <span style={{ fontSize: '1.5rem' }}>{countryFlags[country] || '🌍'}</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{country}</span>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Modal.Body>
+      </Modal>
+
+      <style>{`
+        .country-list-item:hover {
+          background-color: rgba(201, 21, 116, 0.1) !important;
+          color: var(--secondary-color) !important;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+
 function Gallery() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [index1, setIndex1] = useState(-1);
@@ -433,18 +645,30 @@ function Gallery() {
   const [index11, setIndex11] = useState(-1);
   const [index12, setIndex12] = useState(-1);
   const [index13, setIndex13] = useState(-1);
+  const [index14, setIndex14] = useState(-1);
+  const [index15, setIndex15] = useState(-1);
+  const [index16, setIndex16] = useState(-1);
+  const [index17, setIndex17] = useState(-1);
+  const [index18, setIndex18] = useState(-1);
+  const [index19, setIndex19] = useState(-1);
+  const [index20, setIndex20] = useState(-1);
+  const [index21, setIndex21] = useState(-1);
+  const [index22, setIndex22] = useState(-1);
+  const [index23, setIndex23] = useState(-1);
+  const [index24, setIndex24] = useState(-1);
+  const [index25, setIndex25] = useState(-1);
 
   return (
     <Container>
       <Row>
         <Col lg={4} className="image-p">
           <div id="gl-img">
-            <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/gl.svg" alt="project-pic" className="mb-4" fluid/>
+            <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/gl.svg" alt="project-pic" className="mb-4" fluid />
           </div>
         </Col>
         <Col>
           <h1>Welcome to my <span className="pink">Gallery!</span></h1>
-          <p className="lead">I love to travel a lot and have travelled to many places in <span className='pink'>India</span> and <span className='pink'>abroad</span>. <br/>As I have some interest in <span className="pink">photography</span>, I try to click pictures of monuments, architecture, and nature. <br/> Below you can find a beautifully curated gallery of the pictures taken from my <span className="pink">phone</span>.</p>
+          <p className="lead">I love to travel a lot and have travelled to many places in <span className='pink'>India</span> and <span className='pink'>abroad</span>. <br />As I have some interest in <span className="pink">photography</span>, I try to click pictures of monuments, architecture, and nature. <br /> Below you can find a beautifully curated gallery of the pictures taken from my <span className="pink">phone</span>.</p>
         </Col>
       </Row>
       <hr className="my-4" />
@@ -457,241 +681,285 @@ function Gallery() {
           {selectedCountry === "Sweden" && (
             <>
               <h2 className='place'>Sweden</h2>
-        <RowsPhotoAlbum
-          photos={swedenImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex1(index)}
-        />
-        <Lightbox
-          slides={swedenImages}
-          open={index1 >= 0}
-          index={index1}
-          close={() => setIndex1(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
+              <RowsPhotoAlbum
+                photos={swedenImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex1(index)}
+              />
+              <Lightbox
+                slides={swedenImages}
+                open={index1 >= 0}
+                index={index1}
+                close={() => setIndex1(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
             </>
           )}
 
           {selectedCountry === "Thailand" && (
             <>
               <h2 className='place'>Thailand</h2>
-        <RowsPhotoAlbum
-          photos={thailandImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex2(index)}
-        />
-        <Lightbox
-          slides={thailandImages}
-          open={index2 >= 0}
-          index={index2}
-          close={() => setIndex2(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
+              <RowsPhotoAlbum
+                photos={thailandImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex2(index)}
+              />
+              <Lightbox
+                slides={thailandImages}
+                open={index2 >= 0}
+                index={index2}
+                close={() => setIndex2(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
             </>
           )}
 
           {selectedCountry === "India" && (
             <>
               <h2 className='place'>Delhi</h2>
-        <RowsPhotoAlbum
-          photos={delhiImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex13(index)}
-        />
-        <Lightbox
-          slides={delhiImages}
-          open={index13 >= 0}
-          index={index13}
-          close={() => setIndex13(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Mumbai</h2>
-        <RowsPhotoAlbum
-          photos={mumbaiImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex3(index)}
-        />
-        <Lightbox
-          slides={mumbaiImages}
-          open={index3 >= 0}
-          index={index3}
-          close={() => setIndex3(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Pune</h2>
-        <RowsPhotoAlbum
-          photos={puneImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex4(index)}
-        />
-        <Lightbox
-          slides={puneImages}
-          open={index4 >= 0}
-          index={index4}
-          close={() => setIndex4(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Darjeeling</h2>
-        <RowsPhotoAlbum
-          photos={darjeelingImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex5(index)}
-        />
-        <Lightbox
-          slides={darjeelingImages}
-          open={index5 >= 0}
-          index={index5}
-          close={() => setIndex5(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Kolkata</h2>
-        <RowsPhotoAlbum
-          photos={kolkataImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex6(index)}
-        />
-        <Lightbox
-          slides={kolkataImages}
-          open={index6 >= 0}
-          index={index6}
-          close={() => setIndex6(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Gaya</h2>
-        <RowsPhotoAlbum
-          photos={gayaImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex7(index)}
-        />
-        <Lightbox
-          slides={gayaImages}
-          open={index7 >= 0}
-          index={index7}
-          close={() => setIndex7(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Shantiniketan</h2>
-        <RowsPhotoAlbum
-          photos={shantiImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex8(index)}
-        />
-        <Lightbox
-          slides={shantiImages}
-          open={index8 >= 0}
-          index={index8}
-          close={() => setIndex8(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Chennai</h2>
-        <RowsPhotoAlbum
-          photos={chennaiImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex9(index)}
-        />
-        <Lightbox
-          slides={chennaiImages}
-          open={index9 >= 0}
-          index={index9}
-          close={() => setIndex9(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Puducherry</h2>
-        <RowsPhotoAlbum
-          photos={puduImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex10(index)}
-        />
-        <Lightbox
-          slides={puduImages}
-          open={index10 >= 0}
-          index={index10}
-          close={() => setIndex10(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Dhanbad</h2>
-        <RowsPhotoAlbum
-          photos={dhanbadImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex11(index)}
-        />
-        <Lightbox
-          slides={dhanbadImages}
-          open={index11 >= 0}
-          index={index11}
-          close={() => setIndex11(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
-        <h2 className='place'>Sambalpur</h2>
-        <RowsPhotoAlbum
-          photos={sambalpurImages}
-          targetRowHeight={300}
-          onClick={({ index }) => setIndex12(index)}
-        />
-        <Lightbox
-          slides={sambalpurImages}
-          open={index12 >= 0}
-          index={index12}
-          close={() => setIndex12(-1)}
-          plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
-        />
+              <RowsPhotoAlbum
+                photos={delhiImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex13(index)}
+              />
+              <Lightbox
+                slides={delhiImages}
+                open={index13 >= 0}
+                index={index13}
+                close={() => setIndex13(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Mumbai</h2>
+              <RowsPhotoAlbum
+                photos={mumbaiImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex3(index)}
+              />
+              <Lightbox
+                slides={mumbaiImages}
+                open={index3 >= 0}
+                index={index3}
+                close={() => setIndex3(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Pune</h2>
+              <RowsPhotoAlbum
+                photos={puneImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex4(index)}
+              />
+              <Lightbox
+                slides={puneImages}
+                open={index4 >= 0}
+                index={index4}
+                close={() => setIndex4(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Darjeeling</h2>
+              <RowsPhotoAlbum
+                photos={darjeelingImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex5(index)}
+              />
+              <Lightbox
+                slides={darjeelingImages}
+                open={index5 >= 0}
+                index={index5}
+                close={() => setIndex5(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Kolkata</h2>
+              <RowsPhotoAlbum
+                photos={kolkataImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex6(index)}
+              />
+              <Lightbox
+                slides={kolkataImages}
+                open={index6 >= 0}
+                index={index6}
+                close={() => setIndex6(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Gaya</h2>
+              <RowsPhotoAlbum
+                photos={gayaImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex7(index)}
+              />
+              <Lightbox
+                slides={gayaImages}
+                open={index7 >= 0}
+                index={index7}
+                close={() => setIndex7(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Shantiniketan</h2>
+              <RowsPhotoAlbum
+                photos={shantiImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex8(index)}
+              />
+              <Lightbox
+                slides={shantiImages}
+                open={index8 >= 0}
+                index={index8}
+                close={() => setIndex8(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Chennai</h2>
+              <RowsPhotoAlbum
+                photos={chennaiImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex9(index)}
+              />
+              <Lightbox
+                slides={chennaiImages}
+                open={index9 >= 0}
+                index={index9}
+                close={() => setIndex9(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Puducherry</h2>
+              <RowsPhotoAlbum
+                photos={puduImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex10(index)}
+              />
+              <Lightbox
+                slides={puduImages}
+                open={index10 >= 0}
+                index={index10}
+                close={() => setIndex10(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Dhanbad</h2>
+              <RowsPhotoAlbum
+                photos={dhanbadImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex11(index)}
+              />
+              <Lightbox
+                slides={dhanbadImages}
+                open={index11 >= 0}
+                index={index11}
+                close={() => setIndex11(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+              <h2 className='place'>Sambalpur</h2>
+              <RowsPhotoAlbum
+                photos={sambalpurImages}
+                targetRowHeight={300}
+                onClick={({ index }) => setIndex12(index)}
+              />
+              <Lightbox
+                slides={sambalpurImages}
+                open={index12 >= 0}
+                index={index12}
+                close={() => setIndex12(-1)}
+                plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              />
+            </>
+          )}
+
+          {selectedCountry === "Turkey" && (
+            <>
+              <h2 className='place'>Turkey</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex14(index)} />
+              <Lightbox slides={dummyImages} open={index14 >= 0} index={index14} close={() => setIndex14(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Qatar" && (
+            <>
+              <h2 className='place'>Qatar</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex15(index)} />
+              <Lightbox slides={dummyImages} open={index15 >= 0} index={index15} close={() => setIndex15(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Finland" && (
+            <>
+              <h2 className='place'>Finland</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex16(index)} />
+              <Lightbox slides={dummyImages} open={index16 >= 0} index={index16} close={() => setIndex16(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Norway" && (
+            <>
+              <h2 className='place'>Norway</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex17(index)} />
+              <Lightbox slides={dummyImages} open={index17 >= 0} index={index17} close={() => setIndex17(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Estonia" && (
+            <>
+              <h2 className='place'>Estonia</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex18(index)} />
+              <Lightbox slides={dummyImages} open={index18 >= 0} index={index18} close={() => setIndex18(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Latvia" && (
+            <>
+              <h2 className='place'>Latvia</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex19(index)} />
+              <Lightbox slides={dummyImages} open={index19 >= 0} index={index19} close={() => setIndex19(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Lithuania" && (
+            <>
+              <h2 className='place'>Lithuania</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex20(index)} />
+              <Lightbox slides={dummyImages} open={index20 >= 0} index={index20} close={() => setIndex20(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Poland" && (
+            <>
+              <h2 className='place'>Poland</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex21(index)} />
+              <Lightbox slides={dummyImages} open={index21 >= 0} index={index21} close={() => setIndex21(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Denmark" && (
+            <>
+              <h2 className='place'>Denmark</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex22(index)} />
+              <Lightbox slides={dummyImages} open={index22 >= 0} index={index22} close={() => setIndex22(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Germany" && (
+            <>
+              <h2 className='place'>Germany</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex23(index)} />
+              <Lightbox slides={dummyImages} open={index23 >= 0} index={index23} close={() => setIndex23(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Hungary" && (
+            <>
+              <h2 className='place'>Hungary</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex24(index)} />
+              <Lightbox slides={dummyImages} open={index24 >= 0} index={index24} close={() => setIndex24(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
+            </>
+          )}
+
+          {selectedCountry === "Italy" && (
+            <>
+              <h2 className='place'>Italy</h2>
+              <RowsPhotoAlbum photos={dummyImages} targetRowHeight={300} onClick={({ index }) => setIndex25(index)} />
+              <Lightbox slides={dummyImages} open={index25 >= 0} index={index25} close={() => setIndex25(-1)} plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]} />
             </>
           )}
         </>
       ) : (
-        <div className="map-container glass-card p-4 mb-4">
-          <div className="d-flex align-items-center justify-content-center mb-4 gap-4 flex-wrap flex-md-nowrap">
-            <div className="visited-counter">
-              <span className="visited-count">3</span>
-              <span className="total-count">/ 195</span>
-            </div>
-            <h4 className="text-md-start text-center m-0" style={{ color: "var(--bs-body-color)", fontWeight: "300", lineHeight: "1.6" }}>
-              <span className="pink fw-bold">Explore the world through my lens.</span><br/> 
-              Click on my highlighted visited countries to see some wonderful pictures!
-            </h4>
-          </div>
-          <ComposableMap projectionConfig={{ scale: 140 }}>
-            <ZoomableGroup zoom={1}>
-              <Graticule stroke="rgba(255, 255, 255, 0.05)" strokeWidth={0.5} />
-              <Geographies geography={geoUrl}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const isVisited = ["India", "Sweden", "Thailand"].includes(geo.properties.name);
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        data-tooltip-id={isVisited ? "map-tooltip" : undefined}
-                        data-tooltip-content={isVisited ? geo.properties.name : undefined}
-                        onClick={() => {
-                          if (isVisited) setSelectedCountry(geo.properties.name);
-                        }}
-                        style={{
-                          default: {
-                            fill: isVisited ? "var(--bs-body-color)" : "rgba(128, 128, 128, 0.2)",
-                            outline: "none",
-                            transition: "all 0.3s ease",
-                            cursor: isVisited ? "pointer" : "default"
-                          },
-                          hover: {
-                            fill: isVisited ? "var(--secondary-color)" : "rgba(128, 128, 128, 0.3)",
-                            outline: "none",
-                            cursor: isVisited ? "pointer" : "default"
-                          },
-                          pressed: {
-                            fill: isVisited ? "var(--secondary-color)" : "rgba(128, 128, 128, 0.2)",
-                            outline: "none"
-                          }
-                        }}
-                      />
-                    );
-                  })
-                }
-              </Geographies>
-            </ZoomableGroup>
-          </ComposableMap>
-          <Tooltip id="map-tooltip" style={{ background: "linear-gradient(135deg, var(--secondary-color), #ff4d94)", color: "white", padding: "8px 20px", borderRadius: "20px", fontWeight: "600", boxShadow: "0 4px 10px rgba(201, 21, 116, 0.3)", border: "none", zIndex: 1000 }} />
-        </div>
+        <InteractiveGlobe setSelectedCountry={setSelectedCountry} />
       )}
       <style>{`
          #gl-img {
