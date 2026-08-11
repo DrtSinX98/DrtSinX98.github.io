@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Col, Image, Container, Row, Button, Modal, ListGroup } from "react-bootstrap";
+import { Col, Image, Container, Row, Button, Modal, ListGroup, Spinner } from "react-bootstrap";
 import { ComposableMap, Geographies, Geography, Graticule, ZoomableGroup } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
 import { RowsPhotoAlbum } from 'react-photo-album';
@@ -256,24 +256,49 @@ function InteractiveGlobe({ setSelectedCountry }) {
 }
 
 
-const LazyImage = (props) => {
+const LazyImage = ({ style, ...restProps }) => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <img
-      {...props}
-      loading="lazy"
-      onLoad={(e) => {
-        setLoaded(true);
-        if (props.onLoad) props.onLoad(e);
-      }}
-      style={{
-        ...props.style,
-        filter: loaded ? 'none' : 'blur(10px)',
-        opacity: loaded ? 1 : 0.8,
-        transition: 'filter 0.4s ease-out, opacity 0.4s ease-out',
-        backgroundColor: 'rgba(201, 21, 116, 0.1)',
-      }}
-    />
+    <div style={{
+      ...style,
+      position: 'relative',
+      overflow: 'hidden',
+      borderRadius: 'var(--bs-border-radius)'
+    }}>
+      {!loaded && (
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgba(255, 255, 255, 0.02)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}>
+          <Spinner animation="grow" style={{ color: 'var(--secondary-color)', opacity: 0.5 }} />
+        </div>
+      )}
+      <img
+        {...restProps}
+        loading="lazy"
+        onLoad={(e) => {
+          setLoaded(true);
+          if (restProps.onLoad) restProps.onLoad(e);
+        }}
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          objectFit: 'cover',
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 0.5s ease-out',
+        }}
+      />
+    </div>
   );
 };
 
