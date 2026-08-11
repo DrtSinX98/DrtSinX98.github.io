@@ -11,7 +11,7 @@ import Slideshow from 'yet-another-react-lightbox/plugins/slideshow';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
-
+import CountryInfo from './CountryInfo';
 
 import galleryDimensions from '../data/galleryDimensions.json';
 
@@ -370,6 +370,11 @@ return (
               ↑
             </Button>
           )}
+
+          <CountryInfo 
+            country={selectedCountry} 
+            visitedCities={Object.keys(galleriesByCountry[selectedCountry] || {}).map(city => cityDisplayNames[city] || city)} 
+          />
 
           {galleriesByCountry[selectedCountry] ? (
             Object.entries(galleriesByCountry[selectedCountry]).map(([city, photos]) => (
