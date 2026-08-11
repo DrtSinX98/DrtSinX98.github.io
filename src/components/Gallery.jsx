@@ -306,6 +306,23 @@ function Gallery() {
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [lightbox, setLightbox] = useState({ open: false, country: null, city: null, index: -1 });
+  const [showScrollUp, setShowScrollUp] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollUp(true);
+      } else {
+        setShowScrollUp(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 return (
     <Container>
       <Row>
@@ -326,6 +343,33 @@ return (
           <Button variant="secondary" className="mb-4 back-btn" onClick={() => setSelectedCountry(null)}>
             ← Back to Map
           </Button>
+          
+          {showScrollUp && (
+            <Button 
+              variant="secondary" 
+              className="back-btn" 
+              onClick={scrollToTop}
+              style={{
+                position: 'fixed',
+                bottom: '30px',
+                right: '30px',
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+                zIndex: 1000,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                opacity: 0.9,
+                fontSize: '24px',
+                padding: 0
+              }}
+              title="Go Up"
+            >
+              ↑
+            </Button>
+          )}
 
           {galleriesByCountry[selectedCountry] ? (
             Object.entries(galleriesByCountry[selectedCountry]).map(([city, photos]) => (
