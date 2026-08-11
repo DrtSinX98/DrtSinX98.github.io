@@ -259,7 +259,7 @@ function InteractiveGlobe({ setSelectedCountry }) {
 const LazyImage = ({ style, ...restProps }) => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <div style={{
+    <div className="gallery-image-wrapper" style={{
       ...style,
       position: 'relative',
       overflow: 'hidden',
@@ -295,7 +295,7 @@ const LazyImage = ({ style, ...restProps }) => {
           display: 'block',
           objectFit: 'cover',
           opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.5s ease-out',
+          transition: 'opacity 0.5s ease-out, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         }}
       />
     </div>
