@@ -256,6 +256,27 @@ function InteractiveGlobe({ setSelectedCountry }) {
 }
 
 
+const LazyImage = (props) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <img
+      {...props}
+      loading="lazy"
+      onLoad={(e) => {
+        setLoaded(true);
+        if (props.onLoad) props.onLoad(e);
+      }}
+      style={{
+        ...props.style,
+        filter: loaded ? 'none' : 'blur(10px)',
+        opacity: loaded ? 1 : 0.8,
+        transition: 'filter 0.4s ease-out, opacity 0.4s ease-out',
+        backgroundColor: 'rgba(201, 21, 116, 0.1)',
+      }}
+    />
+  );
+};
+
 function Gallery() {
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -289,6 +310,7 @@ return (
                   photos={photos}
                   targetRowHeight={300}
                   onClick={({ index }) => setLightbox({ open: true, country: selectedCountry, city, index })}
+                  render={{ image: LazyImage }}
                 />
               </div>
             ))
