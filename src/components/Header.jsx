@@ -35,10 +35,10 @@ function Header(props) {
                 <Nav.Link eventKey="about" className={active === "about" ? "active-link" : ""}>About</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-link" : ""}>Lectures</Nav.Link>
+                <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-link" : ""}>Gallery</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-link" : ""}>Gallery</Nav.Link>
+                <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-link" : ""}>Lectures</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="contact" className={active === "contact" ? "active-link" : ""}>Contact</Nav.Link>
@@ -62,10 +62,10 @@ function Header(props) {
             <Nav.Link eventKey="about" className={active === "about" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faUser} size="lg" /></Nav.Link>
           </Nav.Item>
           <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faVideo} size="lg" /></Nav.Link>
+            <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faImages} size="lg" /></Nav.Link>
           </Nav.Item>
           <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faImages} size="lg" /></Nav.Link>
+            <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faVideo} size="lg" /></Nav.Link>
           </Nav.Item>
           <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
             <Nav.Link eventKey="contact" className={active === "contact" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faMessage} size="lg" /></Nav.Link>
