@@ -177,19 +177,19 @@ export default function CountryInfo({ country, visitedCities }) {
               
               {weather ? (
                 <Row className="g-3">
-                  <Col xs={3} className="d-flex align-items-center">
+                  <Col xs={6} md={3} className="d-flex align-items-center">
                     <FontAwesomeIcon icon={faTemperatureHalf} className="me-2" style={{ color: 'var(--secondary-color)' }} />
                     <span style={{ color: 'var(--secondary-color)' }}>{weather.temperature_2m}°C</span>
                   </Col>
-                  <Col xs={3} className="d-flex align-items-center">
+                  <Col xs={6} md={3} className="d-flex align-items-center">
                     <FontAwesomeIcon icon={faDroplet} className="me-2" style={{ color: 'var(--secondary-color)' }} />
                     <span style={{ color: 'var(--secondary-color)' }}>{weather.relative_humidity_2m}%</span>
                   </Col>
-                  <Col xs={3} className="d-flex align-items-center">
+                  <Col xs={6} md={3} className="d-flex align-items-center">
                     <FontAwesomeIcon icon={faCloudRain} className="me-2" style={{ color: 'var(--secondary-color)' }} />
                     <span style={{ color: 'var(--secondary-color)' }}>{weather.precipitation} mm</span>
                   </Col>
-                  <Col xs={3} className="d-flex align-items-center">
+                  <Col xs={6} md={3} className="d-flex align-items-center">
                     <FontAwesomeIcon icon={faClock} className="me-2" style={{ color: 'var(--secondary-color)' }} />
                     <span style={{ color: 'var(--secondary-color)' }}>{weather.time.split('T')[1]}</span>
                   </Col>
