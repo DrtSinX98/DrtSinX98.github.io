@@ -20,7 +20,7 @@ function Contact() {
       </Col>
       <Col>
       <h1>Reach out <span className="pink">to me!</span></h1>
-      <p className="lead">I'm available on <span className="pink">Linkedin</span>, Twitter, Telegram, Whatsapp, Discord, <span className="pink">Reddit</span> and Instagram. <br/>You can <Button variant="secondary" size="sm" href="mailto:rjpritish@gmail.com" target="_blank">E-Mail</Button> me directly or find my contact details below, feel free to reach out.</p>
+      <p className="lead">I'm available on <span className="pink">Linkedin</span>, Twitter, Telegram, Whatsapp, Discord, and Instagram. <br/>You can <Button variant="secondary" size="sm" href="mailto:rjpritish@gmail.com" target="_blank">E-Mail</Button> me directly or find my contact details below, feel free to reach out.</p>
       </Col>
       </Row>
       <hr className="my-4" />
@@ -71,7 +71,7 @@ function Contact() {
       </a>
       </Col>
       <Col lg={4} md={6}>
-      <a href="https://whatsapp.com/channel/0029VaGxfUGDp2QAuZaTqp1G" target="_blank" rel="noreferrer" className="text-decoration-none">
+      <a href="https://wa.me/pritishranjanjoshi" target="_blank" rel="noreferrer" className="text-decoration-none">
       <Card className="h-100 text-center contact-card border-0">
         <Card.Body className="d-flex flex-column justify-content-center align-items-center p-4">
           <div className="icon-wrapper mb-3">

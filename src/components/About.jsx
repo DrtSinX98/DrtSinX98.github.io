@@ -41,7 +41,7 @@ function About() {
           <h1 className="hero-title">Do you wanna know <span className="pink">About me?</span></h1>
           <p className="lead mt-3">
             I'm a guy who likes to learn new things and explore different fields.<br />
-            I'm <span className="pink">currently</span> a researcher in the field of Computational Materials Discovery.<br /><br />
+            I'm <span className="pink">currently</span> a researcher in the field of Machine Learning.<br /><br />
             If interested, you can look into my <span onClick={() => setShowCVModal(true)} className="skill-chip cv-chip" style={{ display: 'inline-block', cursor: 'pointer', textDecoration: 'none' }}><FontAwesomeIcon icon={faFilePdf} className="me-1" /> Curriculum vitae</span><br /><br />
             You can also find more details <span className="pink">about me</span> down below.
           </p>
@@ -266,8 +266,7 @@ function About() {
             <p className="text-muted">Connect with me across the web.</p>
             <div className="d-flex justify-content-center gap-3 mt-3">
               <a href="https://www.linkedin.com/in/pritish-joshi-b870bb242" target="_blank" rel="noreferrer" className="social-pill">LinkedIn</a>
-              <a href="https://t.me/rj_pritish" target="_blank" rel="noreferrer" className="social-pill">Telegram</a>
-              <a href="#" className="social-pill">Reddit</a>
+              <a href="https://www.instagram.com/the_istreet" target="_blank" rel="noreferrer" className="social-pill">Instagram</a>
             </div>
           </div>
         </Col>
