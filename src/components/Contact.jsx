@@ -1,5 +1,5 @@
-import React from "react";
-import { Col, Image , Container, Row, Card, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Col, Image , Container, Row, Card, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -10,6 +10,50 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 
 function Contact() {
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwujDxzfQlp_f0sV6qA0Ap-EdAPOMOAjfPA77YYBykbt0FCWWVtTtqyuUxLVBMj4FBldg/exec';
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ipAddress, setIpAddress] = useState('Fetching...');
+
+  useEffect(() => {
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => setIpAddress(data.ip))
+      .catch(err => setIpAddress('Unknown'));
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: new FormData(e.target),
+    })
+      .then(response => {
+        setMessage('Message sent successfully!');
+        setTimeout(() => setMessage(''), 5000);
+        setFormData({ name: '', email: '', message: '' }); // Reset form
+      })
+      .catch(error => console.error('Error!', error.message))
+      .finally(() => setIsSubmitting(false));
+  };
+
   return (
     <Container>
       <Row>
@@ -116,6 +160,60 @@ function Contact() {
       </a>
       </Col>
       </Row>
+      <hr className="my-5" />
+      <Row className="mb-5 pb-4">
+        <Col>
+          <h2 className="place mb-4 fw-bold" style={{ fontSize: '32px' }}>Send me a message</h2>
+          <div className="glass-card p-4">
+            <Form id="contact-form" name="google-sheet" onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold">Name</Form.Label>
+                <Form.Control 
+                  type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter full name" 
+                  required 
+                  className="contact-input"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold">Email address</Form.Label>
+                <Form.Control 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="name@example.com" 
+                  required 
+                  className="contact-input"
+                />
+              </Form.Group>
+              <input type="hidden" name="ip" value={ipAddress} />
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-semibold">Message</Form.Label>
+                <Form.Control 
+                  as="textarea" 
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Enter your message" 
+                  required 
+                  className="contact-input"
+                />
+              </Form.Group>
+              <div className="text-center">
+                <Button variant="primary" type="submit" className="px-5 py-2 fw-bold" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Submit'}
+                </Button>
+              </div>
+            </Form>
+            {message && <p className="pink text-center mt-3 mb-0 fw-bold">{message}</p>}
+          </div>
+        </Col>
+      </Row>
       <style>
         {`
           #ct-img {
@@ -135,6 +233,15 @@ function Contact() {
 
           .pink {
             color: var(--secondary-color);
+          }
+
+          .place {
+            color: var(--tertiary-color) !important;
+            text-align: center;
+            background-color: var(--secondary-color);
+            border-radius: var(--bs-border-radius);
+            padding: 5px;
+            margin-top: 10px;
           }
           
           .contact-card {
@@ -167,6 +274,21 @@ function Contact() {
               display: flex;
               justify-content: center;
             }
+          }
+
+          .contact-input {
+            background-color: var(--bs-body-bg) !important;
+            color: var(--bs-body-color) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          }
+          
+          .contact-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(201, 21, 116, 0.25) !important;
+            border-color: var(--secondary-color) !important;
+          }
+          
+          .contact-input::placeholder {
+            color: #888 !important;
           }
         `}
       </style>
