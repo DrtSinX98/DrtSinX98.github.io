@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Image, Container, Row, Button, Accordion, Badge, Tabs, Tab } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faGraduationCap, faBriefcase, faMicroscope, faCode, faDesktop, faTrophy, faBook, faChalkboardTeacher, faGamepad, faUsers, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 import AndroidProjects from "./AndroidProjects";
 import DesignProjects from "./DesignProjects";
 import CompProjects from "./CompProjects";
+import CVModal from "./CVModal";
 
 function About() {
+  const [showCVModal, setShowCVModal] = useState(false);
   const certificates = [
     { title: "Getting Started with Python (University of Michigan)", link: "https://www.coursera.org/account/accomplishments/verify/MZK5JE7VPKW7" },
     { title: "Python Data Structure (University of Michigan)", link: "https://www.coursera.org/account/accomplishments/verify/AJSMZSQEQ9BD" },
@@ -40,7 +42,7 @@ function About() {
           <p className="lead mt-3">
             I'm a guy who likes to learn new things and explore different fields.<br />
             I'm <span className="pink">currently</span> a researcher in the field of Computational Materials Discovery.<br /><br />
-            If interested, you can look into my <a href="https://drive.google.com/file/d/1EBXQVRXYt07Pbke3zqBcCbw3HlYBIcDd/view?usp=drivesdk" target="_blank" rel="noreferrer" className="skill-chip cv-chip" style={{ display: 'inline-block', cursor: 'pointer', textDecoration: 'none' }}><FontAwesomeIcon icon={faFilePdf} className="me-1" /> Curriculum vitae</a><br /><br />
+            If interested, you can look into my <span onClick={() => setShowCVModal(true)} className="skill-chip cv-chip" style={{ display: 'inline-block', cursor: 'pointer', textDecoration: 'none' }}><FontAwesomeIcon icon={faFilePdf} className="me-1" /> Curriculum vitae</span><br /><br />
             You can also find more details <span className="pink">about me</span> down below.
           </p>
         </Col>
@@ -270,6 +272,8 @@ function About() {
           </div>
         </Col>
       </Row>
+
+      <CVModal show={showCVModal} onHide={() => setShowCVModal(false)} />
 
       <style>
         {`
