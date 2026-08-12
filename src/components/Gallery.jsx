@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, memo } from 'react';
+import { flushSync } from 'react-dom';
 import { Col, Image, Container, Row, Button, Modal, ListGroup, Spinner } from "react-bootstrap";
 import { ComposableMap, Geographies, Geography, Graticule, ZoomableGroup } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
@@ -61,18 +62,38 @@ const countryFlags = {
   "Denmark": "🇩🇰", "Germany": "🇩🇪", "Hungary": "🇭🇺", "Italy": "🇮🇹"
 };
 
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
 
 const visitedStyle = {
-  default: { fill: "var(--bs-body-color)", outline: "none", transition: "all 0.3s ease", cursor: "pointer" },
-  hover: { fill: "var(--secondary-color)", outline: "none", cursor: "pointer" },
-  pressed: { fill: "var(--secondary-color)", outline: "none" }
+  default: { fill: "var(--bs-body-color)", outline: "none", transition: "all 0.3s ease", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
+  hover: { fill: "var(--secondary-color)", outline: "none", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
+  pressed: { fill: "var(--secondary-color)", outline: "none", ...(isChrome ? { pointerEvents: "auto" } : {}) }
 };
 
 const defaultStyle = {
-  default: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", transition: "all 0.3s ease", cursor: "default" },
-  hover: { fill: "rgba(201, 21, 116, 0.25)", outline: "none", cursor: "default" },
-  pressed: { fill: "rgba(201, 21, 116, 0.15)", outline: "none" }
+  default: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", transition: "all 0.3s ease", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
+  hover: { fill: "rgba(201, 21, 116, 0.25)", outline: "none", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
+  pressed: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", ...(isChrome ? { pointerEvents: "none" } : {}) }
 };
+
+const MemoizedGeographies = memo(({ geographies, setSelectedCountry }) => {
+  return geographies.map((geo) => {
+    const isVisited = visitedCountries.includes(geo.properties.name);
+    return (
+      <Geography
+        key={geo.rsmKey}
+        geography={geo}
+        data-tooltip-id={isVisited ? "map-tooltip" : undefined}
+        data-tooltip-content={isVisited ? geo.properties.name : undefined}
+        onClick={() => {
+          if (isVisited) setSelectedCountry(geo.properties.name);
+        }}
+        style={isVisited ? visitedStyle : defaultStyle}
+      />
+    );
+  });
+});
 
 function InteractiveGlobe({ setSelectedCountry }) {
   const [rotation, setRotation] = useState([-40, -30, 0]);
@@ -83,19 +104,43 @@ function InteractiveGlobe({ setSelectedCountry }) {
   const [showList, setShowList] = useState(false);
   const animationRef = useRef(null);
 
-  const rotateGlobe = useCallback(() => {
-    if (!isInteracting && !isDragging) {
-      setRotation((prev) => [(prev[0] + 0.15) % 360, prev[1], prev[2]]);
+  const interactingRef = useRef(false);
+  const draggingRef = useRef(false);
+  const lastTimeRef = useRef(performance.now());
+
+  // Keep refs in sync with state
+  useEffect(() => { interactingRef.current = isInteracting; }, [isInteracting]);
+  useEffect(() => { draggingRef.current = isDragging; }, [isDragging]);
+
+  const rotateGlobe = useCallback((time) => {
+    if (isChrome) {
+      if (!lastTimeRef.current) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      if (!interactingRef.current && !draggingRef.current) {
+        // Calculate rotation based on elapsed time (approx 0.15 deg per 16.6ms frame)
+        const rotationStep = (delta * 0.15) / 16.666;
+        // Cap max rotation step in case of long freezes or tab backgrounding
+        const safeStep = Math.min(rotationStep, 10);
+        flushSync(() => {
+          setRotation((prev) => [(prev[0] + safeStep) % 360, prev[1], prev[2]]);
+        });
+      }
+    } else {
+      if (!isInteracting && !isDragging) {
+        setRotation((prev) => [(prev[0] + 0.15) % 360, prev[1], prev[2]]);
+      }
     }
     animationRef.current = requestAnimationFrame(rotateGlobe);
   }, [isInteracting, isDragging]);
 
   useEffect(() => {
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    if (!isChrome) {
-      animationRef.current = requestAnimationFrame(rotateGlobe);
-      return () => cancelAnimationFrame(animationRef.current);
-    }
+    if (isChrome) lastTimeRef.current = performance.now();
+    animationRef.current = requestAnimationFrame(rotateGlobe);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
   }, [rotateGlobe]);
 
   const handleMouseDown = (e) => {
@@ -107,7 +152,13 @@ function InteractiveGlobe({ setSelectedCountry }) {
     if (isDragging) {
       const deltaX = e.clientX - dragStart[0];
       const deltaY = e.clientY - dragStart[1];
-      setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      if (isChrome) {
+        flushSync(() => {
+          setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+        });
+      } else {
+        setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      }
       setDragStart([e.clientX, e.clientY]);
     }
   };
@@ -125,7 +176,13 @@ function InteractiveGlobe({ setSelectedCountry }) {
     if (isDragging) {
       const deltaX = e.touches[0].clientX - dragStart[0];
       const deltaY = e.touches[0].clientY - dragStart[1];
-      setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      if (isChrome) {
+        flushSync(() => {
+          setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+        });
+      } else {
+        setRotation((prev) => [(prev[0] + deltaX / 2.5) % 360, Math.max(-90, Math.min(90, prev[1] - deltaY / 2.5)), prev[2]]);
+      }
       setDragStart([e.touches[0].clientX, e.touches[0].clientY]);
     }
   };
@@ -185,22 +242,29 @@ function InteractiveGlobe({ setSelectedCountry }) {
         <ComposableMap projection="geoOrthographic" projectionConfig={{ scale: 280, rotate: rotation }}>
           <Graticule stroke="var(--bs-body-color)" strokeWidth={0.5} style={{ opacity: 0.15 }} />
           <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const isVisited = visitedCountries.includes(geo.properties.name);
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    data-tooltip-id={isVisited ? "map-tooltip" : undefined}
-                    data-tooltip-content={isVisited ? geo.properties.name : undefined}
-                    onClick={() => {
-                      if (isVisited) setSelectedCountry(geo.properties.name);
-                    }}
-                    style={isVisited ? visitedStyle : defaultStyle}
-                  />
-                );
-              })
+            {({ geographies }) => 
+              isChrome ? (
+                <MemoizedGeographies 
+                  geographies={geographies} 
+                  setSelectedCountry={setSelectedCountry} 
+                />
+              ) : (
+                geographies.map((geo) => {
+                  const isVisited = visitedCountries.includes(geo.properties.name);
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      data-tooltip-id={isVisited ? "map-tooltip" : undefined}
+                      data-tooltip-content={isVisited ? geo.properties.name : undefined}
+                      onClick={() => {
+                        if (isVisited) setSelectedCountry(geo.properties.name);
+                      }}
+                      style={isVisited ? visitedStyle : defaultStyle}
+                    />
+                  );
+                })
+              )
             }
           </Geographies>
         </ComposableMap>
