@@ -1,22 +1,31 @@
+'use client';
+
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 
-const ParticlesBG = () => {
+const ParticlesBG = ({ config = {} }) => {
   const [init, setInit] = useState(false);
 
+  const {
+    enabled = true,
+    color = "#c91574",
+    count = 150,
+    speed = 2,
+    linkDistance = 150,
+    linkOpacity = 0.3,
+    opacity = 0.4,
+  } = config;
+
   useEffect(() => {
+    if (!enabled) return;
     initParticlesEngine(async (engine) => {
-      
+
       await loadFull(engine);
     }).then(() => {
       setInit(true);
     });
-  }, []);
-
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  }, [enabled]);
 
   const options = useMemo(
     () => ({
@@ -49,13 +58,13 @@ const ParticlesBG = () => {
       },
       particles: {
         color: {
-          value: "#c91574",
+          value: color,
         },
         links: {
-          color: "#c91574",
-          distance: 150,
+          color: color,
+          distance: linkDistance,
           enable: true,
-          opacity: 0.3,
+          opacity: linkOpacity,
           width: 1,
         },
         move: {
@@ -65,17 +74,17 @@ const ParticlesBG = () => {
             default: "bounce",
           },
           random: false,
-          speed: 2,
+          speed: speed,
           straight: false,
         },
         number: {
           density: {
             enable: true,
           },
-          value: 150,
+          value: count,
         },
         opacity: {
-          value: 0.4,
+          value: opacity,
         },
         shape: {
           type: "circle",
@@ -86,14 +95,13 @@ const ParticlesBG = () => {
       },
       detectRetina: true,
     }),
-    [],
+    [color, count, speed, linkDistance, linkOpacity, opacity],
   );
 
-  if (init) {
+  if (init && enabled) {
     return (
       <Particles
         id="tsparticles"
-        particlesLoaded={particlesLoaded}
         options={options}
       />
     );

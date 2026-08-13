@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef, useCallback, memo } from 'react';
+'use client';
+
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { flushSync } from 'react-dom';
-import { Col, Image, Container, Row, Button, Modal, ListGroup, Spinner } from "react-bootstrap";
-import { ComposableMap, Geographies, Geography, Graticule, ZoomableGroup } from "react-simple-maps";
+import { Col, Image, Container, Row, Button, Modal, Spinner } from "react-bootstrap";
+import { ComposableMap, Geographies, Geography, Graticule } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
 import { RowsPhotoAlbum } from 'react-photo-album';
 import 'react-photo-album/rows.css';
@@ -13,71 +15,30 @@ import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import CountryInfo from './CountryInfo';
+import RichText from './RichText';
 
-import galleryDimensions from '../data/galleryDimensions.json';
-
-const imageModules = import.meta.glob('../images/gallery/*/*/*.webp', { eager: true, import: 'default' });
-
-const galleriesByCountry = {};
-
-const cityDisplayNames = {
-  "Poznan": "Poznań",
-  "Vasteras": "Västerås"
-};
-
-for (const [path, url] of Object.entries(imageModules)) {
-  const parts = path.split('/');
-  const country = parts[parts.length - 3];
-  const city = parts[parts.length - 2];
-  const dims = galleryDimensions[path] || { width: 800, height: 600 };
-  
-  if (!galleriesByCountry[country]) galleriesByCountry[country] = {};
-  if (!galleriesByCountry[country][city]) galleriesByCountry[country][city] = [];
-  
-  galleriesByCountry[country][city].push({ src: url, width: dims.width, height: dims.height });
-}
-
-// Ensure sorting by file name or keeping natural order
-for (const country in galleriesByCountry) {
-  for (const city in galleriesByCountry[country]) {
-    galleriesByCountry[country][city].sort((a, b) => {
-      // Natural sort for strings like img1.jpg and img10.jpg
-      return a.src.localeCompare(b.src, undefined, { numeric: true, sensitivity: 'base' });
-    });
-  }
-}
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-const visitedCountries = [
-  "India", "Sweden", "Thailand", 
-  "Turkey", "Qatar", "Finland", "Norway", 
-  "Estonia", "Latvia", "Lithuania", "Poland", 
-  "Denmark", "Germany", "Hungary", "Italy"
-];
+/**
+ * Chrome needs `pointerEvents` pinned and `flushSync` around the rotation state
+ * or the globe stutters — see the "Workaround for rotating globe on chromium"
+ * change in the original site. Detection now happens after mount so the markup
+ * stays identical on the server.
+ */
+const buildStyles = (isChrome) => ({
+  visited: {
+    default: { fill: "var(--bs-body-color)", outline: "none", transition: "all 0.3s ease", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
+    hover: { fill: "var(--secondary-color)", outline: "none", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
+    pressed: { fill: "var(--secondary-color)", outline: "none", ...(isChrome ? { pointerEvents: "auto" } : {}) }
+  },
+  other: {
+    default: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", transition: "all 0.3s ease", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
+    hover: { fill: "rgba(201, 21, 116, 0.25)", outline: "none", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
+    pressed: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", ...(isChrome ? { pointerEvents: "none" } : {}) }
+  }
+});
 
-const countryFlags = {
-  "India": "🇮🇳", "Sweden": "🇸🇪", "Thailand": "🇹🇭", 
-  "Turkey": "🇹🇷", "Qatar": "🇶🇦", "Finland": "🇫🇮", "Norway": "🇳🇴", 
-  "Estonia": "🇪🇪", "Latvia": "🇱🇻", "Lithuania": "🇱🇹", "Poland": "🇵🇱", 
-  "Denmark": "🇩🇰", "Germany": "🇩🇪", "Hungary": "🇭🇺", "Italy": "🇮🇹"
-};
-
-const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-
-const visitedStyle = {
-  default: { fill: "var(--bs-body-color)", outline: "none", transition: "all 0.3s ease", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
-  hover: { fill: "var(--secondary-color)", outline: "none", cursor: "pointer", ...(isChrome ? { pointerEvents: "auto" } : {}) },
-  pressed: { fill: "var(--secondary-color)", outline: "none", ...(isChrome ? { pointerEvents: "auto" } : {}) }
-};
-
-const defaultStyle = {
-  default: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", transition: "all 0.3s ease", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
-  hover: { fill: "rgba(201, 21, 116, 0.25)", outline: "none", cursor: "default", ...(isChrome ? { pointerEvents: "none" } : {}) },
-  pressed: { fill: "rgba(201, 21, 116, 0.15)", outline: "none", ...(isChrome ? { pointerEvents: "none" } : {}) }
-};
-
-const MemoizedGeographies = memo(({ geographies, setSelectedCountry }) => {
+const MemoizedGeographies = memo(({ geographies, visitedCountries, styles, setSelectedCountry }) => {
   return geographies.map((geo) => {
     const isVisited = visitedCountries.includes(geo.properties.name);
     return (
@@ -89,24 +50,97 @@ const MemoizedGeographies = memo(({ geographies, setSelectedCountry }) => {
         onClick={() => {
           if (isVisited) setSelectedCountry(geo.properties.name);
         }}
-        style={isVisited ? visitedStyle : defaultStyle}
+        style={isVisited ? styles.visited : styles.other}
       />
     );
   });
 });
+MemoizedGeographies.displayName = 'MemoizedGeographies';
 
-function InteractiveGlobe({ setSelectedCountry }) {
+/**
+ * Kept out of the globe's render path — the globe re-renders on every animation
+ * frame, and rebuilding these tiles 60 times a second is pure waste.
+ */
+const VisitedCountriesModal = memo(({ show, onHide, onSelect, countries, title }) => (
+  <Modal show={show} onHide={onHide} centered>
+    <Modal.Header closeButton style={{ backgroundColor: 'var(--bs-card-bg)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+      <Modal.Title style={{ color: 'var(--secondary-color)', fontWeight: 'bold' }}>{title}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body style={{ backgroundColor: 'var(--bs-card-bg)', maxHeight: '60vh', overflowY: 'auto' }}>
+      <Row className="g-2">
+        {countries.map(country => (
+          <Col xs={4} key={country.name}>
+            <div
+              onClick={() => onSelect(country.name)}
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.02)',
+                color: 'var(--bs-body-color)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '5px',
+                padding: '15px 5px',
+                textAlign: 'center'
+              }}
+              className="country-list-item h-100"
+            >
+              <span style={{ fontSize: '1.5rem' }}>{country.flag || '🌍'}</span>
+              <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{country.name}</span>
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </Modal.Body>
+  </Modal>
+));
+VisitedCountriesModal.displayName = 'VisitedCountriesModal';
+
+function InteractiveGlobe({ setSelectedCountry, countries, content }) {
   const [rotation, setRotation] = useState([-40, -30, 0]);
   const [isInteracting, setIsInteracting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState([0, 0]);
   const [zoomConfig, setZoomConfig] = useState({ isZoomed: false, x: 50, y: 50 });
   const [showList, setShowList] = useState(false);
+  const [isChrome, setIsChrome] = useState(false);
   const animationRef = useRef(null);
 
   const interactingRef = useRef(false);
   const draggingRef = useRef(false);
-  const lastTimeRef = useRef(performance.now());
+  const lastTimeRef = useRef(0);
+
+  // The rotation state changes every frame, so anything rebuilt during render
+  // becomes a new prop on all ~180 <Geography> elements and defeats both the
+  // memo() below and React's own bail-outs. These must stay referentially stable.
+  const visitedCountries = useMemo(() => countries.map((c) => c.name), [countries]);
+  const styles = useMemo(() => buildStyles(isChrome), [isChrome]);
+  const sortedCountries = useMemo(
+    () => [...countries].sort((a, b) => a.name.localeCompare(b.name)),
+    [countries],
+  );
+
+  const closeList = useCallback(() => setShowList(false), []);
+  const selectFromList = useCallback(
+    (name) => {
+      setSelectedCountry(name);
+      setShowList(false);
+    },
+    [setSelectedCountry],
+  );
+
+  // The globe starts rotating on the first frame, so server rendering it only
+  // ships ~60 kB of already-stale path data and trips hydration. Mount it on the
+  // client and reserve the SVG's 4:3 box so nothing shifts.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setIsChrome(/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor));
+    setMounted(true);
+  }, []);
 
   // Keep refs in sync with state
   useEffect(() => { interactingRef.current = isInteracting; }, [isInteracting]);
@@ -133,7 +167,7 @@ function InteractiveGlobe({ setSelectedCountry }) {
       }
     }
     animationRef.current = requestAnimationFrame(rotateGlobe);
-  }, [isInteracting, isDragging]);
+  }, [isInteracting, isDragging, isChrome]);
 
   useEffect(() => {
     if (isChrome) lastTimeRef.current = performance.now();
@@ -141,7 +175,7 @@ function InteractiveGlobe({ setSelectedCountry }) {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [rotateGlobe]);
+  }, [rotateGlobe, isChrome]);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -166,7 +200,7 @@ function InteractiveGlobe({ setSelectedCountry }) {
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-  
+
   const handleTouchStart = (e) => {
     setIsDragging(true);
     setDragStart([e.touches[0].clientX, e.touches[0].clientY]);
@@ -199,28 +233,28 @@ function InteractiveGlobe({ setSelectedCountry }) {
   };
 
   return (
-    <div 
-      className="map-container glass-card p-4 mb-4" 
+    <div
+      className="map-container glass-card p-4 mb-4"
       style={{ overflow: 'hidden' }}
     >
       <div className="d-flex align-items-center justify-content-center mb-4 gap-4 flex-wrap flex-md-nowrap">
-        <div 
-          className="visited-counter" 
+        <div
+          className="visited-counter"
           onClick={() => setShowList(true)}
           style={{ cursor: 'pointer', transition: 'transform 0.2s ease' }}
           onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           title="View list of visited countries"
         >
-          <span className="visited-count">15</span>
-          <span className="total-count">/ 195</span>
+          <span className="visited-count">{countries.length}</span>
+          <span className="total-count">/ {content.totalCountries}</span>
         </div>
         <h4 className="text-md-start text-center m-0" style={{ color: "var(--bs-body-color)", fontWeight: "300", lineHeight: "1.6" }}>
-          <span className="pink fw-bold">Explore the world through my lens.</span><br />
-          Click on my highlighted visited countries to see some wonderful pictures!
+          <span className="pink fw-bold">{content.mapHeadline}</span><br />
+          {content.mapSubline}
         </h4>
       </div>
-      <div 
+      <div
         onDoubleClick={handleDoubleClick}
         onMouseEnter={() => setIsInteracting(true)}
         onMouseLeave={() => { setIsInteracting(false); handleMouseUp(); }}
@@ -230,84 +264,46 @@ function InteractiveGlobe({ setSelectedCountry }) {
         onTouchStart={(e) => { setIsInteracting(true); handleTouchStart(e); }}
         onTouchMove={handleTouchMove}
         onTouchEnd={() => { setIsInteracting(false); handleMouseUp(); }}
-        style={{ 
-          cursor: isDragging ? 'grabbing' : 'grab', 
-          width: '100%', 
+        style={{
+          cursor: isDragging ? 'grabbing' : 'grab',
+          width: '100%',
           height: '100%',
           transform: zoomConfig.isZoomed ? 'scale(2)' : 'scale(1)',
           transformOrigin: `${zoomConfig.x}% ${zoomConfig.y}%`,
           transition: 'transform 0.4s ease'
         }}
       >
-        <ComposableMap projection="geoOrthographic" projectionConfig={{ scale: 280, rotate: rotation }}>
-          <Graticule stroke="var(--bs-body-color)" strokeWidth={0.5} style={{ opacity: 0.15 }} />
-          <Geographies geography={geoUrl}>
-            {({ geographies }) => 
-              isChrome ? (
-                <MemoizedGeographies 
-                  geographies={geographies} 
-                  setSelectedCountry={setSelectedCountry} 
+        {mounted ? (
+          <ComposableMap projection="geoOrthographic" projectionConfig={{ scale: 280, rotate: rotation }}>
+            <Graticule stroke="var(--bs-body-color)" strokeWidth={0.5} style={{ opacity: 0.15 }} />
+            <Geographies geography={geoUrl}>
+              {({ geographies }) => (
+                // Memoised for every browser now, not just Chrome: the props above
+                // are stable, so the ~180 <Geography> elements are no longer
+                // rebuilt on each frame. They still redraw through the projection
+                // context, which is what actually spins the globe.
+                <MemoizedGeographies
+                  geographies={geographies}
+                  visitedCountries={visitedCountries}
+                  styles={styles}
+                  setSelectedCountry={setSelectedCountry}
                 />
-              ) : (
-                geographies.map((geo) => {
-                  const isVisited = visitedCountries.includes(geo.properties.name);
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      data-tooltip-id={isVisited ? "map-tooltip" : undefined}
-                      data-tooltip-content={isVisited ? geo.properties.name : undefined}
-                      onClick={() => {
-                        if (isVisited) setSelectedCountry(geo.properties.name);
-                      }}
-                      style={isVisited ? visitedStyle : defaultStyle}
-                    />
-                  );
-                })
-              )
-            }
-          </Geographies>
-        </ComposableMap>
+              )}
+            </Geographies>
+          </ComposableMap>
+        ) : (
+          <div style={{ width: '100%', aspectRatio: '800 / 600' }} />
+        )}
       </div>
       <Tooltip id="map-tooltip" style={{ background: "linear-gradient(135deg, var(--secondary-color), #ff4d94)", color: "white", padding: "8px 20px", borderRadius: "20px", fontWeight: "600", boxShadow: "0 4px 10px rgba(201, 21, 116, 0.3)", border: "none", zIndex: 1000 }} />
-      
-      <Modal show={showList} onHide={() => setShowList(false)} centered>
-        <Modal.Header closeButton style={{ backgroundColor: 'var(--bs-card-bg)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-          <Modal.Title style={{ color: 'var(--secondary-color)', fontWeight: 'bold' }}>Visited Countries</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ backgroundColor: 'var(--bs-card-bg)', maxHeight: '60vh', overflowY: 'auto' }}>
-          <Row className="g-2">
-            {visitedCountries.sort().map(country => (
-              <Col xs={4} key={country}>
-                <div 
-                  onClick={() => {
-                    setSelectedCountry(country);
-                    setShowList(false);
-                  }}
-                  style={{ 
-                    backgroundColor: 'rgba(255,255,255,0.02)', 
-                    color: 'var(--bs-body-color)', 
-                    border: '1px solid rgba(255,255,255,0.05)',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '5px',
-                    padding: '15px 5px',
-                    textAlign: 'center'
-                  }}
-                  className="country-list-item h-100"
-                >
-                  <span style={{ fontSize: '1.5rem' }}>{countryFlags[country] || '🌍'}</span>
-                  <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{country}</span>
-                </div>
-              </Col>
-            ))}
-          </Row>
-        </Modal.Body>
-      </Modal>
+
+      <VisitedCountriesModal
+        show={showList}
+        onHide={closeList}
+        onSelect={selectFromList}
+        countries={sortedCountries}
+        title={content.visitedListTitle}
+      />
 
       <style>{`
         .country-list-item:hover {
@@ -346,8 +342,10 @@ const LazyImage = ({ style, ...restProps }) => {
           <Spinner animation="grow" style={{ color: 'var(--secondary-color)', opacity: 0.5 }} />
         </div>
       )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         {...restProps}
+        alt={restProps.alt || ''}
         loading="lazy"
         onLoad={(e) => {
           setLoaded(true);
@@ -366,11 +364,13 @@ const LazyImage = ({ style, ...restProps }) => {
   );
 };
 
-function Gallery() {
+function Gallery({ content = {}, countries = [], galleries = {} }) {
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [lightbox, setLightbox] = useState({ open: false, country: null, city: null, index: -1 });
   const [showScrollUp, setShowScrollUp] = useState(false);
+
+  const countryData = countries.find((c) => c.name === selectedCountry);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -392,26 +392,26 @@ return (
       <Row>
         <Col lg={4} className="image-p">
           <div id="gl-img">
-            <Image src="https://raw.githubusercontent.com/DrtSinX98/DrtSinX98.github.io/main/src/images/gl.svg" alt="project-pic" className="mb-4" fluid />
+            <Image src={content.image} alt="project-pic" className="mb-4" fluid />
           </div>
         </Col>
         <Col>
-          <h1>Welcome to my <span className="pink">Gallery!</span></h1>
-          <p className="lead">I love to travel a lot and have travelled to many places in <span className='pink'>India</span> and <span className='pink'>abroad</span>. <br />As I have some interest in <span className="pink">photography</span>, I try to click pictures of monuments, architecture, and nature. <br /> Below you can find a beautifully curated gallery of the pictures taken from my <span className="pink">phone</span>.</p>
+          <h1><RichText value={content.heading} /></h1>
+          <p className="lead"><RichText value={content.lead} /></p>
         </Col>
       </Row>
       <hr className="my-4" />
-      
+
       {selectedCountry ? (
         <>
           <Button variant="secondary" className="mb-4 back-btn" onClick={() => setSelectedCountry(null)}>
-            ← Back to Map
+            {content.backLabel}
           </Button>
-          
+
           {showScrollUp && (
-            <Button 
-              variant="secondary" 
-              className="back-btn" 
+            <Button
+              variant="secondary"
+              className="back-btn"
               onClick={scrollToTop}
               style={{
                 position: 'fixed',
@@ -435,15 +435,17 @@ return (
             </Button>
           )}
 
-          <CountryInfo 
-            country={selectedCountry} 
-            visitedCities={Object.keys(galleriesByCountry[selectedCountry] || {}).map(city => cityDisplayNames[city] || city)} 
+          <CountryInfo
+            country={selectedCountry}
+            data={countryData}
+            visitedCities={Object.keys(galleries[selectedCountry] || {})}
+            labels={content}
           />
 
-          {galleriesByCountry[selectedCountry] ? (
-            Object.entries(galleriesByCountry[selectedCountry]).map(([city, photos]) => (
+          {galleries[selectedCountry] ? (
+            Object.entries(galleries[selectedCountry]).map(([city, photos]) => (
               <div key={city}>
-                <h2 className='place'>{cityDisplayNames[city] || city}</h2>
+                <h2 className='place'>{city}</h2>
                 <RowsPhotoAlbum
                   photos={photos}
                   targetRowHeight={300}
@@ -454,12 +456,12 @@ return (
             ))
           ) : (
             <p className="text-center mt-5" style={{ color: 'var(--bs-body-color)' }}>
-              No photos available for {selectedCountry} yet.
+              {(content.emptyLabel || 'No photos available for {country} yet.').replace('{country}', selectedCountry)}
             </p>
           )}
 
           <Lightbox
-            slides={lightbox.open && lightbox.country && lightbox.city ? galleriesByCountry[lightbox.country][lightbox.city] : []}
+            slides={lightbox.open && lightbox.country && lightbox.city ? galleries[lightbox.country][lightbox.city] : []}
             open={lightbox.open}
             index={lightbox.index}
             close={() => setLightbox({ ...lightbox, open: false })}
@@ -468,7 +470,7 @@ return (
         </>
       ) : (
 
-        <InteractiveGlobe setSelectedCountry={setSelectedCountry} />
+        <InteractiveGlobe setSelectedCountry={setSelectedCountry} countries={countries} content={content} />
       )}
       <style>{`
          #gl-img {

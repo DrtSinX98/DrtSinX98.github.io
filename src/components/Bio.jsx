@@ -1,20 +1,29 @@
-import React from "react";
+'use client';
+
+import React, { useState, useEffect } from "react";
 import Typewriter from "typewriter-effect";
+import RichText from "./RichText";
 
-function Bio() {
-  const date = new Date();
-  const hours = date.getHours();
-  let timeOfDay;
+function greetingFor(hours, greetings) {
+  if (hours < 12) return greetings.morning;
+  if (hours >= 12 && hours < 17) return greetings.afternoon;
+  if (hours >= 17 && hours < 21) return greetings.evening;
+  return greetings.night;
+}
 
-  if (hours < 12) {
-    timeOfDay = "G'morning";
-  } else if (hours >= 12 && hours < 17) {
-    timeOfDay = "G'afternoon";
-  } else if (hours >= 17 && hours < 21) {
-    timeOfDay = "G'evening";
-  } else {
-    timeOfDay = "G'night";
-  }
+function Bio({ content = {}, serverHour = 12 }) {
+  const greetings = content.greetings || {};
+  // Rendered with the server's clock first, then corrected to the visitor's
+  // local time on mount so the markup stays hydration-safe.
+  const [timeOfDay, setTimeOfDay] = useState(() => greetingFor(serverHour, greetings));
+
+  useEffect(() => {
+    setTimeOfDay(greetingFor(new Date().getHours(), greetings));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content.greetings]);
+
+  const strings = content.typewriter?.length ? content.typewriter : ["Welcome!"];
+
   return (
     <div>
       <div className="greet">
@@ -25,21 +34,19 @@ function Bio() {
               cursor: "_",
             }}
             onInit={(typewriter) => {
-              typewriter
-                .typeString("Welcome!")
-                .pauseFor(1000)
-                .deleteAll()
-                .typeString("I'm Pritish Joshi")
-                .start();
+              let tw = typewriter;
+              strings.forEach((str, i) => {
+                tw = tw.typeString(str);
+                if (i < strings.length - 1) tw = tw.pauseFor(1000).deleteAll();
+              });
+              tw.start();
             }}
           />
         </h1>
       </div>
-      <p className="lead">A Tech enthusiast, Researcher, Educator and Coder</p>
+      <p className="lead">{content.tagline}</p>
       <p className="lead">
-        I'm currently a <span className="pink">PhD Candidate</span> in Machine Learning at <span className="pink">Uppsala University</span>, Sweden. 
-        Previously, I worked on Computational Materials Discovery at <span className="pink">TCG CREST</span> and 
-        completed my Master's at <span className="pink">IIT Dhanbad</span>.
+        <RichText value={content.intro} />
       </p>
       <style>
         {`

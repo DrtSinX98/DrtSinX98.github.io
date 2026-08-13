@@ -5,19 +5,19 @@ import Rimage from "./Rimage";
 import Bio from "./Bio";
 import Buttons from "./Buttons";
 
-function Home() {
+function Home({ content = {}, serverHour }) {
   return (
     <Container>
       <Row>
-        <Rimage />
+        <Rimage light={content.profileImageLight} dark={content.profileImageDark} />
         <Col lg={8}>
-          <Bio />
-          <Buttons />
+          <Bio content={content} serverHour={serverHour} />
+          <Buttons buttons={content.buttons || []} />
         </Col>
       </Row>
       <hr className="my-4" />
       <Row>
-        <TerminalCard />
+        <TerminalCard content={content.terminal || {}} />
       </Row>
     </Container>
   );

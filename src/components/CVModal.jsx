@@ -1,33 +1,35 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
-import html2pdf from 'html2pdf.js';
 import { Modal, Container, Row, Col, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEnvelope, 
-  faPhone, 
-  faMapMarkerAlt, 
-  faGlobe, 
-  faGraduationCap, 
-  faBriefcase, 
-  faCode, 
-  faFileAlt, 
+import {
+  faEnvelope,
+  faMapMarkerAlt,
+  faGlobe,
+  faGraduationCap,
+  faBriefcase,
+  faCode,
+  faFileAlt,
   faAward,
   faStar,
   faSave
 } from '@fortawesome/free-solid-svg-icons';
-import { faLinkedin, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { getIcon } from '@/lib/icons';
 
-function CVModal({ show, onHide }) {
+function CVModal({ show, onHide, content = {} }) {
   const cvRef = useRef(null);
   const [isPdfMode, setIsPdfMode] = useState(false);
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
+    // html2pdf touches `window` at import time, so it can only load in the browser.
+    const html2pdf = (await import('html2pdf.js')).default;
     setIsPdfMode(true);
     setTimeout(() => {
       const element = cvRef.current;
       const opt = {
         margin:       5,
-        filename:     'Pritish_Joshi_CV.pdf',
+        filename:     content.fileName || 'CV.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -43,9 +45,9 @@ function CVModal({ show, onHide }) {
       <Modal.Header className="border-0 pb-0">
         <div className="ms-auto d-flex align-items-center gap-4">
           {!isPdfMode && (
-            <button 
-              onClick={handleDownloadPdf} 
-              className="btn p-0 border-0 shadow-none bg-transparent" 
+            <button
+              onClick={handleDownloadPdf}
+              className="btn p-0 border-0 shadow-none bg-transparent"
               title="Download CV as PDF"
             >
               <FontAwesomeIcon icon={faSave} size="lg" className="cv-save-icon" />
@@ -59,26 +61,24 @@ function CVModal({ show, onHide }) {
           <Row className="mb-4 text-center cv-header position-relative">
             <Col>
               <h1 className="fw-bold cv-name mb-1">
-                Pritish Ranjan Joshi
+                {content.name}
               </h1>
-              <h4 className="cv-subtitle mb-3 text-muted">PhD Candidate in Machine Learning</h4>
+              <h4 className="cv-subtitle mb-3 text-muted">{content.subtitle}</h4>
               <div className="d-flex justify-content-center flex-wrap gap-3 contact-info">
-                <span><FontAwesomeIcon icon={faEnvelope} className="me-2 pink" /> pritish.ranjan.joshi@it.uu.se</span>
-                <span><FontAwesomeIcon icon={faMapMarkerAlt} className="me-2 pink" /> Uppsala, Sweden</span>
-                <a href="https://www.pritish.eu" target="_blank" rel="noreferrer" className="text-decoration-none">
-                  <FontAwesomeIcon icon={faGlobe} className="me-2 pink" /> www.pritish.eu
-                </a>
+                {content.email && <span><FontAwesomeIcon icon={faEnvelope} className="me-2 pink" /> {content.email}</span>}
+                {content.location && <span><FontAwesomeIcon icon={faMapMarkerAlt} className="me-2 pink" /> {content.location}</span>}
+                {content.website?.href && (
+                  <a href={content.website.href} target="_blank" rel="noreferrer" className="text-decoration-none">
+                    <FontAwesomeIcon icon={faGlobe} className="me-2 pink" /> {content.website.label}
+                  </a>
+                )}
               </div>
               <div className="d-flex justify-content-center flex-wrap gap-3 mt-3 profile-links">
-                <a href="https://www.linkedin.com/in/pritish-joshi-b870bb242/" target="_blank" rel="noreferrer" className="social-badge">
-                  <FontAwesomeIcon icon={faLinkedin} className="me-1" /> LinkedIn
-                </a>
-                <a href="https://github.com/DrtSinX98" target="_blank" rel="noreferrer" className="social-badge">
-                  <FontAwesomeIcon icon={faGithub} className="me-1" /> GitHub
-                </a>
-                <a href="https://scholar.google.com/citations?hl=en&user=jUdY7OcAAAAJ" target="_blank" rel="noreferrer" className="social-badge">
-                  <FontAwesomeIcon icon={faGoogle} className="me-1" /> Scholar
-                </a>
+                {(content.socials || []).map((social, i) => (
+                  <a href={social.href} target="_blank" rel="noreferrer" className="social-badge" key={i}>
+                    <FontAwesomeIcon icon={getIcon(social.icon)} className="me-1" /> {social.label}
+                  </a>
+                ))}
               </div>
             </Col>
           </Row>
@@ -86,73 +86,40 @@ function CVModal({ show, onHide }) {
           <Row>
             {/* Left Column */}
             <Col lg={4} className="mb-4">
-              
+
               {/* Summary */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faStar} className="me-2 pink" /> Summary</h5>
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faStar} className="me-2 pink" /> {content.summaryTitle}</h5>
                 <p className="cv-text">
-                  An adaptable and motivated researcher with a deep interest and curiosity in interdisciplinary science and technology:
+                  {content.summaryIntro}
                 </p>
                 <ul className="cv-list">
-                  <li>Currently working on simulation-guided inference for modeling of metal plating dynamics in batteries.</li>
-                  <li>Previously worked on variational autoencoders, predictive modeling, quantum and classical mechanical simulation for battery materials.</li>
-                  <li>Have also worked with classical MD simulations and ML based predictions of drugs and bio-molecules.</li>
+                  {(content.summaryPoints || []).map((point, i) => <li key={i}>{point}</li>)}
                 </ul>
               </div>
 
               {/* Skills */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faCode} className="me-2 pink" /> Technical Skills</h5>
-                <div className="mb-2">
-                  <strong>Programming</strong>
-                  <div className="d-flex flex-wrap gap-1 mt-1">
-                    {["Python", "C++", "JavaScript", "HTML", "CSS", "ReactJS", "Shell Scripting"].map(skill => (
-                      <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
-                    ))}
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faCode} className="me-2 pink" /> {content.skillsTitle}</h5>
+                {(content.skillGroups || []).map((group, i) => (
+                  <div className="mb-2" key={i}>
+                    <strong>{group.title}</strong>
+                    <div className="d-flex flex-wrap gap-1 mt-1">
+                      {(group.items || []).map(skill => (
+                        <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="mb-2">
-                  <strong>Machine Learning</strong>
-                  <div className="d-flex flex-wrap gap-1 mt-1">
-                    {["Bayesian models", "PINNs", "Transformers", "Variational Auto-Encoders"].map(skill => (
-                      <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="mb-2">
-                  <strong>Data Analysis</strong>
-                  <div className="d-flex flex-wrap gap-1 mt-1">
-                    {["Pandas", "NumPy", "MatPlotLib", "Seaborn", "Yellowbrick", "Origin"].map(skill => (
-                      <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="mb-2">
-                  <strong>Software & Tools</strong>
-                  <div className="d-flex flex-wrap gap-1 mt-1">
-                    {["PyTorch", "Tensorflow", "Quantum Espresso", "VASP"].map(skill => (
-                      <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="mb-2">
-                  <strong>Computational Modelling</strong>
-                  <div className="d-flex flex-wrap gap-1 mt-1">
-                    {["Classical MD", "ab initio MD", "Docking", "DFT"].map(skill => (
-                      <Badge bg="secondary" className="cv-badge" key={skill}>{skill}</Badge>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
 
               {/* Test Scores */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faAward} className="me-2 pink" /> Test Scores</h5>
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faAward} className="me-2 pink" /> {content.testScoresTitle}</h5>
                 <ul className="cv-list-no-bullet">
-                  <li><strong>IIT GATE 2025:</strong> AIR 951</li>
-                  <li><strong>IIT GATE 2024:</strong> AIR 569</li>
-                  <li><strong>CSIR NET 2024:</strong> Qualified</li>
-                  <li><strong>IIT JAM 2022:</strong> AIR 443</li>
+                  {(content.testScores || []).map((score, i) => (
+                    <li key={i}><strong>{score.label}</strong> {score.value}</li>
+                  ))}
                 </ul>
               </div>
 
@@ -160,113 +127,61 @@ function CVModal({ show, onHide }) {
 
             {/* Right Column */}
             <Col lg={8}>
-              
+
               {/* Experience */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faBriefcase} className="me-2 pink" /> Research Experience</h5>
-                
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">Uppsala University <span className="text-muted fw-normal">| Uppsala, SE</span></h6>
-                    <span className="cv-date">2025 - Present</span>
-                  </div>
-                  <div className="cv-role pink fw-semibold mb-1">PhD Student</div>
-                  <ul className="cv-list">
-                    <li>Simulation-guided inference for modeling of metal plating dynamics in batteries.</li>
-                    <li>Phase-Field modeling of electroplating dynamics.</li>
-                    <li>PINN based FEM solvers.</li>
-                  </ul>
-                  <div className="cv-supervisors"><em>Supervisors:</em> Jens Sjölund, Peter Broqvist, Erik Berg</div>
-                </div>
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faBriefcase} className="me-2 pink" /> {content.experienceTitle}</h5>
 
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">RISE, TCG CREST <span className="text-muted fw-normal">| Kolkata, IN</span></h6>
-                    <span className="cv-date">2024 - 2025</span>
+                {(content.experience || []).map((item, i) => (
+                  <div className="cv-item mb-3" key={i}>
+                    <div className="d-flex justify-content-between align-items-start">
+                      <h6 className="fw-bold mb-0">{item.org} <span className="text-muted fw-normal">{item.place}</span></h6>
+                      <span className="cv-date">{item.date}</span>
+                    </div>
+                    <div className="cv-role pink fw-semibold mb-1">{item.role}</div>
+                    {item.points?.length > 0 && (
+                      <ul className="cv-list">
+                        {item.points.map((point, j) => <li key={j}>{point}</li>)}
+                      </ul>
+                    )}
+                    {item.note && <div className="cv-supervisors"><em>{item.noteLabel}</em> {item.note}</div>}
                   </div>
-                  <div className="cv-role pink fw-semibold mb-1">Project Associate</div>
-                  <ul className="cv-list">
-                    <li>Computational Materials Discovery using Conditional Variational Autoencoders.</li>
-                    <li>Reactive Dynamics study of Batteries using DFT and ML-FF.</li>
-                    <li>Interfacial reaction dynamics of electrolytes using Classical and ab initio MD.</li>
-                  </ul>
-                  <div className="cv-supervisors"><em>Supervisors:</em> Tanmoy Paul, Gour P. Das</div>
-                </div>
-
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">IIT (ISM) Dhanbad <span className="text-muted fw-normal">| Dhanbad, IN</span></h6>
-                    <span className="cv-date">2023 - 2024</span>
-                  </div>
-                  <div className="cv-role pink fw-semibold mb-1">Master's Thesis Project</div>
-                  <ul className="cv-list">
-                    <li>Machine Learning guided drug discovery.</li>
-                    <li>Classical and semi-classical molecular dynamics simulation and analysis.</li>
-                  </ul>
-                  <div className="cv-supervisors"><em>Supervisor:</em> Niladri Patra</div>
-                </div>
+                ))}
               </div>
 
               {/* Education */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faGraduationCap} className="me-2 pink" /> Education</h5>
-                
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">Uppsala University <span className="text-muted fw-normal">| Uppsala, SE</span></h6>
-                    <span className="cv-date">2025 - Present</span>
-                  </div>
-                  <div className="cv-role mb-1">Doctor of Philosophy, Machine Learning-Information Technology</div>
-                  <div className="cv-supervisors"><em>Key courses:</em> Statistical Machine Learning, Deep Learning, Convex Optimization, Advanced Python</div>
-                </div>
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faGraduationCap} className="me-2 pink" /> {content.educationTitle}</h5>
 
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">Indian Institute of Technology (ISM) <span className="text-muted fw-normal">| Dhanbad, IN</span></h6>
-                    <span className="cv-date">2022 - 2024</span>
+                {(content.education || []).map((item, i) => (
+                  <div className="cv-item mb-3" key={i}>
+                    <div className="d-flex justify-content-between align-items-start">
+                      <h6 className="fw-bold mb-0">{item.org} <span className="text-muted fw-normal">{item.place}</span></h6>
+                      <span className="cv-date">{item.date}</span>
+                    </div>
+                    <div className="cv-role mb-1">{item.role}</div>
+                    {item.note && <div className="cv-supervisors"><em>{item.noteLabel}</em> {item.note}</div>}
                   </div>
-                  <div className="cv-role mb-1">Master of Science, Computational Chemistry-Chemical Biology</div>
-                  <div className="cv-supervisors"><em>Key courses:</em> Machine Learning, Quantum Chemistry, Statistical Thermodynamics, Mathematics for Chemists...</div>
-                </div>
-
-                <div className="cv-item mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    <h6 className="fw-bold mb-0">IGNO University <span className="text-muted fw-normal">| New Delhi, IN</span></h6>
-                    <span className="cv-date">2019 - 2021</span>
-                  </div>
-                  <div className="cv-role mb-1">Bachelor of Science, Chemistry-Mathematics</div>
-                </div>
+                ))}
               </div>
 
               {/* Publications */}
               <div className="cv-section mb-3">
-                <h5 className="section-title-sm"><FontAwesomeIcon icon={faFileAlt} className="me-2 pink" /> Publications</h5>
-                
-                <div className="cv-item mb-3">
-                  <div className="fw-bold">Inverse Design of Next-generation Battery Materials via Diffusion-Seeded Evolutionary Optimization <span className="cv-date ms-2">Submitted</span></div>
-                  <div className="cv-authors">Pritish Joshi, Arnob Das, Rajdeep Boral, Tanmoy Paul</div>
-                </div>
+                <h5 className="section-title-sm"><FontAwesomeIcon icon={faFileAlt} className="me-2 pink" /> {content.publicationsTitle}</h5>
 
-                <div className="cv-item mb-3">
-                  <div className="fw-bold">Reactive dynamics study of solid electrolytes Li6PS5Cl|Li3InCl6 interface: an ab initio molecular dynamics simulation <span className="cv-date ms-2">Submitted</span></div>
-                  <div className="cv-authors">Pritish Joshi, Tanmoy Paul</div>
-                </div>
-
-                <div className="cv-item mb-3">
-                  <a href="https://doi.org/10.1021/acs.jcim.4c01523" target="_blank" rel="noreferrer" className="fw-bold text-decoration-none cv-link">
-                    Delving into Macrolide Binding Affinities and Associated Structural Modulations in Erythromycin Esterase C: Insights into the Venus Flytrap Mechanism
-                  </a>
-                  <div className="cv-journal text-muted">Journal of Chemical Information and Modeling (20-11-2024)</div>
-                  <div className="cv-authors">Abhishek Bera, Pritish Joshi, Niladri Patra</div>
-                </div>
-
-                <div className="cv-item mb-3">
-                  <a href="https://doi.org/10.1021/acs.jpcb.3c05845" target="_blank" rel="noreferrer" className="fw-bold text-decoration-none cv-link">
-                    Machine Learning-Guided Discovery of AcrB and MexB Efflux Pump Inhibitors
-                  </a>
-                  <div className="cv-journal text-muted">Journal of Physical Chemistry B (10-01-2024)</div>
-                  <div className="cv-authors">Abhishek Bera, Rakesh Kumar Roy, Pritish Joshi, Niladri Patra</div>
-                </div>
+                {(content.publications || []).map((pub, i) => (
+                  <div className="cv-item mb-3" key={i}>
+                    {pub.link ? (
+                      <a href={pub.link} target="_blank" rel="noreferrer" className="fw-bold text-decoration-none cv-link">
+                        {pub.title}
+                      </a>
+                    ) : (
+                      <div className="fw-bold">{pub.title}{pub.date && <span className="cv-date ms-2">{pub.date}</span>}</div>
+                    )}
+                    {pub.journal && <div className="cv-journal text-muted">{pub.journal}</div>}
+                    <div className="cv-authors">{pub.authors}</div>
+                  </div>
+                ))}
               </div>
 
             </Col>
@@ -301,49 +216,49 @@ function CVModal({ show, onHide }) {
             color: #212529 !important;
             padding: 10px !important;
           }
-          
+
           .force-light-pdf .cv-section {
             background: #f8f9fa !important;
             border-color: #e9ecef !important;
           }
-          
-          .force-light-pdf h1, 
-          .force-light-pdf h4, 
-          .force-light-pdf h5, 
-          .force-light-pdf h6, 
-          .force-light-pdf p, 
-          .force-light-pdf span, 
-          .force-light-pdf li, 
+
+          .force-light-pdf h1,
+          .force-light-pdf h4,
+          .force-light-pdf h5,
+          .force-light-pdf h6,
+          .force-light-pdf p,
+          .force-light-pdf span,
+          .force-light-pdf li,
           .force-light-pdf strong,
           .force-light-pdf a,
           .force-light-pdf em {
             color: #212529 !important;
           }
-          
+
           .force-light-pdf .cv-supervisors,
           .force-light-pdf .cv-authors {
             color: #6c757d !important;
           }
-          
+
           .force-light-pdf .cv-header {
             border-bottom-color: #e9ecef !important;
           }
-          
+
           .force-light-pdf .cv-list-no-bullet li {
             border-bottom-color: #e9ecef !important;
           }
-          
+
           .force-light-pdf .pink,
           .force-light-pdf .cv-role {
             color: #c91574 !important;
           }
-          
+
           .force-light-pdf .social-badge {
             border-color: rgba(201, 21, 116, 0.3) !important;
             color: #212529 !important;
             background-color: transparent !important;
           }
-          
+
           .force-light-pdf .cv-badge {
             background-color: rgba(201, 21, 116, 0.1) !important;
             color: #c91574 !important;
@@ -422,7 +337,7 @@ function CVModal({ show, onHide }) {
             font-size: 0.95rem;
             margin-bottom: 0;
           }
-          
+
           .cv-list li {
             margin-bottom: 0.4rem;
           }

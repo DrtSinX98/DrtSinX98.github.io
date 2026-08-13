@@ -1,31 +1,13 @@
-import React, { useState, useEffect } from "react";
+'use client';
+
+import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faSun, faMoon} from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from "./ThemeProvider";
 
 function ThemeSwitch() {
+  const { theme, toggleTheme } = useTheme();
 
-  const [theme, setTheme] = useState('light');
-  
-  useEffect(() => {
-    const manualOverride = sessionStorage.getItem('darkModeManual');
-    let initialTheme = 'light';
-    if (manualOverride) {
-      initialTheme = manualOverride;
-    } else {
-      const hour = new Date().getHours();
-      initialTheme = (hour >= 6 && hour < 18) ? 'light' : 'dark';
-    }
-    setTheme(initialTheme);
-    document.documentElement.setAttribute('data-bs-theme', initialTheme);
-  }, []);
-
-  const switchTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-bs-theme', newTheme);
-    setTheme(newTheme);
-    sessionStorage.setItem('darkModeManual', newTheme);
-  };
-  
     return (
         <div className="d-none d-lg-block">
           <input
@@ -33,7 +15,7 @@ function ThemeSwitch() {
             className="checkbox"
             id="checkbox"
             checked={theme === 'dark'}
-            onChange={switchTheme}
+            onChange={toggleTheme}
             aria-label="Switch between dark and light mode"/>
             <label htmlFor="checkbox" className="checkbox-label">
             <FontAwesomeIcon icon={faMoon} />

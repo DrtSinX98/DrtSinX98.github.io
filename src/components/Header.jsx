@@ -1,48 +1,52 @@
-import React, { useState } from "react";
+'use client';
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import ThemeSwitch from "./ThemeSwitch";
 import ThemeButton from "./ThemeButton";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faUser, faVideo, faImages, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { getIcon } from "@/lib/icons";
+import { defaultSite } from "@/lib/defaults";
 
-export const useActiveState = () => {
-  const [active, setActive] = useState("home");
-  const handleSelect = (key) => {
-    setActive(key);
-  };
+// Fallback for menu items saved before the icon field existed, so the mobile bar
+// never degrades to a row of identical generic glyphs.
+const FALLBACK_ICONS = Object.fromEntries(
+  defaultSite.nav.flatMap((item) => [
+    [item.key, item.icon],
+    [item.href, item.icon],
+  ]),
+);
 
-  return { active, handleSelect };
-};
+const iconFor = (item) => getIcon(item.icon || FALLBACK_ICONS[item.key] || FALLBACK_ICONS[item.href]);
 
-function Header(props) {
-  const { active, handleSelect } = props;
+function Header({ brand = "Vortex", nav = [] }) {
+  const pathname = usePathname();
+  // Longest matching href wins so /about doesn't also light up "/".
+  const active =
+    nav
+      .filter((item) => pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)))
+      .sort((a, b) => b.href.length - a.href.length)[0]?.href ?? "/";
 
   return (
     <>
       <header className="header">
         <Container>
           <Navbar expand="lg" className="justify-content-between align-items-center border-0">
-            <Navbar.Brand href="#">
-              <Logo alt="logo-image" height="65" width="100" className="d-inline-block" />{' '}Vortex
+            <Navbar.Brand as={Link} href="/">
+              <Logo alt="logo-image" height="65" width="100" className="d-inline-block" />{' '}{brand}
             </Navbar.Brand>
 
-            <Nav activeKey={active} onSelect={handleSelect} className="d-none d-lg-flex ms-auto me-4 flex-row gap-2">
-              <Nav.Item>
-                <Nav.Link eventKey="home" className={active === "home" ? "active-link" : ""}>Home</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="about" className={active === "about" ? "active-link" : ""}>About</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-link" : ""}>Gallery</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-link" : ""}>Lectures</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="contact" className={active === "contact" ? "active-link" : ""}>Contact</Nav.Link>
-              </Nav.Item>
+            <Nav activeKey={active} className="d-none d-lg-flex ms-auto me-4 flex-row gap-2">
+              {nav.map((item) => (
+                <Nav.Item key={item.key || item.href}>
+                  <Nav.Link as={Link} href={item.href} eventKey={item.href} className={active === item.href ? "active-link" : ""}>
+                    {item.label}
+                  </Nav.Link>
+                </Nav.Item>
+              ))}
             </Nav>
 
             <div className="d-flex align-items-center">
@@ -54,22 +58,14 @@ function Header(props) {
       </header>
 
       <nav className="bottom-nav d-lg-none">
-        <Nav activeKey={active} onSelect={handleSelect} className="w-100 h-100 d-flex justify-content-around align-items-center m-0 p-0 flex-row">
-          <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="home" className={active === "home" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faHouse} size="lg" /></Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="about" className={active === "about" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faUser} size="lg" /></Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="gallery" className={active === "gallery" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faImages} size="lg" /></Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="lectures" className={active === "lectures" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faVideo} size="lg" /></Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="d-flex justify-content-center align-items-center flex-fill">
-            <Nav.Link eventKey="contact" className={active === "contact" ? "active-icon" : "inactive-icon"}><FontAwesomeIcon icon={faMessage} size="lg" /></Nav.Link>
-          </Nav.Item>
+        <Nav activeKey={active} className="w-100 h-100 d-flex justify-content-around align-items-center m-0 p-0 flex-row">
+          {nav.map((item) => (
+            <Nav.Item key={item.key || item.href} className="d-flex justify-content-center align-items-center flex-fill">
+              <Nav.Link as={Link} href={item.href} eventKey={item.href} className={active === item.href ? "active-icon" : "inactive-icon"} aria-label={item.label}>
+                <FontAwesomeIcon icon={iconFor(item)} size="lg" />
+              </Nav.Link>
+            </Nav.Item>
+          ))}
         </Nav>
       </nav>
 

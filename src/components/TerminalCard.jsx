@@ -1,7 +1,60 @@
+'use client';
+
 import React from "react";
 import Typewriter from "typewriter-effect";
 
-function TerminalCard() {
+const esc = (s) =>
+  String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+const INDENT = '&nbsp;&nbsp;';
+const INDENT2 = '&nbsp;&nbsp;&nbsp;&nbsp;';
+
+const str = (v) => `<span class="string">"${esc(v)}"</span>`;
+const key = (k) => `<span class="key">"${esc(k)}"</span>`;
+
+/** Chunks a list into typed lines of at most `perLine` quoted values. */
+function listLines(values, perLine) {
+  const lines = [];
+  for (let i = 0; i < values.length; i += perLine) {
+    const chunk = values.slice(i, i + perLine);
+    const isLast = i + perLine >= values.length;
+    lines.push(`${INDENT2}${chunk.map(str).join(', ')}${isLast ? '' : ','}<br/>`);
+  }
+  return lines;
+}
+
+function TerminalCard({ content = {} }) {
+  const {
+    title = 'root@pritish:~',
+    prompt = 'root@pritish:~#',
+    command = 'cat whoami.json',
+    name = '',
+    education = [],
+    interests = [],
+    works = [],
+  } = content;
+
+  const promptSpan = `<span class="prompt">${esc(prompt)}</span>`;
+
+  const lines = [
+    `${promptSpan} ${esc(command)}<br/>`,
+    '{<br/>',
+    `${INDENT}${key('name')}: ${str(name)},<br/>`,
+    `${INDENT}${key('education')}: [<br/>`,
+    ...education.map((item, i) => `${INDENT2}${str(item)}${i < education.length - 1 ? ',' : ''}<br/>`),
+    `${INDENT}],<br/>`,
+    `${INDENT}${key('interests')}: [<br/>`,
+    ...listLines(interests, 4),
+    `${INDENT}],<br/>`,
+    `${INDENT}${key('works')}: [<br/>`,
+    ...listLines(works, 4),
+    `${INDENT}]<br/>`,
+    '}<br/>',
+  ];
+
   return (
     <div className="card terminal-card">
       <div className="terminal-header">
@@ -10,7 +63,7 @@ function TerminalCard() {
           <span className="terminal-btn minimize"></span>
           <span className="terminal-btn maximize"></span>
         </div>
-        <div className="terminal-title">root@pritish:~</div>
+        <div className="terminal-title">{title}</div>
       </div>
       <div className="terminal-body">
         <Typewriter
@@ -19,27 +72,12 @@ function TerminalCard() {
             delay: 30,
           }}
           onInit={(typewriter) => {
-            typewriter
-              .typeString('<span class="prompt">root@pritish:~#</span> cat whoami.json<br/>')
-              .pauseFor(500)
-              .typeString('{<br/>')
-              .typeString('&nbsp;&nbsp;<span class="key">"name"</span>: <span class="string">"Pritish Joshi"</span>,<br/>')
-              .typeString('&nbsp;&nbsp;<span class="key">"education"</span>: [<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"PhD Machine Learning - Uppsala University"</span>,<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"M.Sc Computational Chemistry - IIT Dhanbad"</span>,<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"B.Sc Chemistry Majors - IGNOU New Delhi"</span><br/>')
-              .typeString('&nbsp;&nbsp;],<br/>')
-              .typeString('&nbsp;&nbsp;<span class="key">"interests"</span>: [<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Machine Learning"</span>, <span class="string">"Battery Modeling"</span>, <span class="string">"Coding"</span>, <span class="string">"Anime"</span>,<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Photography"</span>, <span class="string">"Classical Music"</span>, <span class="string">"Philosophy"</span><br/>')
-              .typeString('&nbsp;&nbsp;],<br/>')
-              .typeString('&nbsp;&nbsp;<span class="key">"works"</span>: [<br/>')
-              .typeString('&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Research Project"</span>, <span class="string">"Custom ROM Development"</span>, <span class="string">"Web Development"</span>, <span class="string">"Education"</span><br/>')
-              .typeString('&nbsp;&nbsp;]<br/>')
-              .typeString('}<br/>')
-              .pauseFor(500)
-              .typeString('<span class="prompt">root@pritish:~#</span> ')
-              .start();
+            let tw = typewriter;
+            lines.forEach((line, i) => {
+              tw = tw.typeString(line);
+              if (i === 0) tw = tw.pauseFor(500);
+            });
+            tw.pauseFor(500).typeString(`${promptSpan} `).start();
           }}
         />
       </div>
@@ -53,7 +91,7 @@ function TerminalCard() {
           margin-bottom: 2rem;
           width: 100%;
         }
-        
+
         .terminal-header {
           background-color: rgba(0, 0, 0, 0.1);
           padding: 10px;
@@ -111,17 +149,17 @@ function TerminalCard() {
         .string {
           color: var(--secondary-color);
         }
-        
+
         .Typewriter__cursor {
           color: inherit;
           animation: blink 1s step-end infinite;
         }
-        
+
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
-        
+
         @media (max-width: 767px) {
           .terminal-body {
             font-size: 14px;

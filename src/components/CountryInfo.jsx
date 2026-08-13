@@ -1,9 +1,10 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Spinner } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { ComposableMap, Geographies, Geography, ZoomableGroup, Annotation } from 'react-simple-maps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTemperatureHalf, faDroplet, faCloudRain, faClock } from '@fortawesome/free-solid-svg-icons';
-import countryData from '../data/countryData.json';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -30,8 +31,7 @@ const TypeWriter = ({ text, delay = 30 }) => {
   return <span>{currentText}</span>;
 };
 
-export default function CountryInfo({ country, visitedCities }) {
-  const data = countryData[country];
+export default function CountryInfo({ country, data, visitedCities, labels = {} }) {
   const [weather, setWeather] = useState(null);
   const [hovered, setHovered] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
@@ -172,7 +172,7 @@ export default function CountryInfo({ country, visitedCities }) {
         <Col md={7}>
           <div className="glass-card h-100 d-flex flex-column justify-content-center p-4" style={{ fontFamily: 'monospace', fontSize: '1.05rem' }}>
             <h3 className="mb-4 pink" style={{ fontWeight: 'bold', fontFamily: 'var(--bs-font-sans-serif)' }}>
-              {data.name}
+              {data.displayName || data.name}
             </h3>
 
             <div className="mb-2">
@@ -224,7 +224,7 @@ export default function CountryInfo({ country, visitedCities }) {
             ) : (
               <div className="d-flex align-items-center mt-2">
                 <Spinner animation="border" size="sm" style={{ color: 'var(--secondary-color)' }} className="me-2" />
-                <span style={{ color: 'var(--bs-body-color)' }}>Fetching atmosphere...</span>
+                <span style={{ color: 'var(--bs-body-color)' }}>{labels.weatherLoadingLabel || 'Fetching atmosphere...'}</span>
               </div>
             )}
           </div>

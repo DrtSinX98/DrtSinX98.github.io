@@ -3,14 +3,14 @@ import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReact, faBootstrap } from "@fortawesome/free-brands-svg-icons";
 
-function Footer() {
+function Footer({ owner = 'Pritish Joshi', writtenIn = 'Written in' }) {
     return (
         <footer className="footer">
             <Container>
                 <div>
-                    <p><span className='pink'>&copy;</span> {new Date().getFullYear()} Pritish Joshi
+                    <p><span className='pink'>&copy;</span> {new Date().getFullYear()} {owner}
                         <br />
-                        <br />Written in <FontAwesomeIcon icon={faReact} /> & <FontAwesomeIcon icon={faBootstrap} /></p>
+                        <br />{writtenIn} <FontAwesomeIcon icon={faReact} /> & <FontAwesomeIcon icon={faBootstrap} /></p>
                 </div>
                 <style>
                     {`
