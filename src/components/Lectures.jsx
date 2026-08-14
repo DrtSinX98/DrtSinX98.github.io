@@ -1,10 +1,11 @@
 'use client';
 
 import React from "react";
-import { Col, Image, Container, Row, Card, ListGroup, Tab } from "react-bootstrap";
+import { Col, Container, Row, Card, ListGroup, Tab } from "react-bootstrap";
 import RichText from "./RichText";
+import Illustration from "./Illustration";
 
-function Lectures({ content = {} }) {
+function Lectures({ content = {}, illustration = null, animateIllustration = true }) {
     const modules = content.modules || [];
 
     return (
@@ -12,7 +13,13 @@ function Lectures({ content = {} }) {
             <Row>
                 <Col lg={4} className="image-p">
                     <div id="lc-img">
-                    <Image src={content.image} alt="about-pic" className="mb-4" fluid/>
+                    <Illustration
+                      illustration={illustration}
+                      src={content.image}
+                      alt="about-pic"
+                      className="mb-4"
+                      animate={animateIllustration}
+                    />
                     </div>
                 </Col>
                 <Col>

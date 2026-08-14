@@ -107,6 +107,17 @@ export default function SiteEditor() {
                 </div>
               </Card>
 
+              <Card
+                title="Illustrations"
+                hint="The page artwork is inlined so each layer of the drawing animates into place when the page loads. Turn this off to serve the SVG as a plain image instead."
+              >
+                <Switch
+                  label="Animate the page illustrations"
+                  checked={data.animations?.illustrations !== false}
+                  onChange={(v) => set('animations.illustrations', v)}
+                />
+              </Card>
+
               <Card title="Particle background">
                 <Switch
                   label="Show the animated particle background"

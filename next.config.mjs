@@ -14,6 +14,12 @@ const nextConfig = {
   },
   // react-simple-maps ships ESM-only d3 sub-dependencies
   transpilePackages: ['react-simple-maps'],
+  // The illustrations are read off disk so their markup can be inlined and
+  // animated. File tracing only follows static imports, so name them explicitly
+  // or they won't exist in the serverless bundle on Vercel.
+  outputFileTracingIncludes: {
+    '/**': ['./public/illustrations/**'],
+  },
 };
 
 export default nextConfig;

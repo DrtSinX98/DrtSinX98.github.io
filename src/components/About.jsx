@@ -1,15 +1,16 @@
 'use client';
 
 import React, { useState } from "react";
-import { Col, Image, Container, Row, Accordion, Badge, Tabs, Tab } from "react-bootstrap";
+import { Col, Container, Row, Accordion, Badge, Tabs, Tab } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faBriefcase, faCode, faTrophy, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 import ProjectList from "./ProjectList";
 import CVModal from "./CVModal";
 import RichText from "./RichText";
+import Illustration from "./Illustration";
 import { getIcon } from "@/lib/icons";
 
-function About({ content = {}, cv = {} }) {
+function About({ content = {}, cv = {}, illustration = null, animateIllustration = true }) {
   const [showCVModal, setShowCVModal] = useState(false);
   const certificates = content.certificates || [];
   const projectTabs = content.projectTabs || [];
@@ -20,7 +21,13 @@ function About({ content = {}, cv = {} }) {
       <Row className="mb-5">
         <Col lg={4} className="image-p">
           <div id="ab-img">
-            <Image src={content.image} alt="about-pic" className="mb-4" fluid />
+            <Illustration
+              illustration={illustration}
+              src={content.image}
+              alt="about-pic"
+              className="mb-4"
+              animate={animateIllustration}
+            />
           </div>
         </Col>
         <Col lg={8}>

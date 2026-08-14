@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { flushSync } from 'react-dom';
-import { Col, Image, Container, Row, Button, Modal, Spinner } from "react-bootstrap";
+import { Col, Container, Row, Button, Modal, Spinner } from "react-bootstrap";
 import { ComposableMap, Geographies, Geography, Graticule } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
 import { RowsPhotoAlbum } from 'react-photo-album';
@@ -16,6 +16,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import CountryInfo from './CountryInfo';
 import RichText from './RichText';
+import Illustration from './Illustration';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -364,7 +365,7 @@ const LazyImage = ({ style, ...restProps }) => {
   );
 };
 
-function Gallery({ content = {}, countries = [], galleries = {} }) {
+function Gallery({ content = {}, countries = [], galleries = {}, illustration = null, animateIllustration = true }) {
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [lightbox, setLightbox] = useState({ open: false, country: null, city: null, index: -1 });
@@ -392,7 +393,13 @@ return (
       <Row>
         <Col lg={4} className="image-p">
           <div id="gl-img">
-            <Image src={content.image} alt="project-pic" className="mb-4" fluid />
+            <Illustration
+              illustration={illustration}
+              src={content.image}
+              alt="project-pic"
+              className="mb-4"
+              animate={animateIllustration}
+            />
           </div>
         </Col>
         <Col>
@@ -475,7 +482,7 @@ return (
       <style>{`
          #gl-img {
             width: 350px;
-            height: 250px;
+            height: 350px;
           }
 
           h1 {

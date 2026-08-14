@@ -30,3 +30,6 @@ yarn-error.log*
 # replit configs
 .replit
 replit.nix
+
+# scratch downloads
+/temp

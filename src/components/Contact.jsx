@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from "react";
-import { Col, Image, Container, Row, Card, Button, Form } from "react-bootstrap";
+import { Col, Container, Row, Card, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RichText from "./RichText";
+import Illustration from "./Illustration";
 import { getIcon } from "@/lib/icons";
 
-function Contact({ content = {} }) {
+function Contact({ content = {}, illustration = null, animateIllustration = true }) {
   const form = content.form || {};
 
   const [formData, setFormData] = useState({
@@ -52,7 +53,13 @@ function Contact({ content = {} }) {
       <Row>
       <Col lg={4} className="image-p">
       <div id="ct-img">
-      <Image src={content.image} alt="contact-pic" className="mb-4" fluid/>
+      <Illustration
+        illustration={illustration}
+        src={content.image}
+        alt="contact-pic"
+        className="mb-4"
+        animate={animateIllustration}
+      />
       </div>
       </Col>
       <Col>

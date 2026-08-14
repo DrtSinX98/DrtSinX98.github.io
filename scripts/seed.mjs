@@ -128,6 +128,25 @@ try {
     }
   }
 
+  // Page illustrations moved from the CDN to the animated Storyset exports in
+  // public/illustrations. Only rewrite documents still on the old default, so a
+  // hand-picked replacement is left alone.
+  const OLD_ILLUSTRATIONS = {
+    about: /\/ab\.svg$/,
+    gallery: /\/gl\.svg$/,
+    lectures: /\/lc\.svg$/,
+    contact: /\/ct\.svg$/,
+  };
+  for (const [key, pattern] of Object.entries(OLD_ILLUSTRATIONS)) {
+    const doc = await db.collection('content').findOne({ key });
+    if (!doc?.data?.image || !pattern.test(doc.data.image)) continue;
+    const next = CONTENT_DEFAULTS[key].image;
+    await db
+      .collection('content')
+      .updateOne({ key }, { $set: { 'data.image': next, updatedAt: new Date() } });
+    console.log(`  backfill: ${key} illustration -> ${next}`);
+  }
+
   // ---- countries ------------------------------------------------------------
   const countryCount = await db.collection('countries').countDocuments();
   if (countryCount === 0 || FORCE) {

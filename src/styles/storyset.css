@@ -1,0 +1,46 @@
+/* Storyset animated illustrations.
+   SVG markup lives in public/illustrations/ and is inlined by lib/illustrations.js;
+   these are the per-layer animations from each download's companion stylesheet.
+   Rules are scoped by the SVG's own root id, so the four sets never collide.
+   Keyframes were identical across all four files and are defined once here. */
+
+/* about — questions-not-css.svg */
+svg#freepik_stories-questions:not(.animated) .animable {opacity: 0;}
+svg#freepik_stories-questions.animated #freepik--background-simple--inject-50 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear floating;animation-delay: 0s,1s;}
+svg#freepik_stories-questions.animated #freepik--Plants--inject-50 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) fadeIn;animation-delay: 0s;}
+svg#freepik_stories-questions.animated #freepik--question-marks-2--inject-50 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear heartbeat;animation-delay: 0s,1s;}
+svg#freepik_stories-questions.animated #freepik--Character--inject-50 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomOut,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
+/* gallery — image-folder-not-css.svg */
+svg#freepik_stories-image-folder:not(.animated) .animable {opacity: 0;}
+svg#freepik_stories-image-folder.animated #freepik--background-simple--inject-1--inject-92 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear floating;animation-delay: 0s,1s;}
+svg#freepik_stories-image-folder.animated #freepik--Folder--inject-1--inject-92 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft,1.5s Infinite  linear heartbeat;animation-delay: 0s,1s;}
+svg#freepik_stories-image-folder.animated #freepik--Character--inject-1--inject-92 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
+/* lectures — professor-not-css.svg */
+svg#freepik_stories-professor:not(.animated) .animable {opacity: 0;}
+svg#freepik_stories-professor.animated #freepik--background-simple--inject-260 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear floating;animation-delay: 0s,1s;}
+svg#freepik_stories-professor.animated #freepik--Blackboard--inject-260 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn;animation-delay: 0s;}
+svg#freepik_stories-professor.animated #freepik--Character--inject-260 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideRight,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
+svg#freepik_stories-professor.animated #freepik--Table--inject-260 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomOut,1.5s Infinite  linear heartbeat;animation-delay: 0s,2s;}
+/* contact — push-notifications-not-css.svg */
+svg#freepik_stories-push-notifications:not(.animated) .animable {opacity: 0;}
+svg#freepik_stories-push-notifications.animated #freepik--background-simple--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear floating;animation-delay: 0s,1s;}
+svg#freepik_stories-push-notifications.animated #freepik--Streetlight--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0s;}
+svg#freepik_stories-push-notifications.animated #freepik--Character--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideRight,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
+svg#freepik_stories-push-notifications.animated #freepik--notification-2--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.4s,1.4s;opacity: 0}
+svg#freepik_stories-push-notifications.animated #freepik--notification-1--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0s,1s;}
+
+/* ---------- shared keyframes ---------- */
+
+@keyframes fadeIn {                0% {                    opacity: 0;                }                100% {                    opacity: 1;                }            }
+@keyframes floating {                0% {                    opacity: 1;                    transform: translateY(0px);                }                50% {                    transform: translateY(-10px);                }                100% {                    opacity: 1;                    transform: translateY(0px);                }            }
+@keyframes heartbeat {                0% {                    transform: scale(1);                }                10% {                    transform: scale(1.1);                }                30% {                    transform: scale(1);                }                40% {                    transform: scale(1);                }                50% {                    transform: scale(1.1);                }                60% {                    transform: scale(1);                }                100% {                    transform: scale(1);                }            }
+@keyframes slideLeft {                0% {                    opacity: 0;                    transform: translateX(-30px);                }                100% {                    opacity: 1;                    transform: translateX(0);                }            }
+@keyframes slideRight {                0% {                    opacity: 0;                    transform: translateX(30px);                }                100% {                    opacity: 1;                    transform: translateX(0);                }            }
+@keyframes slideUp {                0% {                    opacity: 0;                    transform: translateY(30px);                }                100% {                    opacity: 1;                    transform: inherit;                }            }
+@keyframes wind {                0% {                    transform: rotate( 0deg );                }                25% {                    transform: rotate( 1deg );                }                75% {                    transform: rotate( -1deg );                }            }
+@keyframes zoomIn {                0% {                    opacity: 0;                    transform: scale(0.5);                }                100% {                    opacity: 1;                    transform: scale(1);                }            }
+@keyframes zoomOut {                0% {                    opacity: 0;                    transform: scale(1.5);                }                100% {                    opacity: 1;                    transform: scale(1);                }            }
+
+@media (prefers-reduced-motion: reduce) {
+  svg[id^="freepik_stories-"] .animable { animation: none !important; opacity: 1 !important; }
+}

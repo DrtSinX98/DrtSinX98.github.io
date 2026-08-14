@@ -1,0 +1,123 @@
+/* Entrance animation for the inlined page illustrations.
+
+   Pure CSS on purpose: the animation runs on load with no JavaScript, so there
+   is no hydration flash and no invisible artwork if a script fails. Layers are
+   the top-level Storyset groups (`freepik--Character--inject-5` and friends);
+   the animation is chosen from the layer's name and staggered by its position.
+
+   Storyset's own *animated* exports carry their own <style> and keyframes —
+   those are left alone (see `.vx-illustration.is-self-animated`). */
+
+.vx-illustration {
+  display: block;
+  width: 100%;
+}
+
+.vx-illustration > svg,
+.vx-illustration > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* ---------- layer animation ---------- */
+
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"] {
+  animation: 0.9s 1 both cubic-bezier(0.36, -0.01, 0.5, 1.38) vx-fade-up;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Chosen by layer name so the motion suits what's in it. Later rules win where
+   a layer matches more than one. */
+.vx-illustration:not(.is-self-animated) > svg > g[id*="background" i] {
+  animation-name: vx-zoom-out;
+}
+.vx-illustration:not(.is-self-animated) > svg > g[id*="floor" i],
+.vx-illustration:not(.is-self-animated) > svg > g[id*="shadow" i] {
+  animation-name: vx-slide-up;
+}
+.vx-illustration:not(.is-self-animated) > svg > g[id*="plant" i] {
+  animation-name: vx-slide-up;
+}
+.vx-illustration:not(.is-self-animated) > svg > g[id*="couch" i],
+.vx-illustration:not(.is-self-animated) > svg > g[id*="device" i],
+.vx-illustration:not(.is-self-animated) > svg > g[id*="picture" i],
+.vx-illustration:not(.is-self-animated) > svg > g[id*="icon" i] {
+  animation-name: vx-slide-left;
+}
+.vx-illustration:not(.is-self-animated) > svg > g[id*="question" i] {
+  animation-name: vx-slide-down;
+}
+.vx-illustration:not(.is-self-animated) > svg > g[id*="character" i] {
+  animation-name: vx-slide-right;
+}
+
+/* Stagger by paint order — back layers settle before the ones in front.
+   These carry the full base selector plus :nth-of-type so they outrank the
+   `animation` shorthand above, which would otherwise reset the delay to 0s. */
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(1) { animation-delay: 0s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(2) { animation-delay: 0.09s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(3) { animation-delay: 0.18s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(4) { animation-delay: 0.27s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(5) { animation-delay: 0.36s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(6) { animation-delay: 0.45s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(7) { animation-delay: 0.54s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(8) { animation-delay: 0.63s; }
+.vx-illustration:not(.is-self-animated) > svg > g[id^="freepik--"]:nth-of-type(n + 9) { animation-delay: 0.72s; }
+
+/* Raster fallback (an ImgBB upload, for example) still gets a gentle entrance. */
+.vx-illustration.is-raster > img {
+  animation: 0.9s 1 both cubic-bezier(0.36, -0.01, 0.5, 1.38) vx-fade-up;
+}
+
+/* ---------- keyframes ---------- */
+
+@keyframes vx-fade-up {
+  0% { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vx-slide-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vx-slide-down {
+  0% { opacity: 0; transform: translateY(-30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vx-slide-left {
+  0% { opacity: 0; transform: translateX(-30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes vx-slide-right {
+  0% { opacity: 0; transform: translateX(30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes vx-zoom-in {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes vx-zoom-out {
+  0% { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-illustration > svg > g[id^="freepik--"],
+  .vx-illustration.is-raster > img {
+    animation: none !important;
+  }
+  .vx-illustration.is-self-animated > svg .animable {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}

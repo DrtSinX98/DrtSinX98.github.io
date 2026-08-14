@@ -34,6 +34,10 @@ export const defaultSite = {
     dayStartHour: 6,
     nightStartHour: 18,
   },
+  animations: {
+    // Inlines the page SVGs so each Storyset layer animates in on load.
+    illustrations: true,
+  },
   particles: {
     enabled: true,
     color: '#c91574',
@@ -57,11 +61,6 @@ export const defaultSite = {
       `${GH}/erec.png`,
       `${GH}/pfp_l.png`,
       `${GH}/pfp_d.png`,
-      `${GH}/ab.svg`,
-      `${GH}/pr.svg`,
-      `${GH}/ct.svg`,
-      `${GH}/lc.svg`,
-      `${GH}/gl.svg`,
       `${GH}/grad.png`,
       `${GH}/work.png`,
       `${GH}/cert.png`,
@@ -133,7 +132,7 @@ export const defaultHome = {
 };
 
 export const defaultAbout = {
-  image: `${GH}/ab.svg`,
+  image: '/illustrations/about.svg',
   heading: [
     { text: 'Do you wanna know ' },
     { text: 'About me?', pink: true },
@@ -496,7 +495,7 @@ export const defaultCv = {
 };
 
 export const defaultGallery = {
-  image: `${GH}/gl.svg`,
+  image: '/illustrations/gallery.svg',
   heading: [{ text: 'Welcome to my ' }, { text: 'Gallery!', pink: true }],
   lead: [
     { text: 'I love to travel a lot and have travelled to many places in ' },
@@ -523,7 +522,7 @@ export const defaultGallery = {
 };
 
 export const defaultLectures = {
-  image: `${GH}/lc.svg`,
+  image: '/illustrations/lectures.svg',
   heading: [{ text: 'Enjoy the ' }, { text: 'Lectures!', pink: true }],
   lead: [
     { text: 'I am planning to prepare a ' },
@@ -810,7 +809,7 @@ export const defaultLectures = {
 };
 
 export const defaultContact = {
-  image: `${GH}/ct.svg`,
+  image: '/illustrations/contact.svg',
   heading: [{ text: 'Reach out ' }, { text: 'to me!', pink: true }],
   leadPrefix: [
     { text: "I'm available on " },
