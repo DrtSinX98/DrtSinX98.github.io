@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import { getContent } from '@/lib/content';
 import { themeInitScript } from '@/lib/theme';
+import { Analytics } from '@vercel/analytics/next';
 
 // Font Awesome injects its own <style> at runtime; Next already ships the CSS above.
 config.autoAddCss = false;
@@ -50,7 +51,10 @@ export default async function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
