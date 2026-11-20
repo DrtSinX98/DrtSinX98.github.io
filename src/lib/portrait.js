@@ -27,13 +27,18 @@ const themeText = (theme) =>
 // CDN drop images cached under the old algorithm. History: 2 = added the hair shine.
 const RECOLOR_VERSION = 2;
 
+// A visitor's own template (lib/visitorTheme.js) is named in the URL, so the
+// response depends on the URL alone and can be cached by it. Only a template key
+// is ever sent — never colours.
+const forVisitor = (theme) => (theme?.visitor ? `&t=${encodeURIComponent(theme.preset)}` : '');
+
 /** The profile picture, recoloured. `variant` is "light" or "dark". */
 export function portraitUrl(variant, theme, src) {
   if (!src) return src;
-  return `/api/profile-image/${variant}?v=${hash(`${RECOLOR_VERSION}|${themeText(theme)}|${src}`)}`;
+  return `/api/profile-image/${variant}?v=${hash(`${RECOLOR_VERSION}|${themeText(theme)}|${src}`)}${forVisitor(theme)}`;
 }
 
 /** A page illustration, recoloured. Used for the small thumbnails on Home. */
 export function artUrl(name, theme) {
-  return `/api/theme-art/${name}?v=${hash(themeText(theme))}`;
+  return `/api/theme-art/${name}?v=${hash(themeText(theme))}${forVisitor(theme)}`;
 }

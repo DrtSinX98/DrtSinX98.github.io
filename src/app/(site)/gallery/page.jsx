@@ -1,6 +1,7 @@
 import Gallery from '@/components/Gallery';
 import { getContentMany, getCountries, getGalleries } from '@/lib/content';
 import { getIllustration } from '@/lib/illustrations';
+import { visitorTheme } from '@/lib/visitorTheme';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +16,7 @@ export default async function GalleryPage() {
 
   const { gallery, site } = content;
   const animate = site.animations?.illustrations !== false;
-  const illustration = animate ? await getIllustration(gallery.image, site.theme) : null;
+  const illustration = animate ? await getIllustration(gallery.image, await visitorTheme(site.theme)) : null;
   const countries = allCountries.filter((c) => c.visited !== false);
 
   return (

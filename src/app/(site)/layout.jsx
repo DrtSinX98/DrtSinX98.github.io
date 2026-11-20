@@ -1,5 +1,6 @@
 import { getContentMany } from '@/lib/content';
 import { portraitUrl } from '@/lib/portrait';
+import { visitorTheme } from '@/lib/visitorTheme';
 import ThemeProvider from '@/components/ThemeProvider';
 import MotionProvider from '@/components/motion/MotionProvider';
 import Header from '@/components/Header';
@@ -10,7 +11,7 @@ import ScrollTop from '@/components/ScrollTop';
 
 export default async function SiteLayout({ children }) {
   const { site, home } = await getContentMany(['site', 'home']);
-  const theme = site.theme || {};
+  const theme = await visitorTheme(site.theme || {});
   const nav = site.nav || [];
 
   // The saved preload list names the original portrait PNGs (833 kB each), which
@@ -24,8 +25,15 @@ export default async function SiteLayout({ children }) {
     portraitUrl('dark', theme, dark),
   ].filter(Boolean);
 
+  // The constellation follows a visitor's own template; otherwise the saved colour.
+  const particles = theme.visitor ? { ...site.particles, color: theme.secondaryColor } : site.particles || {};
+
   return (
-    <ThemeProvider dayStartHour={theme.dayStartHour ?? 6} nightStartHour={theme.nightStartHour ?? 18}>
+    <ThemeProvider
+      dayStartHour={theme.dayStartHour ?? 6}
+      nightStartHour={theme.nightStartHour ?? 18}
+      visitorPreset={theme.visitor ? theme.preset : null}
+    >
       <MotionProvider>
         {/* `.vx-site` scopes the redesign's element-level styling, so the admin
             panel (which shares the root layout's stylesheets) is untouched. */}
@@ -33,7 +41,7 @@ export default async function SiteLayout({ children }) {
           <a className="vx-skip" href="#main">
             Skip to content
           </a>
-          <ParticlesBG config={site.particles || {}} />
+          <ParticlesBG config={particles} />
           <Header brand={site.brand} nav={nav} />
           <Preloader enabled={site.preloader?.enabled ?? true} images={preloadImages}>
             <main id="main" className="vx-main" tabIndex={-1}>

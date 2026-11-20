@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
-const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {} });
+const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {}, visitorPreset: null });
 
 export const useTheme = () => useContext(ThemeContext);
 
@@ -13,8 +13,11 @@ export const useTheme = () => useContext(ThemeContext);
  * session, otherwise the theme follows the clock. The inline script in the root
  * layout applies this before first paint; this provider only keeps React state
  * in sync so the switch and the mobile button never disagree.
+ *
+ * `visitorPreset` is the colour template this visitor picked for themselves (the
+ * easter egg on the switch), or null when they are seeing the site's own.
  */
-export default function ThemeProvider({ children, dayStartHour = 6, nightStartHour = 18 }) {
+export default function ThemeProvider({ children, dayStartHour = 6, nightStartHour = 18, visitorPreset = null }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -39,5 +42,5 @@ export default function ThemeProvider({ children, dayStartHour = 6, nightStartHo
     });
   }, []);
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ theme, toggleTheme, visitorPreset }}>{children}</ThemeContext.Provider>;
 }

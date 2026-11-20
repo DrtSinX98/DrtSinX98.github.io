@@ -63,6 +63,18 @@ export const THEME_PRESETS = [
 
 export const DEFAULT_PRESET = 'rose';
 
+/** The cookie a visitor's own theme choice is kept in (see lib/visitorTheme.js). */
+export const VISITOR_COOKIE = 'vx-theme';
+
+/**
+ * The four colours of a named template, or null for anything else — including
+ * `manual` and unknown keys. The only way a request can pick colours, so the
+ * public image routes stay limited to this fixed list.
+ */
+export function presetTheme(key) {
+  return THEME_PRESETS.find((p) => p.key === key)?.theme || null;
+}
+
 const COLOUR_KEYS = ['primaryColor', 'secondaryColor', 'tertiaryColor', 'primaryColorDark'];
 
 const same = (a, b) => String(a || '').toLowerCase() === String(b || '').toLowerCase();

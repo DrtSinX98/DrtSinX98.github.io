@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { getContent } from '@/lib/content';
 import { recolorSvg } from '@/lib/recolor';
-import { resolveTheme } from '@/lib/themePresets';
+import { presetTheme, resolveTheme } from '@/lib/themePresets';
 
 export const runtime = 'nodejs';
 
@@ -28,8 +28,11 @@ export async function GET(request, { params }) {
       getContent('site'),
     ]);
 
-    const versioned = new URL(request.url).searchParams.has('v');
-    return new Response(recolorSvg(markup, resolveTheme(site.theme)), {
+    const { searchParams } = new URL(request.url);
+    const versioned = searchParams.has('v');
+    // `t`: a visitor's own template, from the fixed list (see lib/visitorTheme.js).
+    const theme = presetTheme(searchParams.get('t')) || resolveTheme(site.theme);
+    return new Response(recolorSvg(markup, theme), {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': versioned ? 'public, max-age=31536000, immutable' : 'public, max-age=300',

@@ -12,6 +12,7 @@ import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import { getContent } from '@/lib/content';
 import { themeInitScript } from '@/lib/theme';
+import { visitorTheme } from '@/lib/visitorTheme';
 import { Analytics } from '@vercel/analytics/next';
 
 // Font Awesome injects its own <style> at runtime; Next already ships the CSS above.
@@ -75,7 +76,8 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
   const site = await getContent('site');
-  const t = site.theme || {};
+  // The visitor's own template if they chose one, else the saved theme.
+  const t = await visitorTheme(site.theme || {});
 
   const themeVars = `:root{
   --primary-color: ${t.primaryColor || '#301934'};

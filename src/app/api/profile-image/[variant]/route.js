@@ -4,7 +4,7 @@ import sharp from 'sharp';
 import { getContentMany } from '@/lib/content';
 import { ALLOWED_HOSTS } from '@/lib/illustrations';
 import { recolorRaster } from '@/lib/recolor';
-import { resolveTheme } from '@/lib/themePresets';
+import { presetTheme, resolveTheme } from '@/lib/themePresets';
 
 export const runtime = 'nodejs';
 
@@ -80,7 +80,10 @@ export async function GET(request, { params }) {
   const src = variant === 'light' ? home.profileImageLight : home.profileImageDark;
   if (!src) return new Response('No profile image is set', { status: 404 });
 
-  const theme = resolveTheme(site.theme);
+  // `t` is a visitor's own template (see lib/visitorTheme.js): a key from the fixed
+  // list of templates, never colours. Anything else falls back to the saved theme.
+  const requested = new URL(request.url).searchParams.get('t');
+  const theme = presetTheme(requested) || resolveTheme(site.theme);
   const key = [variant, src, theme.primaryColor, theme.secondaryColor, theme.tertiaryColor].join('|').toLowerCase();
 
   try {
