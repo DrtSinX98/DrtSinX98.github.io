@@ -1,6 +1,7 @@
 import { getContentMany } from '@/lib/content';
 import { portraitUrl } from '@/lib/portrait';
 import { visitorTheme } from '@/lib/visitorTheme';
+import { enabledNav } from '@/lib/pageGate';
 import ThemeProvider from '@/components/ThemeProvider';
 import MotionProvider from '@/components/motion/MotionProvider';
 import Header from '@/components/Header';
@@ -12,7 +13,7 @@ import ScrollTop from '@/components/ScrollTop';
 export default async function SiteLayout({ children }) {
   const { site, home } = await getContentMany(['site', 'home']);
   const theme = await visitorTheme(site.theme || {});
-  const nav = site.nav || [];
+  const nav = enabledNav(site.nav);
 
   // The saved preload list names the original portrait PNGs (833 kB each), which
   // the page no longer uses — it shows the recoloured versions. Swap them, so the

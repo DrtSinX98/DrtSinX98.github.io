@@ -10,7 +10,6 @@ const TABS = [
   { key: 'intro', label: 'Intro' },
   { key: 'journey', label: 'Journey' },
   { key: 'skills', label: 'Tech stack' },
-  { key: 'projects', label: 'Projects' },
   { key: 'achievements', label: 'Achievements' },
   { key: 'highlights', label: 'Interests & socials' },
 ];
@@ -109,44 +108,6 @@ export default function AboutEditor() {
                     </div>
                     <IconPicker value={item.icon} onChange={(v) => update({ icon: v })} />
                     <StringList label="Skills" items={item.items || []} onChange={(v) => update({ items: v })} />
-                  </>
-                )}
-              />
-            </Card>
-          )}
-
-          {active === 'projects' && (
-            <Card title="Projects & portfolios" hint="Each group becomes a tab on the About page.">
-              <Text label="Section title" value={data.projectsTitle} onChange={(v) => set('projectsTitle', v)} />
-              <ListEditor
-                items={data.projectTabs || []}
-                onChange={(v) => set('projectTabs', v)}
-                addLabel="Add tab"
-                title={(item) => item.title || 'Untitled tab'}
-                newItem={() => ({ key: `tab${Date.now()}`, title: 'New tab', projects: [] })}
-                renderItem={(tab, updateTab) => (
-                  <>
-                    <div className="admin-grid cols-2">
-                      <Text label="Tab title" value={tab.title} onChange={(v) => updateTab({ title: v })} />
-                      <Text label="Key" hint="Must be unique." value={tab.key} onChange={(v) => updateTab({ key: v })} />
-                    </div>
-                    <ListEditor
-                      items={tab.projects || []}
-                      onChange={(v) => updateTab({ projects: v })}
-                      addLabel="Add project"
-                      title={(p) => p.title || 'Untitled project'}
-                      newItem={{ title: '', desc: '', icon: 'code', link: 'https://' }}
-                      renderItem={(project, updateProject) => (
-                        <>
-                          <div className="admin-grid cols-2">
-                            <Text label="Title" value={project.title} onChange={(v) => updateProject({ title: v })} />
-                            <Text label="Link" value={project.link} onChange={(v) => updateProject({ link: v })} />
-                          </div>
-                          <TextArea label="Description" value={project.desc} onChange={(v) => updateProject({ desc: v })} />
-                          <IconPicker value={project.icon} onChange={(v) => updateProject({ icon: v })} />
-                        </>
-                      )}
-                    />
                   </>
                 )}
               />

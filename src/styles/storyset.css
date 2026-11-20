@@ -1,8 +1,8 @@
 /* Storyset animated illustrations.
    SVG markup lives in public/illustrations/ and is inlined by lib/illustrations.js;
    these are the per-layer animations from each download's companion stylesheet.
-   Rules are scoped by the SVG's own root id, so the four sets never collide.
-   Keyframes were identical across all four files and are defined once here. */
+   Rules are scoped by the SVG's own root id, so the sets never collide.
+   Keyframes were identical across the files and are defined once here. */
 
 /* about — questions-not-css.svg */
 svg#freepik_stories-questions:not(.animated) .animable {opacity: 0;}
@@ -28,6 +28,24 @@ svg#freepik_stories-push-notifications.animated #freepik--Streetlight--inject-51
 svg#freepik_stories-push-notifications.animated #freepik--Character--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideRight,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
 svg#freepik_stories-push-notifications.animated #freepik--notification-2--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.4s,1.4s;opacity: 0}
 svg#freepik_stories-push-notifications.animated #freepik--notification-1--inject-517 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0s,1s;}
+/* projects — project-stages-not-css.svg
+   The download animates each layer once; this follows the other four pages instead:
+   the backdrop slides up and floats, props pop in then pulse, the character sways. */
+svg#freepik_stories-project-stages:not(.animated) .animable {opacity: 0;}
+svg#freepik_stories-project-stages.animated #freepik--background-simple--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp,1.5s Infinite  linear floating;animation-delay: 0s,1s;}
+svg#freepik_stories-project-stages.animated #freepik--Clouds--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0s;}
+svg#freepik_stories-project-stages.animated #freepik--Smoke--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn;animation-delay: 0s;}
+svg#freepik_stories-project-stages.animated #freepik--Platform--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn;animation-delay: 0s;}
+svg#freepik_stories-project-stages.animated #freepik--Rocket--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomOut,1.5s Infinite  linear floating;animation-delay: 0.2s,1.2s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--stage-1--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp;animation-delay: 0.2s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--stage-2--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp;animation-delay: 0.35s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--stage-3--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp;animation-delay: 0.5s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--stage-4--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp;animation-delay: 0.65s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--icon-1--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.5s,1.5s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--icon-2--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.65s,1.65s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--icon-3--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.8s,1.8s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--icon-4--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn,1.5s Infinite  linear heartbeat;animation-delay: 0.95s,1.95s;opacity: 0}
+svg#freepik_stories-project-stages.animated #freepik--Character--inject-23 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideRight,1.5s Infinite  linear wind;animation-delay: 0s,1s;}
 
 /* ---------- shared keyframes ---------- */
 

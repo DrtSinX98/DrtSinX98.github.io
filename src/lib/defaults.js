@@ -15,11 +15,16 @@ export const defaultSite = {
   brand: 'Vortex',
   title: "Pritish's Vortex",
   description: 'Portfolio website of Pritish Joshi',
+  // Bumped when a release adds pages to the menu; see lib/siteUpgrade.js.
+  navVersion: 2,
+  // `enabled: false` hides a page (menu, footer, home list) and makes its address
+  // a 404, without deleting the item or the page's content.
   nav: [
     { key: 'home', label: 'Home', href: '/', icon: 'house' },
     { key: 'about', label: 'About', href: '/about', icon: 'user' },
+    { key: 'projects', label: 'Projects', href: '/projects', icon: 'projectDiagram' },
     { key: 'gallery', label: 'Gallery', href: '/gallery', icon: 'images' },
-    { key: 'lectures', label: 'Lectures', href: '/lectures', icon: 'video' },
+    { key: 'lectures', label: 'Lectures', href: '/lectures', icon: 'video', enabled: false },
     { key: 'contact', label: 'Contact', href: '/contact', icon: 'message' },
   ],
   footer: {
@@ -203,81 +208,6 @@ export const defaultAbout = {
       icon: 'book',
       variant: 'soft',
       items: ['Figma', 'Origin', 'LaTEX', 'Jupyter Notebook'],
-    },
-  ],
-  projectsTitle: 'Projects & Portfolios',
-  projectTabs: [
-    {
-      key: 'android',
-      title: 'Android / Kernel',
-      projects: [
-        {
-          title: 'Cyanide Project',
-          desc: 'Lead Developer of Cyanide custom ROM project that is built on top of Lineage OS with various features and Redesigned User Interface',
-          icon: 'mobileScreen',
-          link: 'https://github.com/Los-FE',
-        },
-        {
-          title: 'TWRP Spaced',
-          desc: 'Official maintainer of TeamWin Recovery Project for Realme 8i (spaced). TWRP is a Custom Recovery used to flash custom partitions in device',
-          icon: 'wrench',
-          link: 'https://twrp.me/realme/realme8i.html',
-        },
-        {
-          title: 'Cyanide Kernel',
-          desc: 'Developer of Cyanide Kernel for Realme 8i and 8s 5G. Cyanide kernel is a Custom Kernel with various device specific tweaks and optimizations',
-          icon: 'microchip',
-          link: 'https://xdaforums.com/t/kernel-4-14-cyanide-kernel-1-0-for-realme-8i-spaced.4447145/',
-        },
-        {
-          title: 'Realme Debloater',
-          desc: 'Scripts for removing unwanted apps from realme UI 2.0 and higher. Realme UI comes with lots of bloatwares, this script helps removing those.',
-          icon: 'broom',
-          link: 'https://github.com/DrtSinX98/Debloat',
-        },
-      ],
-    },
-    {
-      key: 'design',
-      title: 'Design / UI',
-      projects: [
-        {
-          title: 'Concetto 2023',
-          desc: 'Co-head of Design & Content Team in Concetto 2023. Concetto is the annual Techno-management fest of IIT Dhanbad',
-          icon: 'palette',
-          link: 'http://www.concetto.in/',
-        },
-        {
-          title: 'Stag OS',
-          desc: 'Designer and Device Maintainer at Stag OS. Stag OS is a custom ROM project based on Android Open Source Project with various features',
-          icon: 'mobileScreen',
-          link: 'https://stag-os.org',
-        },
-        {
-          title: 'Karmajyoti',
-          desc: 'Head of Media & Branding and Web Developer at KarmaJyoti. KarmaJyoti is a Philanthropic organisation under CSM, IIT (ISM) Dhanbad',
-          icon: 'handHoldingHeart',
-          link: 'https://karmajyoti.org',
-        },
-      ],
-    },
-    {
-      key: 'comp',
-      title: 'Computational',
-      projects: [
-        {
-          title: 'MexB Inhibitors',
-          desc: 'DST (SERB) Funded Project: Prediction of MexB Efflux Pump Inhibitors: A complete Machine Learning and Molecular Dynamics approach',
-          icon: 'dna',
-          link: 'https://doi.org/10.1021/acs.jpcb.3c05845',
-        },
-        {
-          title: 'EreC Dynamics',
-          desc: 'MSc Thesis Project: Molecular Dynamics of Erethromycin Esterase (EreC): Binding Mechanism with Erythromycin and Azithromycin',
-          icon: 'atom',
-          link: 'https://drive.google.com/file/d/1C5NlFdb0n3bDihn7Gv2fDqKNTCHAO9Iv/view?usp=share_link',
-        },
-      ],
     },
   ],
   achievementsTitle: 'Achievements & Certifications',
@@ -872,10 +802,164 @@ export const cityDisplayNames = {
   Vasteras: 'Västerås',
 };
 
+export const defaultProjects = {
+  image: '/illustrations/projects.svg',
+  heading: [{ text: 'Check out my ' }, { text: 'Projects!', pink: true }],
+  lead: [
+    { text: 'Custom ROMs and kernels, design and branding for student organisations, and computational research. ' },
+    { text: 'Filter by area, or open any project to see it in more detail.' },
+  ],
+  categories: [
+    { key: 'android', title: 'Android / Kernel' },
+    { key: 'design', title: 'Design / UI' },
+    { key: 'comp', title: 'Computational' },
+  ],
+  // status: '' | 'active' | 'maintained' | 'completed' | 'archived'
+  items: [
+    {
+      title: 'Cyanide Project',
+      summary:
+        'Lead Developer of Cyanide custom ROM project that is built on top of Lineage OS with various features and Redesigned User Interface',
+      category: 'android',
+      role: 'Lead Developer',
+      year: '',
+      status: '',
+      icon: 'mobileScreen',
+      image: '',
+      tags: ['Android', 'LineageOS', 'Custom ROM'],
+      links: [{ label: 'GitHub', href: 'https://github.com/Los-FE' }],
+      featured: true,
+    },
+    {
+      title: 'TWRP Spaced',
+      summary:
+        'Official maintainer of TeamWin Recovery Project for Realme 8i (spaced). TWRP is a Custom Recovery used to flash custom partitions in device',
+      category: 'android',
+      role: 'Official maintainer',
+      year: '',
+      status: '',
+      icon: 'wrench',
+      image: '',
+      tags: ['Recovery', 'Realme 8i'],
+      links: [{ label: 'TWRP page', href: 'https://twrp.me/realme/realme8i.html' }],
+      featured: false,
+    },
+    {
+      title: 'Cyanide Kernel',
+      summary:
+        'Developer of Cyanide Kernel for Realme 8i and 8s 5G. Cyanide kernel is a Custom Kernel with various device specific tweaks and optimizations',
+      category: 'android',
+      role: 'Developer',
+      year: '',
+      status: '',
+      icon: 'microchip',
+      image: '',
+      tags: ['Linux kernel', 'Realme 8i', 'Realme 8s 5G'],
+      links: [
+        {
+          label: 'XDA thread',
+          href: 'https://xdaforums.com/t/kernel-4-14-cyanide-kernel-1-0-for-realme-8i-spaced.4447145/',
+        },
+      ],
+      featured: false,
+    },
+    {
+      title: 'Realme Debloater',
+      summary:
+        'Scripts for removing unwanted apps from realme UI 2.0 and higher. Realme UI comes with lots of bloatwares, this script helps removing those.',
+      category: 'android',
+      role: '',
+      year: '',
+      status: '',
+      icon: 'broom',
+      image: '',
+      tags: ['Scripts', 'Realme UI'],
+      links: [{ label: 'GitHub', href: 'https://github.com/DrtSinX98/Debloat' }],
+      featured: false,
+    },
+    {
+      title: 'Concetto 2023',
+      summary:
+        'Co-head of Design & Content Team in Concetto 2023. Concetto is the annual Techno-management fest of IIT Dhanbad',
+      category: 'design',
+      role: 'Co-head, Design & Content Team',
+      year: '2023',
+      status: '',
+      icon: 'palette',
+      image: '',
+      tags: ['Design', 'Content', 'IIT Dhanbad'],
+      links: [{ label: 'Website', href: 'http://www.concetto.in/' }],
+      featured: false,
+    },
+    {
+      title: 'Stag OS',
+      summary:
+        'Designer and Device Maintainer at Stag OS. Stag OS is a custom ROM project based on Android Open Source Project with various features',
+      category: 'design',
+      role: 'Designer & Device Maintainer',
+      year: '',
+      status: '',
+      icon: 'mobileScreen',
+      image: '',
+      tags: ['Android', 'AOSP', 'Custom ROM'],
+      links: [{ label: 'Website', href: 'https://stag-os.org' }],
+      featured: false,
+    },
+    {
+      title: 'Karmajyoti',
+      summary:
+        'Head of Media & Branding and Web Developer at KarmaJyoti. KarmaJyoti is a Philanthropic organisation under CSM, IIT (ISM) Dhanbad',
+      category: 'design',
+      role: 'Head of Media & Branding, Web Developer',
+      year: '',
+      status: '',
+      icon: 'handHoldingHeart',
+      image: '',
+      tags: ['Branding', 'Web', 'IIT (ISM) Dhanbad'],
+      links: [{ label: 'Website', href: 'https://karmajyoti.org' }],
+      featured: false,
+    },
+    {
+      title: 'MexB Inhibitors',
+      summary:
+        'DST (SERB) Funded Project: Prediction of MexB Efflux Pump Inhibitors: A complete Machine Learning and Molecular Dynamics approach',
+      category: 'comp',
+      role: '',
+      year: '',
+      status: '',
+      icon: 'dna',
+      image: '',
+      tags: ['Machine Learning', 'Molecular Dynamics', 'DST (SERB)'],
+      links: [{ label: 'Paper (JPCB)', href: 'https://doi.org/10.1021/acs.jpcb.3c05845' }],
+      featured: true,
+    },
+    {
+      title: 'EreC Dynamics',
+      summary:
+        'MSc Thesis Project: Molecular Dynamics of Erethromycin Esterase (EreC): Binding Mechanism with Erythromycin and Azithromycin',
+      category: 'comp',
+      role: 'MSc thesis',
+      year: '',
+      status: '',
+      icon: 'atom',
+      image: '',
+      tags: ['Molecular Dynamics', 'MSc thesis'],
+      links: [
+        {
+          label: 'Thesis (PDF)',
+          href: 'https://drive.google.com/file/d/1C5NlFdb0n3bDihn7Gv2fDqKNTCHAO9Iv/view?usp=share_link',
+        },
+      ],
+      featured: false,
+    },
+  ],
+};
+
 export const CONTENT_DEFAULTS = {
   site: defaultSite,
   home: defaultHome,
   about: defaultAbout,
+  projects: defaultProjects,
   cv: defaultCv,
   gallery: defaultGallery,
   lectures: defaultLectures,

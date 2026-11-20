@@ -2,6 +2,8 @@ import 'server-only';
 import { unstable_cache } from 'next/cache';
 import { getDb, COLLECTIONS } from './mongodb';
 import { CONTENT_DEFAULTS, cityDisplayNames, defaultCountries } from './defaults';
+import { upgradeSite } from './siteUpgrade';
+import { projectsFromAbout } from './projects';
 
 /**
  * Cache tags. Pages render per request (so the clock-based greeting and footer
@@ -63,6 +65,14 @@ const readPhotos = unstable_cache(
   { tags: [TAGS.photos] },
 );
 
+/**
+ * Brings documents saved by an older release up to date (see lib/siteUpgrade.js).
+ * Runs on the stored document *before* the defaults are merged in: the defaults
+ * already carry the newest version number, which would make every old document
+ * look current.
+ */
+const withUpgrades = (key, data) => (key === 'site' ? upgradeSite(data) : data);
+
 /* ------------------------------------------------------------- public API */
 
 /**
@@ -72,9 +82,12 @@ const readPhotos = unstable_cache(
 export async function getContent(key) {
   const fallback = CONTENT_DEFAULTS[key] ?? {};
   try {
-    const data = await readContent(key);
+    let data = await readContent(key);
+    // Projects used to live on the About page. Until the new section is first
+    // saved, show whatever was there (edited or not) rather than the defaults.
+    if (!data && key === 'projects') data = projectsFromAbout(await readContent('about'));
     // Shallow merge keeps newly added default fields available on old documents.
-    return data ? { ...fallback, ...data } : fallback;
+    return data ? { ...fallback, ...withUpgrades(key, data) } : fallback;
   } catch (err) {
     console.error(`[content] failed to load "${key}":`, err.message);
     return fallback;
@@ -86,7 +99,7 @@ export async function getContentMany(keys) {
   try {
     const byKey = await readContentMany(keys);
     return Object.fromEntries(
-      keys.map((key) => [key, { ...(CONTENT_DEFAULTS[key] ?? {}), ...(byKey[key] ?? {}) }]),
+      keys.map((key) => [key, { ...(CONTENT_DEFAULTS[key] ?? {}), ...withUpgrades(key, byKey[key] ?? {}) }]),
     );
   } catch (err) {
     console.error('[content] bulk load failed:', err.message);

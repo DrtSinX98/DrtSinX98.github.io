@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Accordion, Tabs, Tab } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import { ArrowUpRight } from 'lucide-react';
-import ProjectList from './ProjectList';
 import CVModal from './CVModal';
 import RichText from './RichText';
 import Icon from './Icon';
@@ -33,7 +32,6 @@ function RowLink({ href, title, subtitle, compact = false }) {
 function About({ content = {}, cv = {}, illustration = null, animateIllustration = true }) {
   const [showCVModal, setShowCVModal] = useState(false);
   const certificates = content.certificates || [];
-  const projectTabs = content.projectTabs || [];
   const journey = content.journey || [];
   const skillGroups = content.skillGroups || [];
   const highlights = content.highlights || [];
@@ -43,7 +41,6 @@ function About({ content = {}, cv = {}, illustration = null, animateIllustration
   const navItems = [
     { id: 'journey', label: content.journeyTitle, icon: 'briefcase' },
     { id: 'skills', label: content.skillsTitle, icon: 'code' },
-    { id: 'projects', label: content.projectsTitle, icon: 'projectDiagram' },
     { id: 'achievements', label: content.achievementsTitle, icon: 'trophy' },
   ].filter((item) => item.label);
 
@@ -128,21 +125,8 @@ function About({ content = {}, cv = {}, illustration = null, animateIllustration
           </section>
         </div>
 
-        <section id="projects" className="vx-section" aria-labelledby="projects-title">
-          <SectionHead id="projects-title" index="03" icon="projectDiagram" title={content.projectsTitle} />
-          <Reveal className="vx-card vx-card--pad">
-            <Tabs defaultActiveKey={projectTabs[0]?.key} id="projects-tabs" className="vx-tabs">
-              {projectTabs.map((tab) => (
-                <Tab eventKey={tab.key} title={tab.title} key={tab.key}>
-                  <ProjectList projects={tab.projects || []} />
-                </Tab>
-              ))}
-            </Tabs>
-          </Reveal>
-        </section>
-
         <section id="achievements" className="vx-section" aria-labelledby="achievements-title">
-          <SectionHead id="achievements-title" index="04" icon="trophy" title={content.achievementsTitle} />
+          <SectionHead id="achievements-title" index="03" icon="trophy" title={content.achievementsTitle} />
           <Reveal>
             <Accordion className="vx-accordion">
               <Accordion.Item eventKey="0">

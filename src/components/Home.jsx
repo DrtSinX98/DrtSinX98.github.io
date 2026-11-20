@@ -5,6 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import TerminalCard from './TerminalCard';
 import Rimage from './Rimage';
 import Bio from './Bio';
+import Icon from './Icon';
 import Buttons from './Buttons';
 import { ElementTile } from './ui/Eyebrow';
 import { Reveal, RevealGroup, RevealItem } from './motion/Reveal';
@@ -17,7 +18,7 @@ import { artUrl, portraitUrl } from '@/lib/portrait';
  * pages open with, so each door previews the room.
  */
 function Explore({ nav, theme }) {
-  const items = nav.filter((item) => PAGE_ART[item.key]);
+  const items = nav.filter((item) => item.href !== '/');
   if (items.length === 0) return null;
 
   return (
@@ -32,7 +33,11 @@ function Explore({ nav, theme }) {
               <span className="vx-explore__art">
                 {/* Served recoloured to the active theme. `unoptimized` skips the
                     image optimiser, which would otherwise refuse SVG. */}
-                <Image src={artUrl(item.key, theme)} alt="" width={72} height={72} unoptimized />
+                {PAGE_ART[item.key] ? (
+                  <Image src={artUrl(item.key, theme)} alt="" width={72} height={72} unoptimized />
+                ) : (
+                  <Icon name={item.icon} size="2x" />
+                )}
               </span>
               <span className="vx-explore__text">
                 <span className="vx-explore__label">{item.label}</span>

@@ -46,9 +46,19 @@ const PAGES = [
       { label: 'Intro', href: '/admin/about?section=intro' },
       { label: 'Journey', href: '/admin/about?section=journey' },
       { label: 'Tech stack', href: '/admin/about?section=skills' },
-      { label: 'Projects', href: '/admin/about?section=projects' },
       { label: 'Achievements', href: '/admin/about?section=achievements' },
       { label: 'Interests & socials', href: '/admin/about?section=highlights' },
+    ],
+  },
+  {
+    href: '/admin/projects',
+    label: 'Projects',
+    icon: 'projectDiagram',
+    tile: page('projects'),
+    children: [
+      { label: 'Intro', href: '/admin/projects?section=intro' },
+      { label: 'Areas', href: '/admin/projects?section=areas' },
+      { label: 'Projects', href: '/admin/projects?section=projects' },
     ],
   },
   {

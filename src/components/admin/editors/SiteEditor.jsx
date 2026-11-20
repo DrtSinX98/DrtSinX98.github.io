@@ -54,14 +54,14 @@ export default function SiteEditor() {
           {active === 'navigation' && (
             <Card
               title="Menu items"
-              hint="Appears in the header on desktop and the bottom bar on mobile. The icon is only used on mobile."
+              hint="Appears in the header on desktop and the bottom bar on mobile. The icon is only used on mobile. Turn a page off to hide it without deleting anything: it leaves the menu, footer and home page, and its address shows a 404, until you turn it back on."
             >
               <ListEditor
                 items={data.nav || []}
                 onChange={(v) => set('nav', v)}
                 addLabel="Add menu item"
-                title={(item) => item.label || item.href}
-                newItem={{ key: '', label: 'New page', href: '/', icon: 'link' }}
+                title={(item) => `${item.label || item.href}${item.enabled === false ? ' — hidden' : ''}`}
+                newItem={{ key: '', label: 'New page', href: '/', icon: 'link', enabled: true }}
                 renderItem={(item, update) => (
                   <>
                     <div className="admin-grid cols-3">
@@ -75,6 +75,15 @@ export default function SiteEditor() {
                       />
                     </div>
                     <IconPicker label="Mobile icon" value={item.icon} onChange={(v) => update({ icon: v })} />
+                    {/* The home page is the site's front door and cannot be switched off. */}
+                    {item.href !== '/' && (
+                      <Switch
+                        label="Show this page"
+                        hint="Off hides it from the menu, footer and home page, and its address shows a 404. Its content is kept."
+                        checked={item.enabled !== false}
+                        onChange={(v) => update({ enabled: v })}
+                      />
+                    )}
                   </>
                 )}
               />

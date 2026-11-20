@@ -7,16 +7,16 @@ import { presetTheme, resolveTheme } from '@/lib/themePresets';
 export const runtime = 'nodejs';
 
 /**
- * The four page illustrations, re-coloured to the active theme, as plain SVG
+ * The page illustrations, re-coloured to the active theme, as plain SVG
  * images. The big ones on each page are inlined and recoloured in place (see
  * lib/illustrations.js); this serves the small thumbnails on the home page's
  * "Explore" list, which are ordinary <img> tags and so can't be styled from
  * outside.
  *
- * Only these four files can be requested, and the colours come from the saved
+ * Only these files can be requested, and the colours come from the saved
  * theme rather than the URL (`?v=` is just a cache-buster).
  */
-const ALLOWED = new Set(['about', 'gallery', 'lectures', 'contact']);
+const ALLOWED = new Set(['about', 'projects', 'gallery', 'lectures', 'contact']);
 
 export async function GET(request, { params }) {
   const { name } = await params;

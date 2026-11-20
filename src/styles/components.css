@@ -636,6 +636,7 @@
 .vx-explore__link:hover { border-color: var(--accent-50); background: var(--surface-2); color: var(--ink); }
 .vx-explore__art { display: grid; flex: none; place-items: center; width: 4.25rem; height: 4.25rem; overflow: hidden; border-radius: var(--radius); background: var(--accent-10); }
 .vx-explore__art img { width: 100%; height: 100%; object-fit: contain; }
+.vx-explore__art svg { color: var(--accent-text); }
 .vx-explore__text { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: 0.45rem; }
 .vx-explore__label { font-family: var(--ff-display); font-size: 1.15rem; font-weight: 650; line-height: 1; }
 .vx-explore__arrow { flex: none; color: var(--muted); transition: color var(--dur) var(--ease), transform var(--dur) var(--ease); }
@@ -753,74 +754,60 @@
 .vx-skillgroup__title { display: flex; align-items: center; gap: 0.6rem; font-size: 1.05rem; }
 .vx-skillgroup__title svg { color: var(--accent-text); }
 
-/* ---- projects: tabs ---- */
-.vx-tabs.nav-tabs {
-  --bs-nav-tabs-border-width: 0;
-  --bs-nav-tabs-link-active-bg: transparent;
-  --bs-nav-tabs-link-active-border-color: transparent;
-  --bs-nav-tabs-link-hover-border-color: transparent;
-  flex-wrap: nowrap;
-  gap: 0.25rem;
-  margin-bottom: 1.5rem;
-  overflow-x: auto;
-  border-bottom: 1px solid var(--line);
-  scrollbar-width: none;
-}
-.vx-tabs.nav-tabs .nav-link {
-  position: relative;
-  flex: none;
-  padding: 0.75rem 1rem;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 600;
-  transition: color var(--dur) var(--ease);
-}
-.vx-tabs.nav-tabs .nav-link:hover { color: var(--ink); }
-/* The selected tab is marked by an underline (a shape), not colour alone, drawn
-   as a border so forced-colors mode keeps it. */
-.vx-tabs.nav-tabs .nav-link.active { color: var(--ink); background: transparent; }
-.vx-tabs.nav-tabs .nav-link.active::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0.5rem;
-  bottom: -1px;
-  border-block-end: 3px solid var(--accent);
-  border-radius: 3px;
-}
+/* ==========================================================================
+   Projects page
+   ========================================================================== */
 
-/* ---- projects: rows ---- */
-.vx-projects { display: flex; flex-direction: column; gap: 0.75rem; }
-.vx-project {
-  display: flex;
+/* The page's element tile, large, standing in for an illustration. */
+.vx-tile--xl { width: 8.5rem; height: 8.5rem; border-width: 2px; border-radius: 22px; }
+.vx-tile--xl i { top: 0.7rem; left: 0.85rem; font-size: 1.05rem; }
+.vx-tile--xl b { font-size: 3.4rem; }
+.vx-pagehero__tile { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; }
+
+.vx-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.vx-filter__btn {
+  display: inline-flex;
   align-items: center;
-  gap: 1.1rem;
-  padding: 0.9rem 1.1rem 0.9rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  gap: 0.55rem;
+  min-height: 2.5rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--ink);
-  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  font: 600 0.9rem/1.2 var(--ff-sans);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
 }
-.vx-project:hover { border-color: var(--accent-50); background: var(--accent-05); color: var(--ink); }
-.vx-project__icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 12px;
-  background: var(--accent-10);
-  color: var(--accent-text);
-  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-.vx-project:hover .vx-project__icon { background: var(--accent); color: var(--on-accent); }
-.vx-project__body { display: flex; flex: 1; flex-direction: column; gap: 0.2rem; min-width: 0; }
-.vx-project__title { font-family: var(--ff-display); font-size: 1.15rem; font-weight: 650; line-height: 1.25; }
-.vx-project__desc { color: var(--muted); font-size: var(--fs-sm); line-height: 1.5; }
-.vx-project__arrow { flex: none; color: var(--muted); transition: color var(--dur) var(--ease), transform var(--dur) var(--ease); }
-.vx-project:hover .vx-project__arrow { color: var(--accent-text); }
-@media (prefers-reduced-motion: no-preference) { .vx-project:hover .vx-project__arrow { transform: translate(2px, -2px); } }
+.vx-filter__btn:hover { background: var(--accent-10); border-color: var(--accent); }
+.vx-filter__btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+.vx-filter__count { font: 500 0.72rem/1 var(--ff-mono); opacity: 0.8; }
+
+.vx-pjgrid { display: grid; gap: 1.25rem; grid-auto-flow: dense; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
+@media (min-width: 992px) { .vx-pjgrid__wide { grid-column: span 2; } }
+.vx-pjgrid > * { display: flex; }
+
+.vx-pj { display: flex; flex: 1; flex-direction: column; gap: 0.6rem; padding: 1.25rem; }
+.vx-pj:hover { border-color: var(--accent-50); }
+.vx-pj__cover { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 0.4rem; object-fit: cover; border-radius: var(--radius); background: var(--accent-10); }
+.vx-pj__top { display: flex; align-items: center; gap: 0.8rem; }
+.vx-pj__icon { display: inline-grid; flex: none; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 12px; background: var(--accent-10); color: var(--accent-text); }
+.vx-pj__meta { display: flex; flex: 1; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.6rem; min-width: 0; }
+.vx-pj__year { color: var(--muted); font: 500 0.75rem/1.4 var(--ff-mono); }
+.vx-pj__flag { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--accent-text); font: 600 0.72rem/1 var(--ff-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.vx-pj__title { margin-top: 0.4rem; font-size: 1.25rem; line-height: 1.2; }
+.vx-pj.is-featured .vx-pj__title { font-size: clamp(1.4rem, 2.4vw, 1.75rem); }
+.vx-pj__role { margin: 0; color: var(--accent-text); font-size: var(--fs-sm); font-weight: 600; }
+.vx-pj__summary { margin: 0; color: var(--muted); font-size: var(--fs-sm); line-height: 1.6; }
+.vx-pj__status { display: inline-flex; align-items: center; gap: 0.45rem; margin: 0; color: var(--muted); font: 500 0.75rem/1 var(--ff-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.vx-pj__status span { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--muted); }
+.vx-pj__status.is-active span { background: var(--accent); }
+.vx-pj__status.is-archived span { background: transparent; border: 1.5px solid var(--muted); }
+.vx-pj__tags { margin-top: 0.2rem; }
+.vx-pj__links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; padding-top: 0.6rem; }
+.vx-pj__link { display: inline-flex; align-items: center; gap: 0.3rem; margin: 0; }
+
 
 /* ---- achievements: accordion ---- */
 .vx-accordion {
