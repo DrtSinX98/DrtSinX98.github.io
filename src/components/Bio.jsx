@@ -39,7 +39,7 @@ function Bio({ content = {}, serverHour = 12 }) {
 
   return (
     <div className="vx-bio">
-      <Eyebrow page="home">{content.tagline}</Eyebrow>
+      <Eyebrow>{content.tagline}</Eyebrow>
 
       <h1 className="vx-bio__title" aria-label={`${timeOfDay}, ${last}`}>
         <span className="vx-bio__greet pink" aria-hidden="true">

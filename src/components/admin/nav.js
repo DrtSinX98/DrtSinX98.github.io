@@ -29,7 +29,7 @@ const PAGES = [
     href: '/admin/home',
     label: 'Home',
     icon: 'house',
-    tile: page('home'),
+    tile: { code: 'Hm' },
     children: [
       { label: 'Bio & greeting', href: '/admin/home?section=bio' },
       { label: 'Profile image', href: '/admin/home?section=profile' },
