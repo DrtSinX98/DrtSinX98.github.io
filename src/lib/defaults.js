@@ -810,10 +810,10 @@ export const defaultProjects = {
     { text: 'Filter by area, or open any project to see it in more detail.' },
   ],
   categories: [
-    { key: 'android', title: 'Android / Kernel' },
-    { key: 'web', title: 'Web / Apps' },
-    { key: 'design', title: 'Design / UI' },
-    { key: 'comp', title: 'Computational' },
+    { key: 'android', title: 'Android / Kernel', icon: 'mobileScreen' },
+    { key: 'web', title: 'Web / Apps', icon: 'globe' },
+    { key: 'design', title: 'Design / UI', icon: 'palette' },
+    { key: 'comp', title: 'Computational', icon: 'atom' },
   ],
   // status: '' | 'active' | 'maintained' | 'completed' | 'archived'
   items: [

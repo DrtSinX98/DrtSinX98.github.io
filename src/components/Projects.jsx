@@ -3,8 +3,12 @@
 import React, { useState } from 'react';
 import ProjectCard from './ProjectCard';
 import RichText from './RichText';
+import Icon from './Icon';
 import PageHero from './ui/PageHero';
 import { RevealGroup, RevealItem } from './motion/Reveal';
+
+// Icons for areas saved before areas had one.
+const AREA_ICONS = { android: 'mobileScreen', web: 'globe', design: 'palette', comp: 'atom' };
 
 /**
  * The projects page: a hero, a filter by area, and a grid of project cards.
@@ -43,20 +47,24 @@ function Projects({ content = {}, illustration = null, animateIllustration = tru
       <div className="vx-wrap vx-stack">
         {filters.length > 1 && (
           <div className="vx-filter" role="group" aria-label="Filter projects by area">
-            {[{ key: 'all', title: 'All', count: items.length }, ...filters.map((c) => ({ ...c, count: counts[c.key] }))].map(
-              (filter) => (
-                <button
-                  key={filter.key}
-                  type="button"
-                  className="vx-filter__btn"
-                  aria-pressed={active === filter.key}
-                  onClick={() => setActive(filter.key)}
-                >
-                  {filter.title}
-                  <span className="vx-filter__count">{filter.count}</span>
-                </button>
-              ),
-            )}
+            {[
+              { key: 'all', title: 'All', icon: 'layers', count: items.length },
+              ...filters.map((c) => ({ ...c, icon: c.icon || AREA_ICONS[c.key] || 'code', count: counts[c.key] })),
+            ].map((filter) => (
+              <button
+                key={filter.key}
+                type="button"
+                className="vx-filter__btn"
+                // On phones only the chosen area shows its name, so the others need one.
+                aria-label={`${filter.title}, ${filter.count}`}
+                aria-pressed={active === filter.key}
+                onClick={() => setActive(filter.key)}
+              >
+                <Icon name={filter.icon} />
+                <span className="vx-filter__label">{filter.title}</span>
+                <span className="vx-filter__count">{filter.count}</span>
+              </button>
+            ))}
           </div>
         )}
 

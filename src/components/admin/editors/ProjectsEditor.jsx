@@ -49,24 +49,31 @@ export default function ProjectsEditor() {
             {active === 'areas' && (
               <Card
                 title="Areas"
-                hint="Each area becomes a filter button above the projects. An area with no projects is hidden."
+                hint="Each area becomes a filter button above the projects (icon only on phones, where the chosen one shows its name). An area with no projects is hidden."
               >
                 <ListEditor
                   items={areas}
                   onChange={(v) => set('categories', v)}
                   addLabel="Add area"
                   title={(item) => item.title || 'Untitled area'}
-                  newItem={() => ({ key: `area${Date.now()}`, title: 'New area' })}
+                  newItem={() => ({ key: `area${Date.now()}`, title: 'New area', icon: 'code' })}
                   renderItem={(area, update) => (
-                    <div className="admin-grid cols-2">
-                      <Text label="Name" value={area.title} onChange={(v) => update({ title: v })} />
-                      <Text
-                        label="Key"
-                        hint="Internal and unique; projects point to it. Change it only if you also change the projects."
-                        value={area.key}
-                        onChange={(v) => update({ key: v })}
+                    <>
+                      <div className="admin-grid cols-2">
+                        <Text label="Name" value={area.title} onChange={(v) => update({ title: v })} />
+                        <Text
+                          label="Key"
+                          hint="Internal and unique; projects point to it. Change it only if you also change the projects."
+                          value={area.key}
+                          onChange={(v) => update({ key: v })}
+                        />
+                      </div>
+                      <IconPicker
+                        label="Icon"
+                        value={area.icon}
+                        onChange={(v) => update({ icon: v })}
                       />
-                    </div>
+                    </>
                   )}
                 />
               </Card>

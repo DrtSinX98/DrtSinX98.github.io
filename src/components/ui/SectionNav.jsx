@@ -41,7 +41,12 @@ export default function SectionNav({ items = [] }) {
       <ul>
         {items.map((item) => (
           <li key={item.id}>
-            <a href={`#${item.id}`} aria-current={active === item.id ? 'location' : undefined}>
+            <a
+              href={`#${item.id}`}
+              // On phones only the current section shows its name, so every link needs one.
+              aria-label={item.label}
+              aria-current={active === item.id ? 'location' : undefined}
+            >
               {item.icon ? <Icon name={item.icon} /> : null}
               <span>{item.label}</span>
             </a>

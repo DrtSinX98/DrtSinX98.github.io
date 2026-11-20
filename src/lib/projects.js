@@ -18,7 +18,11 @@ export function projectsFromAbout(about) {
   if (!Array.isArray(tabs) || tabs.length === 0) return null;
 
   const stock = new Map(defaultProjects.items.map((item) => [item.title, item]));
-  const categories = tabs.map((tab) => ({ key: tab.key, title: tab.title }));
+  const categories = tabs.map((tab) => ({
+    key: tab.key,
+    title: tab.title,
+    icon: defaultProjects.categories.find((c) => c.key === tab.key)?.icon || 'code',
+  }));
   const items = tabs.flatMap((tab) =>
     (tab.projects || []).map((project) => {
       const base = stock.get(project.title);

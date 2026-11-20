@@ -593,8 +593,8 @@
 .vx-blob__orbit { inset: -10%; width: 120%; height: 120%; }
 
 .vx-bio { display: flex; flex-direction: column; align-items: inherit; gap: 1.5rem; }
-.vx-bio .vx-eyebrow { justify-content: center; text-align: start; }
-@media (min-width: 992px) { .vx-bio .vx-eyebrow { justify-content: flex-start; } }
+.vx-bio .vx-eyebrow { justify-content: center; text-align: center; }
+@media (min-width: 992px) { .vx-bio .vx-eyebrow { justify-content: flex-start; text-align: start; } }
 
 .vx-bio__title {
   display: flex;
@@ -715,14 +715,17 @@
 }
 .vx-secnav ul {
   display: flex;
+  /* Wraps rather than scrolling sideways: a scrolling bar hides items on a
+     phone with nothing to show they are there. */
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.25rem;
   width: fit-content;
   max-width: 100%;
   margin-inline: auto;
   padding: 0.3rem;
-  overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
+  border-radius: 1.5rem; /* a full capsule on one row, a soft block on two */
   background: color-mix(in srgb, var(--surface-2) 90%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -742,7 +745,20 @@
 }
 .vx-secnav a:hover { color: var(--ink); }
 .vx-secnav a[aria-current="location"] { background: var(--ink); color: var(--bg); }
-@media (max-width: 575.98px) { .vx-secnav a span { font-size: 0.8125rem; } }
+/* On phones the bar behaves like the bottom dock: every item is an icon, and the
+   current one grows to show its name. Items share the width equally, so the bar
+   always fits on one row whatever the labels say. */
+@media (max-width: 575.98px) {
+  .vx-secnav ul { width: 100%; flex-wrap: nowrap; gap: 2px; padding: 5px; }
+  .vx-secnav li { display: flex; flex: 1 1 0; min-width: 0; }
+  .vx-secnav li:has(a[aria-current="location"]) { flex-grow: 2.6; }
+  .vx-secnav a { width: 100%; min-height: 2.75rem; justify-content: center; padding-inline: 0.5rem; overflow: hidden; }
+  .vx-secnav a span { display: none; font-size: 0.8125rem; }
+  .vx-secnav a[aria-current="location"] span { display: inline; }
+}
+@media (max-width: 575.98px) and (prefers-reduced-motion: no-preference) {
+  .vx-secnav li { transition: flex-grow var(--dur-slow) var(--ease-spring); }
+}
 
 /* ==========================================================================
    About
@@ -795,25 +811,58 @@
 .vx-tile--xl b { font-size: 3.4rem; }
 .vx-pagehero__tile { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; }
 
-.vx-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+/* The area filter is the same capsule as About's in-page bar (.vx-secnav): one
+   rounded track, items as quiet text, the current one filled solid. Sticky too,
+   so the filter stays in reach while the cards scroll by. */
+.vx-filter {
+  position: sticky;
+  top: var(--sticky-top);
+  z-index: 800;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-self: center;
+  gap: 0.25rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 1.5rem; /* a full capsule on one row, a soft block if it ever wraps */
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 .vx-filter__btn {
-  display: inline-flex;
+  display: flex;
+  flex: none;
   align-items: center;
-  gap: 0.55rem;
-  min-height: 2.5rem;
-  padding: 0.35rem 0.9rem;
-  border: 1px solid var(--line-strong);
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--ink);
-  font: 600 0.9rem/1.2 var(--ff-sans);
+  color: var(--muted);
+  font: 600 0.875rem/1.2 var(--ff-sans);
+  white-space: nowrap;
   cursor: var(--cursor-point, pointer);
-  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
-    color var(--dur-fast) var(--ease);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
-.vx-filter__btn:hover { background: var(--accent-10); border-color: var(--accent); }
-.vx-filter__btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
-.vx-filter__count { font: 500 0.72rem/1 var(--ff-mono); opacity: 0.8; }
+.vx-filter__btn:hover { color: var(--ink); }
+.vx-filter__btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.vx-filter__count { font: 500 0.72rem/1 var(--ff-mono); opacity: 0.75; }
+/* Phones: the same dock behaviour as About's bar (and the bottom nav) — icons,
+   with the chosen area growing to show its name and count. */
+@media (max-width: 767.98px) {
+  .vx-filter { width: 100%; flex-wrap: nowrap; gap: 2px; padding: 5px; }
+  .vx-filter__btn { flex: 1 1 0; min-width: 0; justify-content: center; min-height: 2.75rem; padding-inline: 0.5rem; overflow: hidden; }
+  .vx-filter__btn[aria-pressed="true"] { flex-grow: 2.6; }
+  .vx-filter__label, .vx-filter__count { display: none; }
+  .vx-filter__btn[aria-pressed="true"] .vx-filter__label,
+  .vx-filter__btn[aria-pressed="true"] .vx-filter__count { display: inline; }
+}
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .vx-filter__btn { transition: flex-grow var(--dur-slow) var(--ease-spring), background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+}
 
 .vx-pjgrid { display: grid; gap: 1.25rem; grid-auto-flow: dense; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
 @media (min-width: 992px) { .vx-pjgrid__wide { grid-column: span 2; } }

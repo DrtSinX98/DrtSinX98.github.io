@@ -23,7 +23,7 @@ import {
   Workflow, Smartphone, Wrench, Cpu, Eraser, Palette, HeartHandshake, Dna, Atom,
   FlaskConical, Lightbulb, Rocket, Server, Database, ChartLine, Camera, Music,
   Heart, Link, Thermometer, Droplet, CloudRain, Clock, Mail, Phone, MapPin,
-  Globe, Award, Star, Save, Sun, Moon,
+  Globe, Award, Star, Save, Sun, Moon, Layers,
 } from 'lucide-react';
 import {
   faGithub,
@@ -66,6 +66,7 @@ export const LUCIDE_ICONS = {
   gamepad: Gamepad2,
   users: Users,
   projectDiagram: Workflow,
+  layers: Layers,
   // projects
   mobileScreen: Smartphone,
   wrench: Wrench,

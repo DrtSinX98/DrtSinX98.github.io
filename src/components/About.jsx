@@ -41,7 +41,9 @@ function About({ content = {}, cv = {}, illustration = null, animateIllustration
   const navItems = [
     { id: 'journey', label: content.journeyTitle, icon: 'briefcase' },
     { id: 'skills', label: content.skillsTitle, icon: 'code' },
-    { id: 'achievements', label: content.achievementsTitle, icon: 'trophy' },
+    // The pill is short: "Achievements & Certifications" becomes "Achievements". The
+    // section heading keeps the full title.
+    { id: 'achievements', label: content.achievementsTitle?.split('&')[0].trim(), icon: 'trophy' },
   ].filter((item) => item.label);
 
   return (
