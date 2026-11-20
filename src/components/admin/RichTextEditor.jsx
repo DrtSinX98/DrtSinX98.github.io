@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useId } from 'react';
 import { Field } from './ui';
 
 /**
@@ -58,13 +58,16 @@ export function textToFragments(text) {
 }
 
 export default function RichTextEditor({ label, hint, value, onChange, rows = 4, allowCv = false }) {
-  const defaultHint = `Wrap text in **double asterisks** for the pink accent. Press Enter for a line break.${
+  const id = useId();
+  const defaultHint = `Wrap text in **double asterisks** for the accent colour. Press Enter for a line break.${
     allowCv ? ' Use [cv]Label[/cv] for the CV chip.' : ''
   }`;
 
   return (
-    <Field label={label} hint={hint || defaultHint}>
+    <Field label={label} hint={hint || defaultHint} htmlFor={id}>
       <textarea
+        id={id}
+        aria-describedby={`${id}-hint`}
         className="admin-textarea"
         rows={rows}
         value={fragmentsToText(value)}

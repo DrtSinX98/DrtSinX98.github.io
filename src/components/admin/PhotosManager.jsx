@@ -1,20 +1,26 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
-import { ArrowLeft, ArrowRight, Plus, Trash2, Upload } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CloudUpload, Plus, Trash2, Upload } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import AdminShell from './AdminShell';
-import { Card, Button, Select } from './ui';
+import { Alert, Button, Card, LoadingBlock, Select, useAdminDialogs } from './ui';
 
 /**
  * Gallery photo manager.
  *
  * Photos seeded from the original repo keep their jsDelivr URLs (badged "cdn");
  * anything uploaded here goes to ImgBB and is badged "imgbb".
+ *
+ * Images can be dropped straight onto the grid as well as chosen with the
+ * upload button.
  */
+const hasFiles = (e) => [...(e.dataTransfer?.types || [])].includes('Files');
+
 export default function PhotosManager() {
   const router = useRouter();
   const fileInput = useRef(null);
+  const { confirm, prompt, dialog } = useAdminDialogs();
 
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('');
@@ -23,6 +29,7 @@ export default function PhotosManager() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
   const [progress, setProgress] = useState(null);
+  const [dragging, setDragging] = useState(false);
 
   useEffect(() => {
     fetch('/api/admin/countries', { cache: 'no-store' })
@@ -73,7 +80,14 @@ export default function PhotosManager() {
     const list = [...files];
     if (!list.length || !country) return;
 
-    const targetCity = city || window.prompt('City name for these photos');
+    const targetCity =
+      city ||
+      (await prompt({
+        title: 'Which city are these from?',
+        label: 'City name',
+        placeholder: 'e.g. Vasteras',
+        hint: 'Folder-style, without accents.',
+      }));
     if (!targetCity) return;
 
     setStatus(null);
@@ -116,7 +130,13 @@ export default function PhotosManager() {
   };
 
   const remove = async (photo) => {
-    if (!window.confirm('Remove this photo from the gallery?')) return;
+    const ok = await confirm({
+      title: 'Remove this photo?',
+      message: 'It disappears from the gallery straight away. The image file itself is not deleted from its host.',
+      confirmLabel: 'Remove',
+      danger: true,
+    });
+    if (!ok) return;
     try {
       const res = await fetch(`/api/admin/photos/${photo.id}`, { method: 'DELETE' });
       const json = await res.json();
@@ -152,17 +172,45 @@ export default function PhotosManager() {
     }
   };
 
-  const addCity = () => {
-    const name = window.prompt('New city name (folder-style, e.g. "Vasteras")');
+  const addCity = async () => {
+    const name = await prompt({
+      title: 'New city',
+      label: 'City name',
+      placeholder: 'e.g. Vasteras',
+      hint: 'Folder-style, without accents. You will be asked to choose photos next.',
+      confirmLabel: 'Choose photos',
+    });
     if (!name) return;
     setCity(name);
-    setStatus({ type: 'info', message: `Ready to upload to ${name}. Choose files below.` });
+    setStatus({ type: 'info', message: `Ready to upload to ${name}. Choose files to continue.` });
     fileInput.current?.click();
+  };
+
+  const dropProps = {
+    onDragEnter: (e) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      setDragging(true);
+    },
+    onDragOver: (e) => {
+      if (hasFiles(e)) e.preventDefault();
+    },
+    // Leaving for a child element also fires dragleave; only clear when the
+    // pointer has actually left the drop area.
+    onDragLeave: (e) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) setDragging(false);
+    },
+    onDrop: (e) => {
+      e.preventDefault();
+      setDragging(false);
+      const files = [...e.dataTransfer.files].filter((f) => f.type.startsWith('image/'));
+      if (files.length) upload(files);
+    },
   };
 
   return (
     <AdminShell title="Photos" subtitle="Upload, reorder and delete gallery images">
-      {status && <div className={`admin-alert ${status.type}`}>{status.message}</div>}
+      {status && <Alert type={status.type}>{status.message}</Alert>}
 
       <Card title="Location">
         <div className="admin-grid cols-2">
@@ -183,12 +231,12 @@ export default function PhotosManager() {
             }
           />
         </div>
-        <div className="d-flex gap-2 flex-wrap">
+        <div className="admin-actions">
           <Button onClick={addCity}>
-            <Plus size={16} /> New city
+            <Plus size={16} aria-hidden="true" /> New city
           </Button>
           <Button variant="primary" onClick={() => fileInput.current?.click()} disabled={!country || Boolean(progress)}>
-            {progress ? <span className="admin-spinner" /> : <Upload size={16} />}
+            {progress ? <span className="admin-spinner" aria-hidden="true" /> : <Upload size={16} aria-hidden="true" />}
             {progress ? `Uploading ${progress.done + 1}/${progress.total}…` : 'Upload photos'}
           </Button>
         </div>
@@ -200,49 +248,62 @@ export default function PhotosManager() {
           hidden
           onChange={(e) => upload(e.target.files)}
         />
-        {progress && <div className="field-hint mt-2">{progress.name}</div>}
+        {progress && <div className="field-hint">{progress.name}</div>}
       </Card>
 
       <Card
         title={city ? `${cities.find((c) => c.city === city)?.label || city} — ${cityPhotos.length} photo(s)` : 'Photos'}
-        hint="Order here is the order on the site. Hover a photo for its controls."
+        hint="Order here is the order on the site. Hover or focus a photo for its controls, or drop images onto this panel to add them."
       >
-        {loading && <div className="admin-empty">Loading…</div>}
-        {!loading && cityPhotos.length === 0 && (
-          <div className="admin-empty">No photos in this city yet. Upload some above.</div>
-        )}
+        <div className={`admin-dropzone${dragging ? ' is-dragging' : ''}`} {...dropProps}>
+          {dragging && (
+            <div className="admin-dropzone__hint" aria-hidden="true">
+              <CloudUpload size={28} />
+              <span>Drop images to add them{city ? ` to ${city}` : ''}</span>
+            </div>
+          )}
 
-        {!loading && cityPhotos.length > 0 && (
-          <div className="admin-photo-grid">
-            {cityPhotos.map((photo, index) => (
-              <div className="admin-photo" key={photo.id}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo.thumb || photo.src} alt={photo.fileName || ''} loading="lazy" />
-                <span className="badge-src">{photo.source || 'cdn'}</span>
-                <div className="overlay">
-                  <span className="name">{photo.fileName || `#${index + 1}`}</span>
-                  <div className="row">
-                    <Button size="sm" onClick={() => move(index, -1)} disabled={index === 0} title="Move earlier">
-                      <ArrowLeft size={16} />
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => move(index, 1)}
-                      disabled={index === cityPhotos.length - 1}
-                      title="Move later"
-                    >
-                      <ArrowRight size={16} />
-                    </Button>
-                    <Button size="sm" variant="danger" onClick={() => remove(photo)} title="Delete">
-                      <Trash2 size={16} />
-                    </Button>
+          {loading && <LoadingBlock label="Loading photos" />}
+          {!loading && cityPhotos.length === 0 && (
+            <div className="admin-empty">No photos in this city yet. Upload some above, or drop them here.</div>
+          )}
+
+          {!loading && cityPhotos.length > 0 && (
+            <div className="admin-photo-grid">
+              {cityPhotos.map((photo, index) => (
+                <div className="admin-photo" key={photo.id}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photo.thumb || photo.src} alt={photo.fileName || `Photo ${index + 1}`} loading="lazy" />
+                  <span className="badge-src">{photo.source || 'cdn'}</span>
+                  <div className="admin-photo__bar">
+                    <span className="name">{photo.fileName || `#${index + 1}`}</span>
+                    <div className="row">
+                      <Button size="sm" className="icon-only" onClick={() => move(index, -1)} disabled={index === 0} aria-label="Move earlier" title="Move earlier">
+                        <ArrowLeft size={16} />
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="icon-only"
+                        onClick={() => move(index, 1)}
+                        disabled={index === cityPhotos.length - 1}
+                        aria-label="Move later"
+                        title="Move later"
+                      >
+                        <ArrowRight size={16} />
+                      </Button>
+                      <Button size="sm" variant="danger" className="icon-only" onClick={() => remove(photo)} aria-label="Delete photo" title="Delete">
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </Card>
+
+      {dialog}
     </AdminShell>
   );
 }

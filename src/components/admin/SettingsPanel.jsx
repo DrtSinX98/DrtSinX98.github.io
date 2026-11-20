@@ -1,8 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import { KeyRound } from 'lucide-react';
 import AdminShell from './AdminShell';
-import { Card, Text, Button } from './ui';
+import { Alert, Card, Text, Button } from './ui';
+
+const ENV = [
+  ['MONGODB_URI', 'Atlas connection string for all content, photos and messages.'],
+  ['MONGODB_DB', 'Database name. Defaults to vortex.'],
+  ['JWT_SECRET', 'Signs the admin session cookie. Changing it signs everyone out.'],
+  ['ADMIN_PASSWORD', 'Bootstrap password, used only until a hash exists in the database.'],
+  ['IMGBB_API_KEY', 'Destination for every image uploaded from this panel.'],
+];
 
 export default function SettingsPanel() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -11,7 +20,8 @@ export default function SettingsPanel() {
   const [status, setStatus] = useState(null);
   const [busy, setBusy] = useState(false);
 
-  const submit = async () => {
+  const submit = async (e) => {
+    e.preventDefault();
     if (newPassword !== confirmPassword) {
       setStatus({ type: 'error', message: 'The new passwords do not match.' });
       return;
@@ -39,60 +49,64 @@ export default function SettingsPanel() {
 
   return (
     <AdminShell title="Settings" subtitle="Admin account">
-      {status && <div className={`admin-alert ${status.type}`}>{status.message}</div>}
+      {status && <Alert type={status.type}>{status.message}</Alert>}
 
       <Card
         title="Change password"
         hint="Stored as a bcrypt hash in MongoDB. The ADMIN_PASSWORD environment variable is only used before a password has ever been set."
       >
-        <div style={{ maxWidth: 420 }}>
-          <Text label="Current password" type="password" value={currentPassword} onChange={setCurrentPassword} />
+        {/* A real form, so Enter submits and password managers recognise it. */}
+        <form className="admin-form-narrow" onSubmit={submit}>
+          <Text
+            label="Current password"
+            type="password"
+            autoComplete="current-password"
+            value={currentPassword}
+            onChange={setCurrentPassword}
+          />
           <Text
             label="New password"
             type="password"
+            autoComplete="new-password"
             hint="At least 8 characters."
             value={newPassword}
             onChange={setNewPassword}
           />
-          <Text label="Confirm new password" type="password" value={confirmPassword} onChange={setConfirmPassword} />
-          <Button variant="primary" onClick={submit} disabled={busy || !currentPassword || !newPassword}>
-            {busy ? <span className="admin-spinner" /> : null}
+          <Text
+            label="Confirm new password"
+            type="password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+          />
+          <Button type="submit" variant="primary" disabled={busy || !currentPassword || !newPassword}>
+            {busy ? <span className="admin-spinner" aria-hidden="true" /> : <KeyRound size={16} aria-hidden="true" />}
             {busy ? 'Saving…' : 'Update password'}
           </Button>
-        </div>
+        </form>
       </Card>
 
       <Card title="Environment" hint="Set these in Vercel → Project → Settings → Environment Variables.">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Variable</th>
-              <th>Purpose</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>MONGODB_URI</code></td>
-              <td>Atlas connection string for all content, photos and messages.</td>
-            </tr>
-            <tr>
-              <td><code>MONGODB_DB</code></td>
-              <td>Database name. Defaults to <code>vortex</code>.</td>
-            </tr>
-            <tr>
-              <td><code>JWT_SECRET</code></td>
-              <td>Signs the admin session cookie. Changing it signs everyone out.</td>
-            </tr>
-            <tr>
-              <td><code>ADMIN_PASSWORD</code></td>
-              <td>Bootstrap password, used only until a hash exists in the database.</td>
-            </tr>
-            <tr>
-              <td><code>IMGBB_API_KEY</code></td>
-              <td>Destination for every image uploaded from this panel.</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="admin-tablewrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">Variable</th>
+                <th scope="col">Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ENV.map(([name, purpose]) => (
+                <tr key={name}>
+                  <th scope="row">
+                    <code>{name}</code>
+                  </th>
+                  <td>{purpose}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </AdminShell>
   );

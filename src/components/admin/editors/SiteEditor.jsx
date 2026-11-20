@@ -2,6 +2,7 @@
 
 import React from 'react';
 import EditorPage from '../EditorPage';
+import ThemePreview from '../ThemePreview';
 import { Card, Text, TextArea, Switch, ListEditor, IconPicker, StringList } from '../ui';
 
 const TABS = [
@@ -83,7 +84,7 @@ export default function SiteEditor() {
             <>
               <Card
                 title="Theme colours"
-                hint="Applied as CSS variables. A few accent tints elsewhere are still the fixed pink, so large colour changes may look uneven."
+                hint="Every shade on the site is derived from these four colours, so changing one moves the whole interface. The preview updates as you type; it is not live until you save."
               >
                 <div className="admin-grid cols-4">
                   <Text label="Primary" type="color" value={data.theme?.primaryColor} onChange={(v) => set('theme.primaryColor', v)} />
@@ -91,6 +92,7 @@ export default function SiteEditor() {
                   <Text label="Light" type="color" value={data.theme?.tertiaryColor} onChange={(v) => set('theme.tertiaryColor', v)} />
                   <Text label="Dark background" type="color" value={data.theme?.primaryColorDark} onChange={(v) => set('theme.primaryColorDark', v)} />
                 </div>
+                <ThemePreview theme={data.theme} />
                 <div className="admin-grid cols-2">
                   <Text
                     label="Light theme starts at (hour)"
