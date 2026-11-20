@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faArrowUp, faArrowDown, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ICON_NAMES, getIcon } from '@/lib/icons';
+import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
+import { ICON_NAMES } from '@/lib/icons';
+import Icon from '@/components/Icon';
 
 /* ---------------------------------------------------------------- primitives */
 
@@ -122,7 +122,7 @@ export function IconPicker({ label = 'Icon', value, onChange }) {
             color: 'var(--admin-accent)',
           }}
         >
-          <FontAwesomeIcon icon={getIcon(value)} />
+          <Icon name={value} />
         </span>
         <select className="admin-select" value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
           <option value="">— none —</option>
@@ -171,13 +171,13 @@ export function ListEditor({ items = [], onChange, renderItem, title, newItem, a
             <span className="title">{title ? title(item, index) : `Item ${index + 1}`}</span>
             <div className="admin-item-actions">
               <Button size="sm" className="icon-only" onClick={() => move(index, -1)} disabled={index === 0} title="Move up">
-                <FontAwesomeIcon icon={faArrowUp} />
+                <ArrowUp size={16} />
               </Button>
               <Button size="sm" className="icon-only" onClick={() => move(index, 1)} disabled={index === items.length - 1} title="Move down">
-                <FontAwesomeIcon icon={faArrowDown} />
+                <ArrowDown size={16} />
               </Button>
               <Button size="sm" variant="danger" onClick={() => remove(index)} title="Delete">
-                <FontAwesomeIcon icon={faTrash} />
+                <Trash2 size={16} />
               </Button>
             </div>
           </div>
@@ -186,7 +186,7 @@ export function ListEditor({ items = [], onChange, renderItem, title, newItem, a
       ))}
 
       <Button onClick={() => onChange([...items, typeof newItem === 'function' ? newItem() : { ...newItem }])}>
-        <FontAwesomeIcon icon={faPlus} /> {addLabel}
+        <Plus size={16} /> {addLabel}
       </Button>
     </div>
   );
@@ -230,7 +230,7 @@ export function StringList({ label, hint, items = [], onChange, placeholder = 'A
           }}
         />
         <Button onClick={add}>
-          <FontAwesomeIcon icon={faPlus} />
+          <Plus size={16} />
         </Button>
       </div>
     </Field>

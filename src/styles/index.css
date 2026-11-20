@@ -1,9 +1,73 @@
-/* Root styles */
+/* Root styles
+   ---------------------------------------------------------------------------
+   `--primary-color` / `--secondary-color` / `--tertiary-color` /
+   `--primary-color-dark` are re-declared at runtime by the root layout from
+   Admin -> Settings. Everything below derives from them with color-mix(), so
+   changing the accent in the admin panel now moves the whole UI with it
+   instead of leaving ~50 hardcoded rgba(201, 21, 116, x) literals behind.
+
+   Cascade layers are deliberately NOT used here: Bootstrap is imported
+   unlayered in the root layout, and unlayered styles beat layered ones, so
+   layering this file would hand the cascade back to Bootstrap. */
+
 :root {
   --primary-color: #301934;
   --secondary-color: #c91574;
   --tertiary-color: #eeeafc;
   --primary-color-dark: #130A15;
+
+  /* ---- accent tints (derived, so the admin theme propagates) ---- */
+  --accent: var(--secondary-color);
+  --accent-03: color-mix(in srgb, var(--accent) 3%, transparent);
+  --accent-05: color-mix(in srgb, var(--accent) 5%, transparent);
+  --accent-10: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-15: color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-20: color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent-30: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-50: color-mix(in srgb, var(--accent) 50%, transparent);
+  --accent-70: color-mix(in srgb, var(--accent) 70%, transparent);
+  /* Flat palette: solid fills only. Hover shifts to a darker shade of the same
+     hue rather than sliding along a gradient, which keeps white label text
+     above 4.5:1 in both states. */
+  --accent-dark: color-mix(in srgb, var(--accent) 80%, black);
+
+  /* ---- type scale (fluid: no more 50px headings on a 375px phone) ---- */
+  --fs-h1: clamp(2rem, 1.35rem + 2.75vw, 3.125rem);
+  --fs-h2: clamp(1.5rem, 1.26rem + 1vw, 2rem);
+  --fs-h3: clamp(1.25rem, 1.13rem + 0.5vw, 1.5rem);
+  --fs-h4: clamp(1.1rem, 1.04rem + 0.26vw, 1.25rem);
+  --fs-lead: clamp(1.125rem, 1rem + 0.53vw, 1.5rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.9rem;
+  --lh-tight: 1.2;
+  --lh-body: 1.5;
+
+  /* ---- radii ---- */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* ---- motion ---- */
+  --dur-fast: 150ms;
+  --dur: 250ms;
+  --dur-slow: 400ms;
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* One hover idiom per element family, instead of five ad-hoc ones:
+     tiles rise, rows nudge sideways, pills lift slightly. */
+  --hover-tile: translateY(-4px);
+  --hover-row: translateX(4px);
+  --hover-pill: translateY(-2px);
+
+  /* ---- surfaces ---- */
+  --surface-subtle: var(--accent-03);
+  --surface-border: color-mix(in srgb, var(--bs-body-color, #301934) 12%, transparent);
+  --elev-1: 0 4px 15px rgb(0 0 0 / 0.06);
+  --elev-2: 0 8px 32px rgb(0 0 0 / 0.12);
+  --elev-3: 0 12px 36px rgb(0 0 0 / 0.2);
+  --glow-accent: 0 4px 10px var(--accent-30);
+  --glow-accent-strong: 0 6px 15px var(--accent-50);
 }
 
 /* Global styles */
@@ -12,35 +76,47 @@
 }
 
 html {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* A thin themed scrollbar rather than none at all: hiding it removed the
+     only cue that a page scrolls, and the global `::-webkit-scrollbar {
+     display: none }` it used to rely on also silently killed the custom
+     scrollbar .cert-list tried to style. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-50) transparent;
 }
 
-::-webkit-scrollbar {
-  display: none;
+@supports not (scrollbar-color: auto) {
+  html {
+    scrollbar-width: auto;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-50);
+    border-radius: var(--radius-pill);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 
 [data-bs-theme="light"] {
   --bs-body-color: var(--primary-color);
   --bs-body-bg: var(--tertiary-color);
+  --surface-border: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  --text-muted-strong: color-mix(in srgb, var(--primary-color) 65%, transparent);
 
   .dropdown-menu {
     --bs-dropdown-bg: var(--primary-color);
     --bs-dropdown-link-active-bg: var(--primary-color);
   }
 
-  .btn-secondary {
-    --bs-btn-bg: var(--secondary-color);
-    --bs-btn-hover-bg: var(--primary-color);
-  }
-
-  .btn-primary {
-    --bs-btn-bg: var(--primary-color);
-    --bs-btn-hover-bg: var(--secondary-color);
-  }
-
   .card {
-    --bs-card-bg: rgba(238 234 252 / 0.8);
+    --bs-card-bg: rgb(238 234 252 / 0.8);
     --bs-card-color: var(--primary-color);
   }
 
@@ -52,26 +128,16 @@ html {
 [data-bs-theme="dark"] {
   --bs-body-color: var(--tertiary-color);
   --bs-body-bg: var(--primary-color-dark);
+  --surface-border: color-mix(in srgb, var(--tertiary-color) 14%, transparent);
+  --text-muted-strong: color-mix(in srgb, var(--tertiary-color) 70%, transparent);
 
   .dropdown-menu {
     --bs-dropdown-bg: var(--primary-color);
     --bs-dropdown-link-active-bg: var(--primary-color);
   }
 
-  .btn-secondary {
-    --bs-btn-bg: var(--secondary-color);
-    --bs-btn-hover-color: var(--primary-color);
-    --bs-btn-hover-bg: var(--tertiary-color);
-  }
-
-  .btn-primary {
-    --bs-btn-bg: var(--tertiary-color);
-    --bs-btn-color: var(--primary-color);
-    --bs-btn-hover-bg: var(--secondary-color);
-  }
-
   .card {
-    --bs-card-bg: rgba(48 25 52 / 0.8);
+    --bs-card-bg: rgb(48 25 52 / 0.8);
     --bs-card-color: var(--tertiary-color);
   }
 
@@ -81,79 +147,315 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", sans-serif;
+  /* Helvetica Neue alone fell straight through to the generic sans on Windows
+     and Android, so the site rendered in a different face on most visits. */
+  font-family: "Helvetica Neue", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 a, a:hover {
   text-decoration: none;
 }
 
-.btn-primary, .btn-secondary {
-  background: linear-gradient(135deg, var(--secondary-color), #ff4d94) !important;
-  border: none !important;
-  color: white !important;
-  padding: 8px 20px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 20px;
-  margin: 0px 10px;
-  text-decoration: none;
-  box-shadow: 0 4px 10px rgba(201, 21, 116, 0.3) !important;
-  transition: all 0.2s ease !important;
-  cursor: pointer;
+/* Every link and control had its outline left to the UA default while
+   `text-decoration: none` removed the other keyboard cue. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
-.btn-primary:hover, .btn-secondary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(201, 21, 116, 0.5) !important;
-  color: white !important;
+/* ---------------------------------------------------------------- headings */
+
+h1, .h1 {
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+h2, .h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+}
+
+h3, .h3 { font-size: var(--fs-h3); }
+h4, .h4 { font-size: var(--fs-h4); }
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+}
+
+.pink {
+  color: var(--accent);
+}
+
+/* Bootstrap's .text-muted resolves to a fixed grey that sits at ~2.5:1 on the
+   dark surface. Tie it to the body colour instead. */
+.text-muted {
+  color: var(--text-muted-strong) !important;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+/* `.btn-primary, .btn-secondary` used to share one gradient with !important,
+   which overrode every --bs-btn-* token set per theme above and made the two
+   variants pixel-identical. Contact asks for a secondary email button next to
+   a primary submit; now they actually read differently. */
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 8px 20px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  margin: 0 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--glow-accent);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: var(--accent-dark);
+  color: #fff;
+  box-shadow: var(--glow-accent-strong);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--glow-accent);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover:not(:disabled),
+  .btn-secondary:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+}
+
+/* ------------------------------------------------------------------ cards */
+
+/* `.card` and `.glass-card` were two different glass treatments (16px vs 12px
+   radius, 12px vs 8px blur, lift vs no lift) used interchangeably on the same
+   page. They share one set of values now and differ only in elevation. */
+.card,
+.glass-card {
+  background-color: var(--bs-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
 }
 
 .card {
-  background-color: var(--bs-card-bg) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.3s ease !important;
+  box-shadow: var(--elev-2);
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(201, 21, 116, 0.3) !important;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Glass Cards */
 .glass-card {
-  background-color: var(--bs-card-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: box-shadow 0.3s ease;
+  box-shadow: var(--elev-1);
 }
+
+.card:hover,
 .glass-card:hover {
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border-color: var(--accent-30);
+  box-shadow: var(--elev-3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover,
+  .glass-card:hover {
+    transform: var(--hover-tile);
+  }
+}
+
+/* ------------------------------------------------- chips, badges and pills */
+
+/* One chip component with three variants. `.cv-badge` and `.custom-badge` were
+   the same badge under two names; `.social-badge` and `.social-pill` likewise. */
+.skill-chip {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  box-shadow: var(--glow-accent);
+  transition: transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+  cursor: default;
+}
+
+.skill-chip:hover {
+  background: var(--accent-dark);
+  box-shadow: var(--glow-accent-strong);
+}
+
+.skill-chip.outline {
+  background: transparent;
+  color: var(--bs-body-color);
+  border: 1px solid var(--accent);
+  box-shadow: none;
+}
+
+.skill-chip.outline:hover {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--glow-accent);
+}
+
+.skill-chip.soft {
+  background: var(--accent-10);
+  color: var(--bs-body-color);
+  box-shadow: none;
+}
+
+.skill-chip.soft:hover {
+  background: var(--accent-20);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skill-chip:hover {
+    transform: scale(1.05);
+  }
+}
+
+.custom-badge,
+.cv-badge {
+  background-color: var(--accent-15) !important;
+  color: var(--bs-body-color) !important;
+  border: 1px solid var(--accent-30);
+  font-weight: 500;
+  padding: 6px 10px;
+}
+
+.social-pill,
+.social-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: var(--accent-10);
+  border: 1px solid var(--accent-30);
+  border-radius: var(--radius-pill);
+  color: var(--bs-body-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              background-color var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+}
+
+.social-pill:hover,
+.social-badge:hover {
+  background-color: var(--accent);
+  color: #fff;
+  box-shadow: var(--glow-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .social-pill:hover,
+  .social-badge:hover {
+    transform: var(--hover-pill);
+  }
+}
+
+/* Row-shaped links: project cards, accordion entries. */
+.glass-link,
+.project-card {
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm);
+  color: var(--bs-body-color);
+  text-decoration: none;
+  transition: transform var(--dur) var(--ease),
+              background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+
+.glass-link:hover,
+.project-card:hover {
+  background-color: var(--accent-10);
+  border-color: var(--accent-30);
+  color: var(--bs-body-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glass-link:hover,
+  .project-card:hover {
+    transform: var(--hover-row);
+  }
 }
 
 .gallery-image-wrapper {
   cursor: zoom-in;
 }
 
-.gallery-image-wrapper:hover img {
-  transform: scale(1.05);
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-image-wrapper:hover img {
+    transform: scale(1.05);
+  }
 }
 
-/* Main Styles */
+/* ------------------------------------------------------------------ forms */
+
+.contact-input {
+  background-color: var(--bs-body-bg) !important;
+  color: var(--bs-body-color) !important;
+  border: 1px solid var(--surface-border) !important;
+}
+
+.contact-input:focus {
+  box-shadow: 0 0 0 0.25rem var(--accent-20) !important;
+  border-color: var(--accent) !important;
+}
+
+.contact-input::placeholder {
+  /* #888 failed contrast on the light surface. */
+  color: color-mix(in srgb, var(--bs-body-color) 55%, transparent) !important;
+}
+
+/* -------------------------------------------------------------- main layout */
 
 .container {
   position: relative;
   max-width: 1140px;
   padding: 20px;
+}
+
+/* The site layout already wraps every page in a .container; the page
+   components used to open a second one inside it, doubling the gutter to 40px
+   on phones. Pages now render plain <div>s, but guard the nesting anyway. */
+.container .container {
+  padding: 0;
+  max-width: none;
 }
 
 @media (max-width: 991px) {
@@ -168,28 +470,32 @@ a, a:hover {
   }
 }
 
-/* Spinner */
+/* ---------------------------------------------------------------- spinner */
 
+/* react-bootstrap renders .spinner-border, which already carries its own
+   border and animation; the old custom `.spinner` fought it and hardcoded
+   `rgba(0, 0, 0, 0.1)` for the track, which is all but invisible on the dark
+   background. Colour it from the accent and let Bootstrap animate it. */
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 60vh;
 }
 
-.spinner {
-  position: absolute;
-  top: 50%;
-  border: 8px solid rgba(0, 0, 0, 0.1);
-  border-left-color: var(--secondary-color);
-  border-radius: 50%;
+.spinner-container .spinner-border {
   width: 60px;
   height: 60px;
-  animation: spin 1s linear infinite;
+  border-width: 8px;
+  color: var(--accent);
+  border-right-color: var(--accent-20);
+  border-bottom-color: var(--accent-20);
+  border-left-color: var(--accent-20);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+@media (prefers-reduced-motion: reduce) {
+  /* Slowed rather than stopped, so it still reads as "busy". */
+  .spinner-container .spinner-border {
+    animation-duration: 3s;
   }
 }

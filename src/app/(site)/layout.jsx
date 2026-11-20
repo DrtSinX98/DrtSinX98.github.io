@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import { getContent } from '@/lib/content';
 import ThemeProvider from '@/components/ThemeProvider';
+import MotionProvider from '@/components/motion/MotionProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Preloader from '@/components/Preloader';
@@ -12,7 +13,7 @@ export default async function SiteLayout({ children }) {
 
   return (
     <ThemeProvider dayStartHour={theme.dayStartHour ?? 6} nightStartHour={theme.nightStartHour ?? 18}>
-      <div>
+      <MotionProvider>
         <Header brand={site.brand} nav={site.nav || []} />
         <Preloader enabled={site.preloader?.enabled ?? true} images={site.preloader?.images || []}>
           <Container>
@@ -21,7 +22,7 @@ export default async function SiteLayout({ children }) {
           </Container>
         </Preloader>
         <Footer owner={site.footer?.owner} writtenIn={site.footer?.writtenIn} />
-      </div>
+      </MotionProvider>
     </ThemeProvider>
   );
 }

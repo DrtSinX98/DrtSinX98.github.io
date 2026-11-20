@@ -48,29 +48,6 @@ function Bio({ content = {}, serverHour = 12 }) {
       <p className="lead">
         <RichText value={content.intro} />
       </p>
-      <style>
-        {`
-          h1 {
-            font-size: 50px;
-            font-weight: bold;
-          }
-
-          .lead {
-            font-size: 24px;
-            line-height: 1.5;
-          }
-
-          .pink {
-            color: var(--secondary-color);
-          }
-
-          @media (max-width: 767px) {
-            .greet {
-              text-align: center;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }

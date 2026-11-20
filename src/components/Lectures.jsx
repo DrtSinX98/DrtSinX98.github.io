@@ -4,6 +4,7 @@ import React from "react";
 import { Col, Container, Row, Card, ListGroup, Tab } from "react-bootstrap";
 import RichText from "./RichText";
 import Illustration from "./Illustration";
+import { Reveal } from "./motion/Reveal";
 
 function Lectures({ content = {}, illustration = null, animateIllustration = true }) {
     const modules = content.modules || [];
@@ -12,7 +13,7 @@ function Lectures({ content = {}, illustration = null, animateIllustration = tru
         <Container>
             <Row>
                 <Col lg={4} className="image-p">
-                    <div id="lc-img">
+                    <div className="page-illustration">
                     <Illustration
                       illustration={illustration}
                       src={content.image}
@@ -35,7 +36,8 @@ function Lectures({ content = {}, illustration = null, animateIllustration = tru
                 return (
                     <Row key={mi}>
                         <Col lg={12} className="mb-4">
-                            <Card>
+                            <Reveal>
+                            <Card className="lecture-card">
                                 <Card.Header>{mod.header}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>{mod.title}</Card.Title>
@@ -71,86 +73,12 @@ function Lectures({ content = {}, illustration = null, animateIllustration = tru
                                     </Row>
                                 </Tab.Container>
                             </Card>
+                            </Reveal>
                         </Col>
                     </Row>
                 );
             })}
 
-            <style>
-                {`
-                #lc-img {
-                    width: 350px;
-                    height: 350px;
-                }
-
-                h1 {
-                    font-size: 50px;
-                    font-weight: bold;
-                }
-
-                .lead {
-                    font-size: 24px;
-                    line-height: 1.5;
-                }
-
-                .pink {
-                    color: var(--secondary-color);
-                }
-
-
-
-                .card-title {
-                    color: var(--secondary-color);
-                    font-size: 24px;
-                    font-weight: bold;
-                }
-
-                .card-header {
-                    color: var(--secondary-color);
-                    font-size: 22px;
-                    font-weight: bold;
-                }
-
-                .card-text {
-                    font-size: 18px;
-                    line-height: 1.5;
-                }
-
-                .list-group {
-                    overflow: auto;
-                }
-
-
-                .list-group-item {
-                    background-color: rgba(256, 256, 256, 0.0);
-                    transition: background-color 0.3s ease, color 0.3s ease;
-                }
-
-                .list-group-item:hover {
-                    background-color: rgba(201 21 116 / 0.8);
-                    color: white;
-                }
-
-                .list-group-item.active {
-                    z-index: 0;
-                    color: var(--tertiary-color);
-                    background-color: var(--secondary-color);
-                    border-color: rgb(222, 226, 230);
-                }
-
-                .list-group-item.active:hover {
-                    background-color: var(--secondary-color);
-                }
-
-
-                @media (max-width: 767px) {
-                    .image-p {
-                    display: flex;
-                    justify-content: center;
-                    }
-                }
-                `}
-            </style>
         </Container>
     );
 }

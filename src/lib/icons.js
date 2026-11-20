@@ -3,59 +3,28 @@
  *
  * Content documents store an icon *name* (e.g. "mobileScreen") rather than an
  * imported object, so the admin panel can offer a picker and the database stays
- * JSON-serialisable.
+ * JSON-serialisable. The names below are unchanged from the Font Awesome era —
+ * existing documents keep resolving.
+ *
+ * Two families, on purpose:
+ *
+ * - **Semantic icons** come from Lucide: a consistent 24px grid drawn in
+ *   `currentColor` strokes, which reads as flat line-work next to the rest of
+ *   the UI. The old Font Awesome solid set was heavy filled glyphs.
+ * - **Brand marks** stay on Font Awesome. Lucide deliberately ships no company
+ *   logos, and an approximated logo is worse than an accurate one.
+ *
+ * Render through `<Icon name="…" />` rather than reading this map directly;
+ * it knows how to draw both families.
  */
 import {
-  faHouse,
-  faUser,
-  faVideo,
-  faImages,
-  faMessage,
-  faFilePdf,
-  faGraduationCap,
-  faBriefcase,
-  faMicroscope,
-  faCode,
-  faDesktop,
-  faTrophy,
-  faBook,
-  faChalkboardTeacher,
-  faGamepad,
-  faUsers,
-  faProjectDiagram,
-  faMobileScreen,
-  faWrench,
-  faMicrochip,
-  faBroom,
-  faPalette,
-  faHandHoldingHeart,
-  faDna,
-  faAtom,
-  faTemperatureHalf,
-  faDroplet,
-  faCloudRain,
-  faClock,
-  faEnvelope,
-  faPhone,
-  faMapMarkerAlt,
-  faGlobe,
-  faFileAlt,
-  faAward,
-  faStar,
-  faSave,
-  faSun,
-  faMoon,
-  faFlask,
-  faLightbulb,
-  faRocket,
-  faServer,
-  faDatabase,
-  faChartLine,
-  faCamera,
-  faMusic,
-  faHeart,
-  faLink,
-} from '@fortawesome/free-solid-svg-icons';
+  House, User, Video, Images, MessageSquare, FileText, GraduationCap, Briefcase,
+  Microscope, Code, Monitor, Trophy, Book, Presentation, Gamepad2, Users,
+  Workflow, Smartphone, Wrench, Cpu, Eraser, Palette, HeartHandshake, Dna, Atom,
+  FlaskConical, Lightbulb, Rocket, Server, Database, ChartLine, Camera, Music,
+  Heart, Link, Thermometer, Droplet, CloudRain, Clock, Mail, Phone, MapPin,
+  Globe, Award, Star, Save, Sun, Moon,
+} from 'lucide-react';
 import {
   faGithub,
   faLinkedin,
@@ -76,61 +45,65 @@ import {
   faOrcid,
 } from '@fortawesome/free-brands-svg-icons';
 
-export const ICONS = {
+/** Semantic icons — Lucide components. */
+export const LUCIDE_ICONS = {
   // navigation
-  house: faHouse,
-  user: faUser,
-  video: faVideo,
-  images: faImages,
-  message: faMessage,
+  house: House,
+  user: User,
+  video: Video,
+  images: Images,
+  message: MessageSquare,
   // sections
-  filePdf: faFilePdf,
-  graduationCap: faGraduationCap,
-  briefcase: faBriefcase,
-  microscope: faMicroscope,
-  code: faCode,
-  desktop: faDesktop,
-  trophy: faTrophy,
-  book: faBook,
-  chalkboardTeacher: faChalkboardTeacher,
-  gamepad: faGamepad,
-  users: faUsers,
-  projectDiagram: faProjectDiagram,
+  filePdf: FileText,
+  graduationCap: GraduationCap,
+  briefcase: Briefcase,
+  microscope: Microscope,
+  code: Code,
+  desktop: Monitor,
+  trophy: Trophy,
+  book: Book,
+  chalkboardTeacher: Presentation,
+  gamepad: Gamepad2,
+  users: Users,
+  projectDiagram: Workflow,
   // projects
-  mobileScreen: faMobileScreen,
-  wrench: faWrench,
-  microchip: faMicrochip,
-  broom: faBroom,
-  palette: faPalette,
-  handHoldingHeart: faHandHoldingHeart,
-  dna: faDna,
-  atom: faAtom,
-  flask: faFlask,
-  lightbulb: faLightbulb,
-  rocket: faRocket,
-  server: faServer,
-  database: faDatabase,
-  chartLine: faChartLine,
-  camera: faCamera,
-  music: faMusic,
-  heart: faHeart,
-  link: faLink,
+  mobileScreen: Smartphone,
+  wrench: Wrench,
+  microchip: Cpu,
+  broom: Eraser,
+  palette: Palette,
+  handHoldingHeart: HeartHandshake,
+  dna: Dna,
+  atom: Atom,
+  flask: FlaskConical,
+  lightbulb: Lightbulb,
+  rocket: Rocket,
+  server: Server,
+  database: Database,
+  chartLine: ChartLine,
+  camera: Camera,
+  music: Music,
+  heart: Heart,
+  link: Link,
   // weather / misc
-  temperature: faTemperatureHalf,
-  droplet: faDroplet,
-  cloudRain: faCloudRain,
-  clock: faClock,
-  envelope: faEnvelope,
-  phone: faPhone,
-  mapMarker: faMapMarkerAlt,
-  globe: faGlobe,
-  fileAlt: faFileAlt,
-  award: faAward,
-  star: faStar,
-  save: faSave,
-  sun: faSun,
-  moon: faMoon,
-  // brands
+  temperature: Thermometer,
+  droplet: Droplet,
+  cloudRain: CloudRain,
+  clock: Clock,
+  envelope: Mail,
+  phone: Phone,
+  mapMarker: MapPin,
+  globe: Globe,
+  fileAlt: FileText,
+  award: Award,
+  star: Star,
+  save: Save,
+  sun: Sun,
+  moon: Moon,
+};
+
+/** Brand marks — Font Awesome definitions. */
+export const BRAND_ICONS = {
   github: faGithub,
   linkedin: faLinkedin,
   scholar: faGoogleScholar,
@@ -150,9 +123,19 @@ export const ICONS = {
   orcid: faOrcid,
 };
 
-/** Falls back to a neutral link glyph so a bad name never crashes a page. */
-export function getIcon(name) {
-  return ICONS[name] || faLink;
+export const ICON_NAMES = [...Object.keys(LUCIDE_ICONS), ...Object.keys(BRAND_ICONS)];
+
+export function isBrandIcon(name) {
+  return Object.prototype.hasOwnProperty.call(BRAND_ICONS, name);
 }
 
-export const ICON_NAMES = Object.keys(ICONS);
+/**
+ * Resolves a stored name to something renderable, falling back to a neutral
+ * link glyph so a bad name never crashes a page.
+ *
+ * Returns a Lucide component for semantic names and a Font Awesome definition
+ * for brands — `<Icon>` tells them apart via `isBrandIcon`.
+ */
+export function getIcon(name) {
+  return LUCIDE_ICONS[name] || BRAND_ICONS[name] || Link;
+}

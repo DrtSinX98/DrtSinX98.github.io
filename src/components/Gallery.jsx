@@ -296,7 +296,7 @@ function InteractiveGlobe({ setSelectedCountry, countries, content }) {
           <div style={{ width: '100%', aspectRatio: '800 / 600' }} />
         )}
       </div>
-      <Tooltip id="map-tooltip" style={{ background: "linear-gradient(135deg, var(--secondary-color), #ff4d94)", color: "white", padding: "8px 20px", borderRadius: "20px", fontWeight: "600", boxShadow: "0 4px 10px rgba(201, 21, 116, 0.3)", border: "none", zIndex: 1000 }} />
+      <Tooltip id="map-tooltip" className="map-tooltip" />
 
       <VisitedCountriesModal
         show={showList}
@@ -306,16 +306,9 @@ function InteractiveGlobe({ setSelectedCountry, countries, content }) {
         title={content.visitedListTitle}
       />
 
-      <style>{`
-        .country-list-item:hover {
-          background-color: rgba(201, 21, 116, 0.1) !important;
-          color: var(--secondary-color) !important;
-        }
-      `}</style>
     </div>
   );
 }
-
 
 const LazyImage = ({ style, ...restProps }) => {
   const [loaded, setLoaded] = useState(false);
@@ -392,7 +385,7 @@ return (
     <Container>
       <Row>
         <Col lg={4} className="image-p">
-          <div id="gl-img">
+          <div className="page-illustration">
             <Illustration
               illustration={illustration}
               src={content.image}
@@ -479,68 +472,6 @@ return (
 
         <InteractiveGlobe setSelectedCountry={setSelectedCountry} countries={countries} content={content} />
       )}
-      <style>{`
-         #gl-img {
-            width: 350px;
-            height: 350px;
-          }
-
-          h1 {
-            font-size: 50px;
-            font-weight: bold;
-          }
-
-          .lead {
-            font-size: 24px;
-            line-height: 1.5;
-          }
-
-          .pink {
-            color: var(--secondary-color);
-          }
-
-          .place {
-            color: var(--tertiary-color);
-            text-align: center;
-            background-color: var(--secondary-color);
-            border-radius: var(--bs-border-radius);
-            padding: 5px;
-            margin-top: 10px;
-          }
-          .react-photo-album--photo img {
-            border-radius: var(--bs-border-radius);
-          }
-          .map-container {
-            background-color: var(--bs-card-bg);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-          }
-          .visited-counter {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(201, 21, 116, 0.2), rgba(201, 21, 116, 0.05));
-            border: 2px solid var(--secondary-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--bs-body-color);
-            box-shadow: 0 4px 10px rgba(201, 21, 116, 0.2);
-            flex-shrink: 0;
-          }
-          .visited-count {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--secondary-color);
-            line-height: 1;
-          }
-          .total-count {
-            font-size: 0.9rem;
-            opacity: 0.8;
-          }
-        `}</style>
     </Container>
   );
 }

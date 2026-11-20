@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Icon from './Icon';
 import { Row, Col, Spinner } from 'react-bootstrap';
 import { ComposableMap, Geographies, Geography, ZoomableGroup, Annotation } from 'react-simple-maps';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTemperatureHalf, faDroplet, faCloudRain, faClock } from '@fortawesome/free-solid-svg-icons';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -205,19 +204,19 @@ export default function CountryInfo({ country, data, visitedCities, labels = {} 
             {weather ? (
               <Row className="g-3">
                 <Col xs={6} md={3} className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faTemperatureHalf} className="me-2" style={{ color: 'var(--secondary-color)' }} />
+                  <Icon name="temperature" className="me-2" style={{ color: 'var(--secondary-color)' }} />
                   <span style={{ color: 'var(--secondary-color)' }}>{weather.temperature_2m}°C</span>
                 </Col>
                 <Col xs={6} md={3} className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faDroplet} className="me-2" style={{ color: 'var(--secondary-color)' }} />
+                  <Icon name="droplet" className="me-2" style={{ color: 'var(--secondary-color)' }} />
                   <span style={{ color: 'var(--secondary-color)' }}>{weather.relative_humidity_2m}%</span>
                 </Col>
                 <Col xs={6} md={3} className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faCloudRain} className="me-2" style={{ color: 'var(--secondary-color)' }} />
+                  <Icon name="cloudRain" className="me-2" style={{ color: 'var(--secondary-color)' }} />
                   <span style={{ color: 'var(--secondary-color)' }}>{weather.precipitation} mm</span>
                 </Col>
                 <Col xs={6} md={3} className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faClock} className="me-2" style={{ color: 'var(--secondary-color)' }} />
+                  <Icon name="clock" className="me-2" style={{ color: 'var(--secondary-color)' }} />
                   <span style={{ color: 'var(--secondary-color)' }}>{currentTime || weather.time.split('T')[1]}</span>
                 </Col>
               </Row>

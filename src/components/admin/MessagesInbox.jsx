@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEnvelope, faEnvelopeOpen, faReply } from '@fortawesome/free-solid-svg-icons';
+import { Mail, MailOpen, Reply, Trash2 } from 'lucide-react';
 import AdminShell from './AdminShell';
 import { Card, Button } from './ui';
 
@@ -67,10 +66,11 @@ export default function MessagesInbox() {
           messages.map((message) => (
             <div className="admin-item" key={message.id}>
               <div className="admin-item-head">
-                <FontAwesomeIcon
-                  icon={message.read ? faEnvelopeOpen : faEnvelope}
-                  style={{ color: message.read ? 'var(--admin-muted)' : 'var(--admin-accent)' }}
-                />
+                {message.read ? (
+                  <MailOpen size={16} style={{ color: 'var(--admin-muted)' }} />
+                ) : (
+                  <Mail size={16} style={{ color: 'var(--admin-accent)' }} />
+                )}
                 <span className="title" style={{ fontWeight: message.read ? 500 : 700 }}>
                   {message.name} — {message.email}
                 </span>
@@ -79,13 +79,13 @@ export default function MessagesInbox() {
                 </span>
                 <div className="admin-item-actions">
                   <a className="admin-btn sm" href={`mailto:${message.email}`} title="Reply by email">
-                    <FontAwesomeIcon icon={faReply} />
+                    <Reply size={16} />
                   </a>
                   <Button size="sm" onClick={() => toggleRead(message)}>
                     {message.read ? 'Unread' : 'Read'}
                   </Button>
                   <Button size="sm" variant="danger" onClick={() => remove(message)}>
-                    <FontAwesomeIcon icon={faTrash} />
+                    <Trash2 size={16} />
                   </Button>
                 </div>
               </div>

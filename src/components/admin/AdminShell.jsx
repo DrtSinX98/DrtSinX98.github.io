@@ -1,37 +1,22 @@
 'use client';
 
 import React, { useState } from 'react';
+import { ExternalLink, FileText, Gauge, Globe, House, Images, LogOut, Mail, Menu, MessageSquare, Settings, User, Video } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faGauge,
-  faGlobe,
-  faHouse,
-  faUser,
-  faFilePdf,
-  faImages,
-  faVideo,
-  faMessage,
-  faEnvelope,
-  faGear,
-  faArrowUpRightFromSquare,
-  faRightFromBracket,
-  faBars,
-} from '@fortawesome/free-solid-svg-icons';
 import { ADMIN_NAV } from './nav';
 
 const NAV_ICONS = {
-  gauge: faGauge,
-  globe: faGlobe,
-  house: faHouse,
-  user: faUser,
-  filePdf: faFilePdf,
-  images: faImages,
-  video: faVideo,
-  message: faMessage,
-  envelope: faEnvelope,
-  gear: faGear,
+  gauge: Gauge,
+  globe: Globe,
+  house: House,
+  user: User,
+  filePdf: FileText,
+  images: Images,
+  video: Video,
+  message: MessageSquare,
+  envelope: Mail,
+  gear: Settings,
 };
 
 export default function AdminShell({ title, subtitle, children }) {
@@ -76,7 +61,7 @@ export default function AdminShell({ title, subtitle, children }) {
                 onClick={() => setOpen(false)}
               >
                 <span className="icon">
-                  <FontAwesomeIcon icon={NAV_ICONS[item.icon] || faGauge} />
+                  {(() => { const G = NAV_ICONS[item.icon] || Gauge; return <G size={16} />; })()}
                 </span>
                 {item.label}
               </Link>
@@ -105,7 +90,7 @@ export default function AdminShell({ title, subtitle, children }) {
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
-            <FontAwesomeIcon icon={faBars} />
+            <Menu size={16} />
           </button>
 
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -115,11 +100,11 @@ export default function AdminShell({ title, subtitle, children }) {
 
           <div className="d-flex gap-2">
             <a className="admin-btn" href="/" target="_blank" rel="noreferrer">
-              <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+              <ExternalLink size={16} />
               <span className="d-none d-sm-inline">View site</span>
             </a>
             <button type="button" className="admin-btn" onClick={logout}>
-              <FontAwesomeIcon icon={faRightFromBracket} />
+              <LogOut size={16} />
               <span className="d-none d-sm-inline">Log out</span>
             </button>
           </div>

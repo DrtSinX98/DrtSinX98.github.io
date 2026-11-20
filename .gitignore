@@ -33,3 +33,7 @@ replit.nix
 
 # scratch downloads
 /temp
+
+# agent skill artifacts (2.3MB, regenerable via `npx modern-web-guidance@latest install`;
+# the version is pinned in skills-lock.json)
+/.agents

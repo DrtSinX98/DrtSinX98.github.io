@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/index.css';
+import '@/styles/components.css';
 import '@/styles/illustrations.css';
 import '@/styles/storyset.css';
 
@@ -50,6 +51,13 @@ export default async function RootLayout({ children }) {
             __html: themeInitScript(t.dayStartHour ?? 6, t.nightStartHour ?? 18),
           }}
         />
+        {/* Motion server-renders each reveal's `initial` state as inline
+            opacity: 0. With JS disabled the animation never runs, so without
+            this the content would be in the DOM for crawlers but invisible to
+            the reader. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body>
         {children}

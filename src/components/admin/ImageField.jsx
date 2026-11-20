@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { Upload } from 'lucide-react';
 import { Button, Field } from './ui';
 
 /**
@@ -51,7 +50,7 @@ export default function ImageField({ label, hint, value, onChange }) {
           />
           <div className="d-flex gap-2 align-items-center flex-wrap">
             <Button onClick={() => inputRef.current?.click()} disabled={busy}>
-              {busy ? <span className="admin-spinner" /> : <FontAwesomeIcon icon={faUpload} />}
+              {busy ? <span className="admin-spinner" /> : <Upload size={16} />}
               {busy ? 'Uploading…' : 'Upload to ImgBB'}
             </Button>
             {value && (

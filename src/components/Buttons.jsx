@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getIcon } from "@/lib/icons";
+import Icon from "./Icon";
 
 function Buttons({ buttons = [] }) {
   return (
@@ -13,25 +12,9 @@ function Buttons({ buttons = [] }) {
           href={button.href}
           target="_blank"
         >
-          <FontAwesomeIcon icon={getIcon(button.icon)} />{' '}{button.label}
+          <Icon name={button.icon} />{' '}{button.label}
         </Button>
       ))}
-      <style>
-        {`
-          .button-container {
-            display: flex;
-            justify-content: left;
-            margin-top: 20px;
-          }
-
-          @media (max-width: 767px) {
-            .button-container {
-              display: flex;
-              justify-content: center;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }

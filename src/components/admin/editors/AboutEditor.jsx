@@ -101,7 +101,7 @@ export default function AboutEditor() {
                         value={item.variant}
                         onChange={(v) => update({ variant: v })}
                         options={[
-                          { value: 'solid', label: 'Solid (gradient)' },
+                          { value: 'solid', label: 'Solid' },
                           { value: 'outline', label: 'Outline' },
                           { value: 'soft', label: 'Soft tint' },
                         ]}

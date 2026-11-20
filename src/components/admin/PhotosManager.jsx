@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import { ArrowLeft, ArrowRight, Plus, Trash2, Upload } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faTrash, faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import AdminShell from './AdminShell';
 import { Card, Button, Select } from './ui';
 
@@ -186,10 +185,10 @@ export default function PhotosManager() {
         </div>
         <div className="d-flex gap-2 flex-wrap">
           <Button onClick={addCity}>
-            <FontAwesomeIcon icon={faPlus} /> New city
+            <Plus size={16} /> New city
           </Button>
           <Button variant="primary" onClick={() => fileInput.current?.click()} disabled={!country || Boolean(progress)}>
-            {progress ? <span className="admin-spinner" /> : <FontAwesomeIcon icon={faUpload} />}
+            {progress ? <span className="admin-spinner" /> : <Upload size={16} />}
             {progress ? `Uploading ${progress.done + 1}/${progress.total}…` : 'Upload photos'}
           </Button>
         </div>
@@ -224,7 +223,7 @@ export default function PhotosManager() {
                   <span className="name">{photo.fileName || `#${index + 1}`}</span>
                   <div className="row">
                     <Button size="sm" onClick={() => move(index, -1)} disabled={index === 0} title="Move earlier">
-                      <FontAwesomeIcon icon={faArrowLeft} />
+                      <ArrowLeft size={16} />
                     </Button>
                     <Button
                       size="sm"
@@ -232,10 +231,10 @@ export default function PhotosManager() {
                       disabled={index === cityPhotos.length - 1}
                       title="Move later"
                     >
-                      <FontAwesomeIcon icon={faArrowRight} />
+                      <ArrowRight size={16} />
                     </Button>
                     <Button size="sm" variant="danger" onClick={() => remove(photo)} title="Delete">
-                      <FontAwesomeIcon icon={faTrash} />
+                      <Trash2 size={16} />
                     </Button>
                   </div>
                 </div>

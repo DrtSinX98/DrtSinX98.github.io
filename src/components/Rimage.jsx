@@ -1,9 +1,25 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import { Col } from "react-bootstrap";
 import { useSpring, animated } from "react-spring";
 import blobshape from "blobshape";
+
+/** The blob morph is a persistent, unstoppable animation, so it has to honour
+ *  the OS reduced-motion setting; CSS can't reach a react-spring loop. */
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange = (e) => setReduced(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  return reduced;
+}
 
 function Rimage({ light, dark }) {
   // The blob paths are randomised on every frame, so they can't be server
@@ -43,21 +59,6 @@ function Rimage({ light, dark }) {
           </>
         )}
       </div>
-      <style>
-        {`
-          .blob{
-          width:400px;
-          height:320px;
-          position: relative;
-          }
-
-          .image-p{
-          align-items: center;
-          justify-content: center;
-          }
-
-        `}
-      </style>
     </Col>
   );
 }
@@ -76,8 +77,16 @@ function Blob(props) {
   // the loop explicitly gives the same continuous morph and survives the
   // double-mount that Strict Mode does in development.
   const [{ path }, api] = useSpring(() => ({ path: getRandomPath() }));
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
+    // Hold the current shape rather than morphing forever. The blob still
+    // renders — it just stops moving.
+    if (reducedMotion) {
+      api.stop();
+      return undefined;
+    }
+
     let cancelled = false;
     const duration = props.image ? 3000 : 2000;
 
@@ -93,16 +102,20 @@ function Blob(props) {
       cancelled = true;
       api.stop();
     };
-  }, [api, props.image]);
+  }, [api, props.image, reducedMotion]);
+
+  // Was a hardcoded id="a" — a document-wide identifier from a component that
+  // renders four times on the page.
+  const clipId = `blob-clip-${useId().replace(/:/g, '')}`;
 
   return (
-    <svg viewBox="0 0 500 500" width="100%" style={props.style}>
+    <svg viewBox="0 0 500 500" width="100%" style={props.style} aria-hidden={!props.image}>
       {!props.image && <animated.path fill={props.color} d={path} />}
 
       {props.image && (
         <>
           <defs>
-            <clipPath id="a">
+            <clipPath id={clipId}>
               <animated.path fill={props.color} d={path} />
             </clipPath>
           </defs>
@@ -110,16 +123,16 @@ function Blob(props) {
             className="pfp-light"
             width="80%"
             height="80%"
-            clipPath="url(#a)"
-            xlinkHref={props.light}
+            clipPath={`url(#${clipId})`}
+            href={props.light}
             preserveAspectRatio="xMidYMid slice"
           />
           <image
             className="pfp-dark"
             width="80%"
             height="80%"
-            clipPath="url(#a)"
-            xlinkHref={props.dark}
+            clipPath={`url(#${clipId})`}
+            href={props.dark}
             preserveAspectRatio="xMidYMid slice"
           />
         </>

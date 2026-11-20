@@ -263,10 +263,10 @@
 .admin-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .admin-btn.primary {
-  background: linear-gradient(135deg, var(--admin-accent), #ff4d94);
+  background: var(--admin-accent);
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(201, 21, 116, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--admin-accent) 30%, transparent);
 }
 .admin-btn.primary:hover:not(:disabled) { filter: brightness(1.08); color: #fff; }
 

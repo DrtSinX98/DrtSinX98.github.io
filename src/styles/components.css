@@ -1,0 +1,825 @@
+/* Component styles
+   ---------------------------------------------------------------------------
+   Everything here used to live in a `<style>` block inside the component that
+   used it. React renders those as plain, unscoped <style> tags, so they were
+   global anyway — just duplicated and order-dependent. `.pink` was declared in
+   eight files, `h1 { font-size: 50px }` in four, the `.image-p` media query in
+   three, and `.place` in two with a stray !important in one of them.
+
+   Shared primitives (buttons, cards, chips, badges, pills, rows, form fields,
+   type scale) live in index.css. This file holds the rest. */
+
+/* ----------------------------------------------------------------- header */
+
+.header {
+  /* Was `background-color: none`, which is invalid and therefore dropped, so
+     the sticky header was fully transparent and page content scrolled through
+     the nav links. */
+  background-color: color-mix(in srgb, var(--bs-body-bg) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--surface-border);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar {
+  background-color: transparent;
+}
+
+.navbar-brand {
+  color: var(--bs-body-color);
+  font-weight: 500;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.nav-link {
+  color: var(--bs-body-color);
+  font-size: 18px;
+  font-weight: 450;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.navbar-nav .active {
+  background-color: var(--accent-70);
+  border-radius: var(--radius-pill);
+  padding: 8px;
+}
+
+.navbar-nav .nav-link.active {
+  color: #fff;
+}
+
+.navbar-nav .active:hover {
+  background-color: var(--accent);
+}
+
+.logo-path {
+  fill: var(--bs-body-color);
+}
+
+/* ------------------------------------------------------------- bottom nav */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 65px;
+  /* Sits above the home indicator on notched phones. */
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: content-box;
+  background-color: var(--bs-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--surface-border);
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgb(0 0 0 / 0.1);
+}
+
+.bottom-nav .nav-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 44x44 minimum touch target. */
+  min-width: 44px;
+  min-height: 44px;
+  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+.bottom-nav .inactive-icon {
+  color: var(--bs-body-color);
+  opacity: 0.7;
+}
+
+.bottom-nav .inactive-icon:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.bottom-nav .active-icon {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bottom-nav .active-icon {
+    transform: scale(1.1);
+  }
+}
+
+/* ----------------------------------------------------------------- footer */
+
+.footer {
+  background-color: transparent;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: var(--bs-body-color);
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid var(--surface-border);
+  padding-top: 20px;
+}
+
+.footer .fa-react,
+.footer .fa-bootstrap {
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------- theme switch/button */
+
+.theme-switch-input {
+  opacity: 0;
+  position: absolute;
+  display: flex;
+}
+
+.theme-switch-label {
+  background-color: var(--accent-20);
+  width: 50px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Lucide emits `.lucide`, not Font Awesome's `.fa-moon` / `.fa-sun`, so target
+   the glyphs structurally instead of by library class. */
+.theme-switch-label svg {
+  color: var(--bs-body-color);
+}
+
+.theme-switch-label .ball {
+  background-color: var(--accent);
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+}
+
+.theme-switch-input:checked + .theme-switch-label .ball {
+  transform: translateX(24px);
+}
+
+/* Keyboard focus lands on the visually hidden checkbox, so draw the ring on
+   the label the user can actually see. */
+.theme-switch-input:focus-visible + .theme-switch-label {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-switch-label .ball {
+    transition: transform var(--dur) var(--ease);
+  }
+}
+
+.theme-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--bs-body-color);
+  /* Was a 44px-less icon with a 0.8s :active rotate that only held while the
+     finger was down. */
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-button {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .theme-button:active {
+    transform: rotate(180deg);
+  }
+}
+
+/* ----------------------------------------------------------- home: blob */
+
+.blob {
+  /* Was a fixed 400x320 with no max-width, which overflowed a 375px viewport
+     by 65px once the container's 20px gutters are taken off. */
+  width: min(400px, 100%);
+  aspect-ratio: 400 / 320;
+  position: relative;
+  margin-inline: auto;
+}
+
+.image-p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 0;
+  justify-content: left;
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+  .button-container {
+    justify-content: center;
+  }
+}
+
+/* ---------------------------------------------------- home: terminal card */
+
+.terminal-card {
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, "Courier New", monospace;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.terminal-header {
+  background-color: var(--accent-05);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--surface-border);
+  position: relative;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+  z-index: 1;
+}
+
+.terminal-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-btn.close { background-color: #ff5f56; }
+.terminal-btn.minimize { background-color: #ffbd2e; }
+.terminal-btn.maximize { background-color: #27c93f; }
+
+.terminal-title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted-strong);
+  position: absolute;
+  width: 100%;
+  left: 0;
+  pointer-events: none;
+}
+
+.terminal-body {
+  padding: 20px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  min-height: 350px;
+  text-align: left;
+}
+
+.terminal-body .prompt {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.terminal-body .key {
+  color: var(--bs-card-color);
+  font-weight: bold;
+}
+
+.terminal-body .string {
+  color: var(--accent);
+}
+
+.Typewriter__cursor {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Typewriter__cursor {
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 767px) {
+  .terminal-body {
+    font-size: var(--fs-sm);
+    min-height: 400px;
+  }
+}
+
+/* ------------------------------------------------------- page illustration */
+
+/* Was three identical ID rules (#ab-img, #ct-img, #lc-img, #gl-img) at a fixed
+   350x350, which overflows a 375px viewport once gutters are removed. */
+.page-illustration {
+  width: min(350px, 100%);
+  aspect-ratio: 1;
+}
+
+/* ------------------------------------------------------------ about page */
+
+.hero-title {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: var(--fs-h2);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid var(--accent-30);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -27px;
+  top: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Rendered as a real <button>, so reset the UA button styling back to chip. */
+.cv-chip {
+  font-size: var(--fs-body);
+  padding: 6px 14px;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.project-card {
+  overflow: hidden;
+}
+
+.project-icon-wrapper {
+  flex: 0 0 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-10);
+  border-right: 1px solid var(--surface-border);
+  color: var(--accent);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.project-card:hover .project-icon-wrapper {
+  background: var(--accent);
+  color: #fff;
+}
+
+.glass-link {
+  display: block;
+  padding: 15px;
+}
+
+.glass-link.compact {
+  padding: 10px 15px;
+  margin-bottom: 5px;
+}
+
+.cert-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-50) transparent;
+}
+
+/* Accordion */
+.custom-accordion .accordion-item {
+  background-color: var(--bs-card-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--surface-border);
+  margin-bottom: 10px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.custom-accordion .accordion-button {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  background-color: transparent;
+  color: var(--bs-body-color);
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button:not(.collapsed) {
+  background-color: var(--accent-10);
+  color: var(--accent);
+}
+
+.custom-accordion .accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c91574'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+  margin-left: 0 !important;
+  margin-right: 15px !important;
+}
+
+.custom-accordion .accordion-button.collapsed::after {
+  transform: rotate(-90deg) !important;
+}
+
+.custom-accordion .accordion-button:not(.collapsed)::after {
+  transform: rotate(0deg) !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .custom-accordion .accordion-button::after {
+    transition: transform var(--dur) var(--ease);
+  }
+}
+
+/* Tabs */
+.custom-tabs {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.custom-tabs .nav-link {
+  color: var(--bs-body-color);
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+}
+
+.custom-tabs .nav-link:hover {
+  color: var(--accent);
+  border-color: transparent;
+}
+
+.custom-tabs .nav-link.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  background: transparent;
+}
+
+/* ---------------------------------------------------------- contact page */
+
+.place {
+  color: var(--tertiary-color);
+  text-align: center;
+  background-color: var(--accent);
+  border-radius: var(--bs-border-radius);
+  padding: 5px;
+  margin-top: 10px;
+}
+
+/* Empty until a submit resolves; collapses so it takes no space when silent. */
+.form-status:empty {
+  display: none;
+}
+
+.form-status.is-success {
+  color: var(--accent);
+}
+
+.form-status.is-error {
+  color: #d32f2f;
+}
+
+[data-bs-theme="dark"] .form-status.is-error {
+  color: #ff6b6b;
+}
+
+.contact-card {
+  background-color: var(--bs-card-bg);
+}
+
+.contact-card .icon-wrapper {
+  color: var(--bs-body-color);
+  transition: color var(--dur) var(--ease);
+}
+
+.contact-card:hover .icon-wrapper {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-card .icon-wrapper {
+    transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .contact-card:hover .icon-wrapper {
+    transform: scale(1.1);
+  }
+}
+
+.contact-card .card-title {
+  font-size: var(--fs-h4);
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* --------------------------------------------------------- lectures page */
+
+.lecture-card .card-title {
+  color: var(--accent);
+  font-size: var(--fs-h3);
+  font-weight: bold;
+}
+
+.lecture-card .card-header {
+  color: var(--accent);
+  font-size: var(--fs-h4);
+  font-weight: bold;
+}
+
+.lecture-card .list-group {
+  overflow: auto;
+}
+
+.lecture-card .list-group-item {
+  background-color: transparent;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.lecture-card .list-group-item:hover {
+  background-color: var(--accent-70);
+  color: #fff;
+}
+
+.lecture-card .list-group-item.active {
+  z-index: 0;
+  color: var(--tertiary-color);
+  background-color: var(--accent);
+  border-color: var(--surface-border);
+}
+
+.lecture-card .list-group-item.active:hover {
+  background-color: var(--accent);
+}
+
+/* ---------------------------------------------------------- gallery page */
+
+.country-list-item:hover {
+  background-color: var(--accent-10) !important;
+  color: var(--accent) !important;
+}
+
+.react-photo-album--photo img {
+  border-radius: var(--bs-border-radius);
+}
+
+.map-container {
+  background-color: var(--bs-card-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+}
+
+.visited-counter {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--accent-10);
+  border: 2px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--bs-body-color);
+  box-shadow: 0 4px 10px var(--accent-20);
+  flex-shrink: 0;
+}
+
+/* Was an inline style object carrying a gradient plus two hardcoded accent
+   literals, so it ignored the admin theme entirely. */
+.map-tooltip {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 8px 20px !important;
+  border-radius: var(--radius-pill) !important;
+  font-weight: 600;
+  box-shadow: var(--glow-accent);
+  border: none !important;
+  z-index: 1000;
+}
+
+.visited-count {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.total-count {
+  font-size: var(--fs-sm);
+  opacity: 0.8;
+}
+
+/* -------------------------------------------------------------- CV modal */
+
+.custom-modal .modal-content {
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--elev-2);
+  color: var(--bs-body-color);
+  border-radius: var(--radius);
+}
+
+.cv-save-icon {
+  color: var(--bs-body-color);
+  opacity: 0.6;
+  transition: color var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+.cv-save-icon:hover {
+  color: var(--accent);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cv-save-icon:hover {
+    transform: scale(1.15);
+  }
+}
+
+.cv-header {
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 1.5rem;
+}
+
+.cv-name {
+  letter-spacing: -0.5px;
+}
+
+.contact-info span,
+.contact-info a {
+  font-size: 0.95rem;
+  color: var(--bs-body-color);
+}
+
+.section-title-sm {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-30);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.cv-section {
+  background: var(--surface-subtle);
+  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--surface-border);
+}
+
+.cv-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.cv-list {
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.cv-list li {
+  margin-bottom: 0.4rem;
+}
+
+.cv-list-no-bullet {
+  list-style-type: none;
+  padding-left: 0;
+  font-size: 0.95rem;
+}
+
+.cv-list-no-bullet li:not(:last-child) {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--surface-border);
+}
+
+.cv-date {
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--accent-10);
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+/* Were #aaa / #ccc, which sit near 2:1 against the light background. */
+.cv-supervisors {
+  font-size: 0.85rem;
+  color: var(--text-muted-strong);
+  margin-top: 0.3rem;
+}
+
+.cv-authors {
+  font-size: var(--fs-sm);
+  color: var(--text-muted-strong);
+}
+
+.cv-link {
+  color: var(--bs-body-color);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.cv-link:hover {
+  color: var(--accent);
+}
+
+/* PDF export runs html2pdf over a cloned subtree, which has to render light
+   regardless of the active theme. */
+.force-light-pdf {
+  background-color: #fff !important;
+  color: #212529 !important;
+  padding: 10px !important;
+}
+
+.force-light-pdf .cv-section {
+  background: #f8f9fa !important;
+  border-color: #e9ecef !important;
+}
+
+.force-light-pdf :is(h1, h4, h5, h6, p, span, li, strong, a, em) {
+  color: #212529 !important;
+}
+
+.force-light-pdf :is(.cv-supervisors, .cv-authors) {
+  color: #6c757d !important;
+}
+
+.force-light-pdf .cv-header,
+.force-light-pdf .cv-list-no-bullet li {
+  border-bottom-color: #e9ecef !important;
+}
+
+.force-light-pdf :is(.pink, .cv-role) {
+  color: #c91574 !important;
+}
+
+.force-light-pdf .social-badge {
+  border-color: rgb(201 21 116 / 0.3) !important;
+  color: #212529 !important;
+  background-color: transparent !important;
+}
+
+.force-light-pdf .cv-badge,
+.force-light-pdf .cv-date {
+  background-color: rgb(201 21 116 / 0.1) !important;
+  color: #c91574 !important;
+  border: 1px solid rgb(201 21 116 / 0.3) !important;
+}
+
+.force-light-pdf .cv-download-btn {
+  display: none !important;
+}

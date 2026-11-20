@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { Col, Container, Row, Card, Button, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RichText from "./RichText";
 import Illustration from "./Illustration";
-import { getIcon } from "@/lib/icons";
+import { Reveal, RevealGroup, RevealItem } from "./motion/Reveal";
+import Icon from "./Icon";
 
 function Contact({ content = {}, illustration = null, animateIllustration = true }) {
   const form = content.form || {};
@@ -17,6 +17,9 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
   });
 
   const [message, setMessage] = useState('');
+  // Success and failure used to render identically in pink, so neither sighted
+  // nor screen-reader users could tell which had happened.
+  const [status, setStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -38,13 +41,18 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
         body: JSON.stringify(formData),
       });
       if (!res.ok) throw new Error('Request failed');
+      setStatus('success');
       setMessage(form.successMessage || 'Message sent successfully!');
       setFormData({ name: '', email: '', message: '' }); // Reset form
     } catch (error) {
+      setStatus('error');
       setMessage(form.errorMessage || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setMessage(''), 5000);
+      setTimeout(() => {
+        setMessage('');
+        setStatus('');
+      }, 5000);
     }
   };
 
@@ -52,7 +60,7 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
     <Container>
       <Row>
       <Col lg={4} className="image-p">
-      <div id="ct-img">
+      <div className="page-illustration">
       <Illustration
         illustration={illustration}
         src={content.image}
@@ -72,14 +80,16 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
       </Col>
       </Row>
       <hr className="my-4" />
+      <RevealGroup>
       <Row className="g-4">
       {(content.cards || []).map((card, index) => (
         <Col lg={4} md={6} key={index}>
+        <RevealItem className="h-100">
         <a href={card.href} target="_blank" rel="noreferrer" className="text-decoration-none">
         <Card className="h-100 text-center contact-card border-0">
           <Card.Body className="d-flex flex-column justify-content-center align-items-center p-4">
             <div className="icon-wrapper mb-3">
-              <FontAwesomeIcon icon={getIcon(card.icon)} size="2x" />
+              <Icon name={card.icon} size="2x" />
             </div>
             <Card.Title className ="pink fw-bold">{card.title}</Card.Title>
             <Card.Text className="text-muted small">
@@ -94,9 +104,11 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
           </Card.Body>
         </Card>
         </a>
+        </RevealItem>
         </Col>
       ))}
       </Row>
+      </RevealGroup>
 
       {form.enabled !== false && (
         <>
@@ -149,90 +161,21 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
                     </Button>
                   </div>
                 </Form>
-                {message && <p className="pink text-center mt-3 mb-0 fw-bold">{message}</p>}
+                {/* Rendered unconditionally so the live region already exists
+                    when the text arrives — a region added at the same moment
+                    as its content is unreliably announced. */}
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className={`form-status text-center mt-3 mb-0 fw-bold${status ? ` is-${status}` : ''}`}
+                >
+                  {message}
+                </p>
               </div>
             </Col>
           </Row>
         </>
       )}
-      <style>
-        {`
-          #ct-img {
-            width: 350px;
-            height: 350px;
-          }
-
-          h1 {
-            font-size: 50px;
-            font-weight: bold;
-          }
-
-          .lead {
-            font-size: 24px;
-            line-height: 1.5;
-          }
-
-          .pink {
-            color: var(--secondary-color);
-          }
-
-          .place {
-            color: var(--tertiary-color) !important;
-            text-align: center;
-            background-color: var(--secondary-color);
-            border-radius: var(--bs-border-radius);
-            padding: 5px;
-            margin-top: 10px;
-          }
-
-          .contact-card {
-            background-color: var(--bs-card-bg);
-            transition: all 0.3s ease;
-          }
-
-          .contact-card:hover .icon-wrapper {
-            transform: scale(1.1);
-            color: var(--secondary-color);
-          }
-
-          .icon-wrapper {
-            color: var(--bs-body-color);
-            transition: all 0.3s ease;
-          }
-
-          .card-title {
-            font-size: 22px;
-            font-weight: bold;
-          }
-
-          .card-text {
-            font-size: 16px;
-            line-height: 1.5;
-          }
-
-          @media (max-width: 767px) {
-            .image-p {
-              display: flex;
-              justify-content: center;
-            }
-          }
-
-          .contact-input {
-            background-color: var(--bs-body-bg) !important;
-            color: var(--bs-body-color) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          }
-
-          .contact-input:focus {
-            box-shadow: 0 0 0 0.25rem rgba(201, 21, 116, 0.25) !important;
-            border-color: var(--secondary-color) !important;
-          }
-
-          .contact-input::placeholder {
-            color: #888 !important;
-          }
-        `}
-      </style>
     </Container>
   );
 }
