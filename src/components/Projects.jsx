@@ -73,7 +73,7 @@ function Projects({ content = {}, illustration = null, animateIllustration = tru
               <RevealItem
                 key={`${project.title}-${index}`}
                 role="listitem"
-                className={project.featured ? 'vx-pjgrid__wide' : undefined}
+                className={project.featured ? (project.image ? 'vx-pjgrid__full' : 'vx-pjgrid__wide') : undefined}
               >
                 <ProjectCard project={project} categoryTitle={titleOf[project.category]} />
               </RevealItem>

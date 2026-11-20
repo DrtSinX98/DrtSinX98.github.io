@@ -1,5 +1,9 @@
 import { defaultProjects } from './defaults';
 
+// Projects added to the defaults after the section moved off the About page. A
+// site still showing converted About data would otherwise never get them.
+const ADDED_SINCE_MOVE = ['Sagabond', 'Open Mapple'];
+
 /**
  * Projects used to be tabs on the About page (`projectTabs`, each with a flat
  * list of title / desc / icon / link). They now have their own page and a richer
@@ -39,5 +43,14 @@ export function projectsFromAbout(about) {
     }),
   );
 
-  return { categories, items };
+  // The newer projects come first, with their area if the old tabs had no such one.
+  const fresh = defaultProjects.items.filter(
+    (item) => ADDED_SINCE_MOVE.includes(item.title) && !items.some((existing) => existing.title === item.title),
+  );
+  fresh.forEach((item) => {
+    const area = defaultProjects.categories.find((c) => c.key === item.category);
+    if (area && !categories.some((c) => c.key === area.key)) categories.push(area);
+  });
+
+  return { categories, items: [...fresh, ...items] };
 }

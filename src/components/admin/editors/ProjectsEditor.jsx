@@ -91,6 +91,8 @@ export default function ProjectsEditor() {
                     status: '',
                     icon: 'code',
                     image: '',
+                    logo: '',
+                    logoTint: false,
                     tags: [],
                     links: [],
                     featured: false,
@@ -140,6 +142,20 @@ export default function ProjectsEditor() {
                         )}
                       />
                       <IconPicker value={project.icon} onChange={(v) => update({ icon: v })} />
+                      <ImageField
+                        label="Logo"
+                        hint="Optional. Replaces the icon above in the card's corner tile."
+                        value={project.logo}
+                        onChange={(v) => update({ logo: v })}
+                      />
+                      {project.logo ? (
+                        <Switch
+                          label="Single-colour logo: tint it to match the theme"
+                          hint="Use for a black or white logo (SVG or PNG with transparency), so it stays visible in light and dark mode."
+                          checked={Boolean(project.logoTint)}
+                          onChange={(v) => update({ logoTint: v })}
+                        />
+                      ) : null}
                       <ImageField
                         label="Cover image"
                         hint="Optional. Shown across the top of the card."

@@ -811,11 +811,50 @@ export const defaultProjects = {
   ],
   categories: [
     { key: 'android', title: 'Android / Kernel' },
+    { key: 'web', title: 'Web / Apps' },
     { key: 'design', title: 'Design / UI' },
     { key: 'comp', title: 'Computational' },
   ],
   // status: '' | 'active' | 'maintained' | 'completed' | 'archived'
   items: [
+    {
+      title: 'Sagabond',
+      summary:
+        'A travel planner that shows a trip as the line it actually is: a timeline, stop by stop, with the travel between the stops on it, so you can see the gaps, the connection that is uncomfortably tight and the day with nothing in it yet. The interface is open source.',
+      category: 'web',
+      role: 'Creator',
+      year: '2026',
+      status: 'active',
+      icon: 'globe',
+      image: '',
+      logo: '/projects/sagabond-icon.svg',
+      logoTint: true,
+      tags: ['Travel', 'Next.js', 'React', 'Framer Motion'],
+      links: [
+        { label: 'Website', href: 'https://sagabond.site' },
+        { label: 'Open-source UI', href: 'https://github.com/DrtSinX98/sagabond-oss' },
+      ],
+      featured: true,
+    },
+    {
+      title: 'Open Mapple',
+      summary:
+        "iOS on MediaTek Android phones. Open Mapple runs iOS 16.7.16 on the realme 8i using Apple's open-source XNU kernel, with its own patches and drivers for the phone's real hardware, and builds like a custom ROM. It builds on the work of HakiOS.",
+      category: 'android',
+      role: 'Creator',
+      year: '2026',
+      status: 'active',
+      icon: 'microchip',
+      image: '',
+      logo: '/projects/open-mapple-logo.svg',
+      logoTint: true,
+      tags: ['XNU kernel', 'MediaTek', 'realme 8i', 'iOS 16.7.16'],
+      links: [
+        { label: 'Website', href: 'https://open-mapple.pages.dev' },
+        { label: 'GitHub', href: 'https://github.com/open-mapple' },
+      ],
+      featured: true,
+    },
     {
       title: 'Cyanide Project',
       summary:
@@ -840,6 +879,9 @@ export const defaultProjects = {
       status: '',
       icon: 'wrench',
       image: '',
+      // TWRP's own logo (from its source tree), tinted to the theme like the others.
+      logo: '/projects/twrp-logo.png',
+      logoTint: true,
       tags: ['Recovery', 'Realme 8i'],
       links: [{ label: 'TWRP page', href: 'https://twrp.me/realme/realme8i.html' }],
       featured: false,

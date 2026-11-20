@@ -786,13 +786,25 @@
 
 .vx-pjgrid { display: grid; gap: 1.25rem; grid-auto-flow: dense; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
 @media (min-width: 992px) { .vx-pjgrid__wide { grid-column: span 2; } }
+/* A featured project with a cover takes a whole row, so the cover keeps a natural shape. */
+.vx-pjgrid__full { grid-column: 1 / -1; }
 .vx-pjgrid > * { display: flex; }
 
 .vx-pj { display: flex; flex: 1; flex-direction: column; gap: 0.6rem; padding: 1.25rem; }
+.vx-pj__body { display: flex; flex: 1; flex-direction: column; gap: 0.6rem; min-width: 0; }
+/* A wide (featured) card with a cover lays out side by side, so it is no taller than
+   its neighbours instead of stretching them. */
+@media (min-width: 992px) {
+  .vx-pj.is-featured.has-cover { flex-direction: row; align-items: stretch; gap: 1.5rem; }
+  .vx-pj.is-featured.has-cover .vx-pj__cover { flex: none; width: 42%; height: auto; min-height: 16rem; aspect-ratio: auto; margin: 0; }
+}
 .vx-pj:hover { border-color: var(--accent-50); }
-.vx-pj__cover { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 0.4rem; object-fit: cover; border-radius: var(--radius); background: var(--accent-10); }
+.vx-pj__cover { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 0.4rem; object-fit: cover; object-position: center top; border-radius: var(--radius); background: var(--accent-10); }
 .vx-pj__top { display: flex; align-items: center; gap: 0.8rem; }
 .vx-pj__icon { display: inline-grid; flex: none; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 12px; background: var(--accent-10); color: var(--accent-text); }
+.vx-pj__icon.has-logo { background: transparent; border: 1px solid var(--line); }
+.vx-pj__logo { display: block; width: 1.9rem; height: 1.9rem; object-fit: contain; }
+.vx-pj__logo.is-tinted { background: var(--accent-text); -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
 .vx-pj__meta { display: flex; flex: 1; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.6rem; min-width: 0; }
 .vx-pj__year { color: var(--muted); font: 500 0.75rem/1.4 var(--ff-mono); }
 .vx-pj__flag { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--accent-text); font: 600 0.72rem/1 var(--ff-mono); letter-spacing: 0.06em; text-transform: uppercase; }
