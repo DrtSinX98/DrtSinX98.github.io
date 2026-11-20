@@ -83,8 +83,11 @@ function Blob(props) {
       className="vx-blob__layer"
       // blobshape draws in a 400-unit box and the portrait fills exactly that
       // box. Shifting the viewBox (rather than moving the shapes) centres the
-      // blob in its square frame without disturbing the clip alignment.
-      viewBox="-50 -50 500 500"
+      // blob in its square frame without disturbing the clip alignment. The
+      // margin (12 units each side, was 50) sets how much of the frame the blob
+      // fills: ~94%, up from 80%. Keep it above the few units a morphing blob
+      // can overshoot its box by, or its edge would be clipped.
+      viewBox="-12 -12 424 424"
       style={props.style}
       aria-hidden={props.image ? undefined : true}
       role={props.image ? 'img' : undefined}
@@ -99,18 +102,19 @@ function Blob(props) {
               <animated.path fill={props.color} d={path} />
             </clipPath>
           </defs>
+          {/* Explicit user units: a percentage would resolve against the viewBox. */}
           <image
             className="pfp-light"
-            width="80%"
-            height="80%"
+            width="400"
+            height="400"
             clipPath={`url(#${clipId})`}
             href={props.light}
             preserveAspectRatio="xMidYMid slice"
           />
           <image
             className="pfp-dark"
-            width="80%"
-            height="80%"
+            width="400"
+            height="400"
             clipPath={`url(#${clipId})`}
             href={props.dark}
             preserveAspectRatio="xMidYMid slice"
