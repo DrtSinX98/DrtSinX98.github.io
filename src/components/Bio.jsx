@@ -50,7 +50,7 @@ function Bio({ content = {}, serverHour = 12 }) {
             last
           ) : (
             <Typewriter
-              options={{ cursor: '_' }}
+              options={{ cursor: '|' }}
               onInit={(typewriter) => {
                 let tw = typewriter;
                 strings.forEach((str, i) => {
