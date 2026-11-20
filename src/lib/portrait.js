@@ -23,10 +23,14 @@ const themeText = (theme) =>
     .map((key) => String(theme?.[key] || '').toLowerCase())
     .join('|');
 
+// Bump when the recolouring itself changes (lib/recolor.js), so browsers and the
+// CDN drop images cached under the old algorithm. History: 2 = added the hair shine.
+const RECOLOR_VERSION = 2;
+
 /** The profile picture, recoloured. `variant` is "light" or "dark". */
 export function portraitUrl(variant, theme, src) {
   if (!src) return src;
-  return `/api/profile-image/${variant}?v=${hash(`${themeText(theme)}|${src}`)}`;
+  return `/api/profile-image/${variant}?v=${hash(`${RECOLOR_VERSION}|${themeText(theme)}|${src}`)}`;
 }
 
 /** A page illustration, recoloured. Used for the small thumbnails on Home. */
