@@ -75,57 +75,61 @@ function About({ content = {}, cv = {}, illustration = null, animateIllustration
       <div className="vx-wrap vx-sections">
         <SectionNav items={navItems} />
 
-        {/* Journey + skills share a row on wide screens. */}
-        <div className="vx-split">
-          <section id="journey" className="vx-section" aria-labelledby="journey-title">
-            <SectionHead id="journey-title" index="01" icon="briefcase" title={content.journeyTitle} />
-            <RevealGroup className="vx-timeline" role="list" stagger={0.1}>
-              {journey.map((item, index) => (
-                <RevealItem key={index} role="listitem" className="vx-timeline__item">
-                  <span className="vx-timeline__node" aria-hidden="true" />
-                  <article className="vx-card">
-                    <h3>{item.title}</h3>
-                    <p className="vx-muted">{item.subtitle}</p>
-                    {(item.tags || []).length > 0 && (
-                      <ul className="vx-tags">
-                        {item.tags.map((tag, i) => (
-                          <li className="vx-tag" key={i}>
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </article>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-          </section>
+        {/* Each section gets its own row. Side by side, the in-page bar could only ever
+            highlight the upper one (Journey), which read as a bug. */}
+        <section id="journey" className="vx-section" aria-labelledby="journey-title">
+          <SectionHead id="journey-title" index="01" icon="briefcase" title={content.journeyTitle} />
+          <RevealGroup className="vx-timeline" role="list" stagger={0.1}>
+            {journey.map((item, index) => (
+              <RevealItem key={index} role="listitem" className="vx-timeline__item">
+                <span className="vx-timeline__node" aria-hidden="true" />
+                <article className="vx-card">
+                  <h3>{item.title}</h3>
+                  <p className="vx-muted">{item.subtitle}</p>
+                  {(item.tags || []).length > 0 && (
+                    <ul className="vx-tags">
+                      {item.tags.map((tag, i) => (
+                        <li className="vx-tag" key={i}>
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
 
-          <section id="skills" className="vx-section" aria-labelledby="skills-title">
-            <SectionHead id="skills-title" index="02" icon="code" title={content.skillsTitle} />
-            <div className="vx-skills">
-              {skillGroups.map((group, index) => (
-                <Reveal key={index} className="vx-card vx-skillgroup">
-                  <h3 className="vx-skillgroup__title">
-                    <Icon name={group.icon} /> {group.title}
-                  </h3>
-                  <RevealGroup className="vx-chips" role="list" stagger={0.03}>
-                    {(group.items || []).map((item, i) => (
-                      <RevealItem
-                        key={i}
-                        role="listitem"
-                        distance={8}
-                        className={`vx-chip vx-chip--${group.variant || 'solid'}`}
-                      >
-                        {item}
-                      </RevealItem>
-                    ))}
-                  </RevealGroup>
-                </Reveal>
-              ))}
-            </div>
-          </section>
-        </div>
+        <section id="skills" className="vx-section" aria-labelledby="skills-title">
+          <SectionHead id="skills-title" index="02" icon="code" title={content.skillsTitle} />
+          {/* One panel, a row per group: the label (with its icon) on the left, the chips
+              on the right. Three separate cards read as three unrelated boxes. */}
+          <Reveal className="vx-card vx-skills">
+            {skillGroups.map((group, index) => (
+              <div key={index} className="vx-skillrow">
+                <h3 className="vx-skillrow__title">
+                  <span className="vx-skillrow__icon" aria-hidden="true">
+                    <Icon name={group.icon} />
+                  </span>
+                  {group.title}
+                </h3>
+                <RevealGroup className="vx-chips" role="list" stagger={0.03}>
+                  {(group.items || []).map((item, i) => (
+                    <RevealItem
+                      key={i}
+                      role="listitem"
+                      distance={8}
+                      className={`vx-chip vx-chip--${group.variant || 'solid'}`}
+                    >
+                      {item}
+                    </RevealItem>
+                  ))}
+                </RevealGroup>
+              </div>
+            ))}
+          </Reveal>
+        </section>
 
         <section id="achievements" className="vx-section" aria-labelledby="achievements-title">
           <SectionHead id="achievements-title" index="03" icon="trophy" title={content.achievementsTitle} />
