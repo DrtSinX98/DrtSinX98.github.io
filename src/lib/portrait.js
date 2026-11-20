@@ -1,9 +1,9 @@
 /**
- * URLs for artwork that is re-coloured to match the theme (see lib/recolor.js and
- * the two routes under app/api).
+ * The URL for the profile picture, re-coloured to match the theme (see
+ * lib/recolor.js and app/api/profile-image).
  *
- * Each URL carries `v`, a short hash of everything the result depends on — the
- * theme colours and, for the portraits, the source image. When any of those
+ * The URL carries `v`, a short hash of everything the result depends on — the
+ * theme colours and the source image. When any of those
  * change, the URL changes, so the response can be cached "forever" by browsers
  * and the CDN without ever going stale. Pure functions: usable on the server
  * (to build the URLs) and in plain node.
@@ -36,9 +36,4 @@ const forVisitor = (theme) => (theme?.visitor ? `&t=${encodeURIComponent(theme.p
 export function portraitUrl(variant, theme, src) {
   if (!src) return src;
   return `/api/profile-image/${variant}?v=${hash(`${RECOLOR_VERSION}|${themeText(theme)}|${src}`)}${forVisitor(theme)}`;
-}
-
-/** A page illustration, recoloured. Used for the small thumbnails on Home. */
-export function artUrl(name, theme) {
-  return `/api/theme-art/${name}?v=${hash(themeText(theme))}${forVisitor(theme)}`;
 }

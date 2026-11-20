@@ -12,12 +12,3 @@ export const PAGE_META = {
   lectures: { num: '04', code: 'Lc', label: 'Lectures' },
   contact: { num: '05', code: 'Ct', label: 'Contact' },
 };
-
-/** Pages that have an illustration (served recoloured by api/theme-art). The rest get an icon. */
-export const PAGE_ART = {
-  about: '/illustrations/about.svg',
-  projects: '/illustrations/projects.svg',
-  gallery: '/illustrations/gallery.svg',
-  lectures: '/illustrations/lectures.svg',
-  contact: '/illustrations/contact.svg',
-};
