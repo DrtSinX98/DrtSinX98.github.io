@@ -17,7 +17,9 @@
  *   - the accent as a shape against the page, light and dark           >= 3:1
  *
  * That last one is why Newspaper's accent is #666 rather than a darker grey: at
- * #525252 it all but vanished against the near-black dark page.
+ * #525252 it all but vanished against the near-black dark page. Lime is dark for
+ * the opposite reason: a bright yellow cannot carry white button text or readable
+ * link text on a cream page, so its accent is a golden olive (#7a7600).
  *
  * `manual` has no colours of its own — it means "whatever is typed in".
  */
@@ -52,6 +54,24 @@ export const THEME_PRESETS = [
     label: 'Newspaper',
     blurb: 'Black, grey and newsprint.',
     theme: { primaryColor: '#1a1a1a', secondaryColor: '#666666', tertiaryColor: '#f1f0ed', primaryColorDark: '#0f0f0f' },
+  },
+  {
+    key: 'lime',
+    label: 'Lime',
+    blurb: 'Golden olive on butter yellow.',
+    theme: { primaryColor: '#343319', secondaryColor: '#7a7600', tertiaryColor: '#fbfae7', primaryColorDark: '#15140a' },
+  },
+  {
+    key: 'hell',
+    label: 'Hell',
+    blurb: 'Fire-engine red on blush.',
+    theme: { primaryColor: '#341919', secondaryColor: '#d91212', tertiaryColor: '#fbe8e7', primaryColorDark: '#150a0a' },
+  },
+  {
+    key: 'amethyst',
+    label: 'Amethyst',
+    blurb: 'Violet on pale lilac.',
+    theme: { primaryColor: '#281934', secondaryColor: '#9343d0', tertiaryColor: '#f2e6fb', primaryColorDark: '#100a15' },
   },
   {
     key: 'manual',
