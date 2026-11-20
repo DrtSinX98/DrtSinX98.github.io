@@ -35,5 +35,7 @@ replit.nix
 /temp
 
 # agent skill artifacts (2.3MB, regenerable via `npx modern-web-guidance@latest install`;
-# the version is pinned in skills-lock.json)
+# the version is pinned in skills-lock.json). .claude/skills holds symlinks into
+# .agents, so committing them would leave dangling links on a fresh clone.
 /.agents
+/.claude/skills
