@@ -29,7 +29,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.2;
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
     border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
 }
@@ -131,7 +131,6 @@
   font-size: 0.85rem;
   font-weight: 600;
   line-height: 1.4;
-  cursor: default;
   transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
     border-color var(--dur-fast) var(--ease);
 }
@@ -374,7 +373,7 @@
   border-radius: 50%;
   background: var(--surface-1);
   color: var(--ink);
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .vx-themebtn:hover { background: var(--surface-2); border-color: var(--line-strong); }
@@ -458,7 +457,7 @@
   border-radius: 50%;
   background: transparent;
   color: var(--muted);
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
 }
 .vx-themepick__close:hover { background: var(--line); color: var(--ink); }
 
@@ -472,7 +471,7 @@
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: border-color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
 }
 .vx-themepick__opt:hover { border-color: var(--line-strong); background: var(--line); }
@@ -517,7 +516,7 @@
   background: var(--surface-2);
   color: var(--ink);
   box-shadow: var(--shadow-float);
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -808,7 +807,7 @@
   background: transparent;
   color: var(--ink);
   font: 600 0.9rem/1.2 var(--ff-sans);
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
     color var(--dur-fast) var(--ease);
 }
@@ -931,7 +930,7 @@
   background: transparent;
   color: var(--ink);
   line-height: 1.45;
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .vx-topics .list-group-item::before {
@@ -1070,7 +1069,7 @@
   color: var(--ink);
   font-size: 0.9rem;
   font-weight: 500;
-  cursor: pointer;
+  cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .vx-country:hover { border-color: var(--accent); background: var(--accent-10); }

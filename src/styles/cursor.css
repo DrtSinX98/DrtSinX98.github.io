@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Fountain-pen cursor (public site only)
+   --------------------------------------------------------------------------
+   A nib for the pointer, and the same nib with an ink bead where something can
+   be clicked. The tip is the hot spot (5 5), so it points exactly where it looks
+   like it does.
+
+   - Only on devices with a precise pointer, and not when the visitor asks for
+     more contrast: a custom cursor does not scale with the system's cursor size,
+     which low-vision users rely on.
+   - Cues that carry meaning are left alone: the text caret in fields, zoom-in on
+     photos, grab on the globe, not-allowed on disabled controls.
+   - Drawn in ink on a paper outline (and the reverse in dark mode) so it reads on
+     any theme template. SVG cursors can't read CSS variables, hence two sets.
+   - Existing `cursor: pointer` rules use var(--cursor-point, pointer), so they
+     switch to the bead nib here and stay a plain pointer everywhere else
+     (the admin panel, where this file does nothing).
+   ========================================================================== */
+@media (pointer: fine) and (prefers-contrast: no-preference) {
+  html[data-bs-theme="light"]:has(.vx-site) {
+  --cursor-pen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 32 32'%3E%3Cg transform='rotate(-45 16 16)'%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%23ffffff' stroke='%23ffffff' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%232a2230'/%3E%3Cpath d='M16 3.4V14' stroke='%23ffffff' stroke-width='0.9' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='15.6' r='1.5' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E") 5 5, auto;
+  --cursor-point: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 32 32'%3E%3Cg transform='rotate(-45 16 16)'%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%23ffffff' stroke='%23ffffff' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%232a2230'/%3E%3Cpath d='M16 3.4V14' stroke='%23ffffff' stroke-width='0.9' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='15.6' r='1.5' fill='%23ffffff'/%3E%3C/g%3E%3Ccircle cx='4.6' cy='4.6' r='2.5' fill='%23c91574' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E") 5 5, pointer;
+  }
+  html[data-bs-theme="dark"]:has(.vx-site) {
+  --cursor-pen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 32 32'%3E%3Cg transform='rotate(-45 16 16)'%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%2317121d' stroke='%2317121d' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%23f4f0fa'/%3E%3Cpath d='M16 3.4V14' stroke='%2317121d' stroke-width='0.9' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='15.6' r='1.5' fill='%2317121d'/%3E%3C/g%3E%3C/svg%3E") 5 5, auto;
+  --cursor-point: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 32 32'%3E%3Cg transform='rotate(-45 16 16)'%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%2317121d' stroke='%2317121d' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M16 2C14.6 7.5 10.2 12 9.4 18.5C9.1 21 10.4 23 11.2 25V30H20.8V25C21.6 23 22.9 21 22.6 18.5C21.8 12 17.4 7.5 16 2Z' fill='%23f4f0fa'/%3E%3Cpath d='M16 3.4V14' stroke='%2317121d' stroke-width='0.9' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='15.6' r='1.5' fill='%2317121d'/%3E%3C/g%3E%3Ccircle cx='4.6' cy='4.6' r='2.5' fill='%23c91574' stroke='%2317121d' stroke-width='1'/%3E%3C/svg%3E") 5 5, pointer;
+  }
+
+  html:has(.vx-site) { cursor: var(--cursor-pen, auto); }
+
+  /* Things the browser (or Bootstrap) already gives a pointer to. */
+  html:has(.vx-site) :is(a[href], button:not(:disabled), summary, label[for], select,
+    [role="button"], [role="switch"], [role="tab"], input[type="checkbox"], input[type="radio"],
+    input[type="submit"], input[type="button"], .accordion-button, .nav-link, .list-group-item-action) {
+    cursor: var(--cursor-point, pointer);
+  }
+
+  /* Typing keeps its caret. */
+  html:has(.vx-site) :is(input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"], [type="range"]),
+    textarea, [contenteditable="true"]) {
+    cursor: text;
+  }
+  html:has(.vx-site) :is(:disabled, [aria-disabled="true"]) { cursor: not-allowed; }
+}

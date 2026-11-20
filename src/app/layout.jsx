@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/index.css';
 import '@/styles/components.css';
+import '@/styles/cursor.css';
 import '@/styles/cv.css';
 import '@/styles/illustrations.css';
 import '@/styles/storyset.css';
