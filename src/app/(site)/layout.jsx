@@ -2,6 +2,7 @@ import { getContentMany } from '@/lib/content';
 import { portraitUrl } from '@/lib/portrait';
 import { visitorTheme } from '@/lib/visitorTheme';
 import { enabledNav } from '@/lib/pageGate';
+import { presetOf } from '@/lib/themePresets';
 import ThemeProvider from '@/components/ThemeProvider';
 import MotionProvider from '@/components/motion/MotionProvider';
 import Header from '@/components/Header';
@@ -33,7 +34,9 @@ export default async function SiteLayout({ children }) {
     <ThemeProvider
       dayStartHour={theme.dayStartHour ?? 6}
       nightStartHour={theme.nightStartHour ?? 18}
-      visitorPreset={theme.visitor ? theme.preset : null}
+      preset={theme.visitor ? theme.preset : presetOf(theme)}
+      sitePreset={presetOf(site.theme || {})}
+      visitor={Boolean(theme.visitor)}
     >
       <MotionProvider>
         {/* `.vx-site` scopes the redesign's element-level styling, so the admin

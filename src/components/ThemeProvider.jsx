@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
-const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {}, visitorPreset: null });
+const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {}, preset: 'rose', sitePreset: 'rose', visitor: false });
 
 export const useTheme = () => useContext(ThemeContext);
 
@@ -14,10 +14,11 @@ export const useTheme = () => useContext(ThemeContext);
  * layout applies this before first paint; this provider only keeps React state
  * in sync so the switch and the mobile button never disagree.
  *
- * `visitorPreset` is the colour template this visitor picked for themselves (the
- * easter egg on the switch), or null when they are seeing the site's own.
+ * `preset` is the key of the colour template on screen, `visitor` says whether
+ * this visitor picked it themselves (long-press on the switch) or it is the
+ * site's own, and `sitePreset` is the site's own whichever is on screen.
  */
-export default function ThemeProvider({ children, dayStartHour = 6, nightStartHour = 18, visitorPreset = null }) {
+export default function ThemeProvider({ children, dayStartHour = 6, nightStartHour = 18, preset = 'rose', sitePreset = 'rose', visitor = false }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -42,5 +43,5 @@ export default function ThemeProvider({ children, dayStartHour = 6, nightStartHo
     });
   }, []);
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme, visitorPreset }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ theme, toggleTheme, preset, sitePreset, visitor }}>{children}</ThemeContext.Provider>;
 }

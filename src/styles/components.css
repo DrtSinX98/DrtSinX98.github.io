@@ -360,23 +360,65 @@
 .vx-dock a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
 .vx-dock a[aria-current="page"] span { display: inline; }
 
-/* ---- theme toggle ---- */
+/* ---- theme toggle: a circle that stretches into a pill, then a list ---- */
+.vx-themewrap { position: relative; justify-self: end; width: 2.75rem; height: 2.75rem; }
+
+/* One element, three shapes. At rest (closed) it is the 2.75rem circle around the
+   sun/moon button; on a long press (pill) it stretches leftwards, the button
+   staying at the right end; clicking the theme (list) lets it grow downwards.
+   It is anchored to the wrap's right edge, so it never moves the header. */
+.vx-themepill {
+  --pill-h: 2.75rem;
+  --pill-w: min(15rem, calc(100vw - 2 * var(--gutter)));
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: var(--pill-h);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--pill-h) / 2);
+  background: var(--surface-1);
+  color: var(--ink);
+  transition:
+    width var(--dur-slow) var(--ease-spring),
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+.vx-themepill.is-closed:hover { background: var(--surface-2); border-color: var(--line-strong); }
+.vx-themepill.is-pill,
+.vx-themepill.is-list {
+  width: var(--pill-w);
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-float);
+}
+
+.vx-themepill__row { display: flex; align-items: center; height: calc(var(--pill-h) - 2px); }
+
+/* The sun/moon button: always the last thing in the row, so it stays put. */
 .vx-themebtn {
   position: relative;
   display: grid;
+  flex: none;
   place-items: center;
-  justify-self: end;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: calc(var(--pill-h) - 2px);
+  height: calc(var(--pill-h) - 2px);
   padding: 0;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 50%;
-  background: var(--surface-1);
+  background: transparent;
   color: var(--ink);
   cursor: var(--cursor-point, pointer);
-  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease);
+  -webkit-touch-callout: none;
+  user-select: none;
 }
-.vx-themebtn:hover { background: var(--surface-2); border-color: var(--line-strong); }
+.vx-themepill:not(.is-closed) .vx-themebtn:hover { background: var(--line); }
+.vx-themebtn:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -4px; }
 .vx-themebtn svg {
   grid-area: 1 / 1;
   width: 1.2rem;
@@ -388,102 +430,83 @@
 [data-bs-theme="light"] .vx-themebtn__moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
 [data-bs-theme="dark"] .vx-themebtn__sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
 
-/* ---- visitor theme picker (the easter egg on the switch) ---- */
-.vx-themewrap { position: relative; justify-self: end; }
-.vx-themebtn { -webkit-touch-callout: none; user-select: none; }
-
-/* The first-visit hint under the theme button. */
-.vx-themehint {
-  position: absolute;
-  inset-block-start: calc(100% + 0.65rem);
-  inset-inline-end: 0;
-  z-index: 10;
-  padding: 0.45rem 0.8rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
-  background: var(--surface-2);
-  color: var(--ink);
-  box-shadow: var(--shadow-float);
-  font: 500 0.8rem/1.3 var(--ff-mono);
+/* The current theme, to the left of the button. Squeezed to nothing while closed. */
+.vx-themepill__head,
+.vx-themepill__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  height: calc(var(--pill-h) - 2px);
+  padding: 0 0.85rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   white-space: nowrap;
-  pointer-events: none;
-  animation: themepick-in var(--dur) var(--ease);
+  cursor: var(--cursor-point, pointer);
 }
-/* A small pointer toward the button. */
-.vx-themehint::before {
-  content: "";
-  position: absolute;
-  inset-block-start: -0.36rem;
-  inset-inline-end: 1.15rem;
-  width: 0.65rem;
-  height: 0.65rem;
-  border-block-start: 1px solid var(--line-strong);
-  border-inline-start: 1px solid var(--line-strong);
-  background: var(--surface-2);
-  transform: rotate(45deg);
-}
-@media (prefers-reduced-motion: reduce) { .vx-themehint { animation: none; } }
+.vx-themepill__head { flex: 1; min-width: 0; border-radius: 999px 0 0 999px; transition: opacity var(--dur-fast) var(--ease), visibility 0s linear var(--dur-slow); }
+.vx-themepill.is-closed .vx-themepill__head { opacity: 0; visibility: hidden; }
+.vx-themepill:not(.is-closed) .vx-themepill__head { transition-delay: 0s; }
+.vx-themepill__head:hover,
+.vx-themepill__opt:hover { background: var(--line); }
+.vx-themepill__head:focus-visible,
+.vx-themepill__opt:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -4px; }
+.vx-themepill__name { flex: 1; text-align: start; font-weight: 600; font-size: 0.95rem; }
+.vx-themepill__chev { flex: none; transition: transform var(--dur) var(--ease); }
+.vx-themepill.is-list .vx-themepill__chev { transform: rotate(180deg); }
 
-.vx-themepick {
-  position: absolute;
-  inset-block-start: calc(100% + 0.75rem);
-  inset-inline-end: 0;
-  z-index: 10;
-  width: min(19rem, calc(100vw - 2 * var(--gutter)));
+/* The list unfolds by animating its grid row from 0 to its natural height. */
+.vx-themepill__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--dur-slow) var(--ease), visibility 0s linear var(--dur-slow);
+}
+.vx-themepill.is-list .vx-themepill__body { grid-template-rows: 1fr; visibility: visible; transition-delay: 0s; }
+
+.vx-themepill__list {
+  min-height: 0;
+  margin: 0;
   /* Scrolls on short screens rather than running under the mobile dock. */
-  max-height: calc(100dvh - var(--header-h) - 6.5rem);
+  max-height: calc(100dvh - var(--header-h) - 9rem);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 1rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-  color: var(--ink);
-  box-shadow: var(--shadow-float);
-  animation: themepick-in var(--dur) var(--ease);
+  padding: 0 0 0.35rem;
+  list-style: none;
 }
-@keyframes themepick-in { from { opacity: 0; transform: translateY(-0.4rem); } }
-@media (prefers-reduced-motion: reduce) { .vx-themepick { animation: none; } }
+.vx-themepill__opt { transition: opacity var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease); }
 
-.vx-themepick__head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; }
-.vx-themepick__head strong { flex: 1; font-family: var(--ff-display); font-size: 1.05rem; }
-.vx-themepick__close {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--muted);
-  cursor: var(--cursor-point, pointer);
-}
-.vx-themepick__close:hover { background: var(--line); color: var(--ink); }
-
-.vx-themepick__list { display: grid; gap: 0.4rem; margin: 0; padding: 0; border: 0; min-width: 0; }
-.vx-themepick__opt {
+/* Choosing: the others fade, the chosen row bounces up over the top row (whose
+   own text gives way), then the whole shape folds back into the circle. */
+.vx-themepill.is-picking .vx-themepill__opt:not(.is-flying) { opacity: 0; }
+.vx-themepill.is-picking .vx-themepill__head { opacity: 0; transition-delay: 0s; }
+.vx-themepill__opt.is-flying {
   position: relative;
-  display: grid;
-  grid-template-columns: 4.5rem 1fr auto;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  cursor: var(--cursor-point, pointer);
-  transition: border-color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+  z-index: 1;
+  background: var(--surface-2);
+  transform: translateY(var(--fly, 0));
+  transition: transform 420ms var(--ease-spring);
 }
-.vx-themepick__opt:hover { border-color: var(--line-strong); background: var(--line); }
-.vx-themepick__opt.is-selected { padding: calc(0.5rem - 1px) calc(0.6rem - 1px); border: 2px solid var(--accent-text); background: color-mix(in srgb, var(--accent) 10%, transparent); }
-.vx-themepick__opt:has(.vx-themepick__input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
-.vx-themepick__input { position: absolute; opacity: 0; pointer-events: none; }
-.vx-themepick__swatches { display: flex; height: 1.75rem; overflow: hidden; align-items: center; justify-content: center; border: 1px solid var(--line-strong); border-radius: 8px; color: var(--muted); }
-.vx-themepick__swatches i { flex: 1; align-self: stretch; }
-.vx-themepick__text { display: grid; min-width: 0; }
-.vx-themepick__label { font-weight: 600; font-size: 0.95rem; }
-.vx-themepick__blurb { color: var(--muted); font-size: 0.78rem; line-height: 1.3; }
-.vx-themepick__tick { color: var(--accent-text); }
+
+.vx-themepill__swatches {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  color: var(--muted);
+}
+.vx-themepill__swatches i { flex: 1; align-self: stretch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-themepill, .vx-themepill__body, .vx-themepill__chev, .vx-themepill__opt.is-flying { transition-duration: 0.01ms; }
+}
 
 /* ---- footer ---- */
 .vx-footer {

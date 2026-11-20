@@ -4,7 +4,7 @@ import { VISITOR_COOKIE, presetTheme } from './themePresets';
 
 /**
  * The theme this visitor sees: their own template if they picked one (the
- * easter egg on the light/dark switch), otherwise the one the site owner saved.
+ * long-press pill on the light/dark switch), otherwise the one the site owner saved.
  *
  * The choice lives only in a cookie in the visitor's browser, so it never
  * touches the saved theme and never affects anyone else. Only a template key is
