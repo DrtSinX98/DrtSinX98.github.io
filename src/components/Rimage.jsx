@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useId } from "react";
 import { Col } from "react-bootstrap";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
 import blobshape from "blobshape";
 
 /** The blob morph is a persistent, unstoppable animation, so it has to honour
