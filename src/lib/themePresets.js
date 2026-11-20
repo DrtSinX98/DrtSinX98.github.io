@@ -74,6 +74,12 @@ export const THEME_PRESETS = [
     theme: { primaryColor: '#281934', secondaryColor: '#9343d0', tertiaryColor: '#f2e6fb', primaryColorDark: '#100a15' },
   },
   {
+    key: 'ladybird',
+    label: 'Ladybird',
+    blurb: 'Black, red and white.',
+    theme: { primaryColor: '#161616', secondaryColor: '#d8141c', tertiaryColor: '#fafafa', primaryColorDark: '#0b0b0b' },
+  },
+  {
     key: 'manual',
     label: 'Manual',
     blurb: 'Choose every colour yourself.',
