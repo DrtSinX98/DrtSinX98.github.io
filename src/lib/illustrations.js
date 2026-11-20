@@ -2,6 +2,8 @@ import 'server-only';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { unstable_cache } from 'next/cache';
+import { recolorSvg } from './recolor';
+import { resolveTheme } from './themePresets';
 
 /**
  * Inlines the page illustrations so their layers can be animated.
@@ -15,7 +17,7 @@ import { unstable_cache } from 'next/cache';
 // Only the CDNs this site actually serves images from. The URL comes from an
 // editable content document, so this also stops the fetch being pointed at an
 // internal address.
-const ALLOWED_HOSTS = new Set(['raw.githubusercontent.com', 'cdn.jsdelivr.net', 'i.ibb.co']);
+export const ALLOWED_HOSTS = new Set(['raw.githubusercontent.com', 'cdn.jsdelivr.net', 'i.ibb.co']);
 
 const MAX_BYTES = 512 * 1024;
 
@@ -93,13 +95,19 @@ const loadSvg = unstable_cache(
 );
 
 /**
+ * @param {string} src    the illustration's URL or `/illustrations/…` path
+ * @param {object} [theme] the site theme; the artwork's magenta is swapped for its
+ *                         accent. The cache above holds the *original* markup, so a
+ *                         theme change never needs it flushed.
  * @returns {Promise<{markup: string, selfAnimated: boolean}|null>}
  *   null when the URL isn't an inlinable SVG — callers fall back to an <img>.
  */
-export async function getIllustration(src) {
+export async function getIllustration(src, theme) {
   if (!src) return null;
   try {
-    return await loadSvg(src);
+    const loaded = await loadSvg(src);
+    if (!loaded) return null;
+    return theme ? { ...loaded, markup: recolorSvg(loaded.markup, resolveTheme(theme)) } : loaded;
   } catch (err) {
     console.error('[illustration] could not inline', src, err.message);
     return null;

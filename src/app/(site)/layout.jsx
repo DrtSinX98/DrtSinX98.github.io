@@ -1,4 +1,5 @@
-import { getContent } from '@/lib/content';
+import { getContentMany } from '@/lib/content';
+import { portraitUrl } from '@/lib/portrait';
 import ThemeProvider from '@/components/ThemeProvider';
 import MotionProvider from '@/components/motion/MotionProvider';
 import Header from '@/components/Header';
@@ -8,9 +9,20 @@ import ParticlesBG from '@/components/ParticlesBg';
 import ScrollTop from '@/components/ScrollTop';
 
 export default async function SiteLayout({ children }) {
-  const site = await getContent('site');
+  const { site, home } = await getContentMany(['site', 'home']);
   const theme = site.theme || {};
   const nav = site.nav || [];
+
+  // The saved preload list names the original portrait PNGs (833 kB each), which
+  // the page no longer uses — it shows the recoloured versions. Swap them, so the
+  // loading screen waits for (and warms the cache with) the images actually shown.
+  const light = home.profileImageLight;
+  const dark = home.profileImageDark;
+  const preloadImages = [
+    ...(site.preloader?.images || []).filter((url) => url !== light && url !== dark),
+    portraitUrl('light', theme, light),
+    portraitUrl('dark', theme, dark),
+  ].filter(Boolean);
 
   return (
     <ThemeProvider dayStartHour={theme.dayStartHour ?? 6} nightStartHour={theme.nightStartHour ?? 18}>
@@ -23,7 +35,7 @@ export default async function SiteLayout({ children }) {
           </a>
           <ParticlesBG config={site.particles || {}} />
           <Header brand={site.brand} nav={nav} />
-          <Preloader enabled={site.preloader?.enabled ?? true} images={site.preloader?.images || []}>
+          <Preloader enabled={site.preloader?.enabled ?? true} images={preloadImages}>
             <main id="main" className="vx-main" tabIndex={-1}>
               {children}
             </main>

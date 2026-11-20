@@ -9,7 +9,7 @@ export const metadata = { title: 'Lectures | Vortex' };
 export default async function LecturesPage() {
   const { lectures, site } = await getContentMany(['lectures', 'site']);
   const animate = site.animations?.illustrations !== false;
-  const illustration = animate ? await getIllustration(lectures.image) : null;
+  const illustration = animate ? await getIllustration(lectures.image, site.theme) : null;
 
   return <Lectures content={lectures} illustration={illustration} animateIllustration={animate} />;
 }

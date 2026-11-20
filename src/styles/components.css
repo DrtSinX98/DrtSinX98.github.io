@@ -259,6 +259,7 @@
 }
 .vx-brand:hover { color: var(--ink); }
 .logo-path { fill: var(--ink); }
+.logo-accent { fill: var(--accent); }
 
 /* ---- desktop nav: a pill with a sliding indicator ---- */
 .vx-nav { display: none; position: relative; }

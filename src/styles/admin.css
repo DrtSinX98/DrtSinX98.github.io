@@ -536,3 +536,17 @@
 .admin-login-card .admin-field { margin-bottom: 0.25rem; }
 .admin-login-card .admin-alert { margin-bottom: 0; }
 
+/* Theme templates */
+.admin-presets { margin: 0 0 1.25rem; padding: 0; border: 0; min-width: 0; }
+.admin-presets legend { margin-bottom: 0.6rem; padding: 0; color: var(--muted); font-size: 0.8rem; font-weight: 600; }
+.admin-presets__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.75rem; }
+.admin-preset { position: relative; display: grid; gap: 0.35rem; align-content: start; padding: 0.75rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface-2); cursor: pointer; transition: border-color 0.15s, background-color 0.15s; }
+.admin-preset:hover { border-color: var(--accent-text); }
+.admin-preset.is-selected { border: 2px solid var(--accent-text); padding: calc(0.75rem - 1px); background: var(--accent-05); }
+.admin-preset:has(.admin-preset__input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+.admin-preset__input { position: absolute; opacity: 0; pointer-events: none; }
+.admin-preset__swatches { display: flex; height: 2.25rem; overflow: hidden; align-items: center; justify-content: center; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); color: var(--muted); }
+.admin-preset__swatches i { flex: 1; align-self: stretch; }
+.admin-preset__label { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; color: var(--ink); font-weight: 600; font-size: 0.95rem; }
+.admin-preset__label svg { color: var(--accent-text); }
+.admin-preset__blurb { color: var(--muted); font-size: 0.8rem; }

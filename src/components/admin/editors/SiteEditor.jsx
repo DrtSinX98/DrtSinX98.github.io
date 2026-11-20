@@ -3,6 +3,7 @@
 import React from 'react';
 import EditorPage from '../EditorPage';
 import ThemePreview from '../ThemePreview';
+import ThemePresetPicker from '../ThemePresetPicker';
 import { Card, Text, TextArea, Switch, ListEditor, IconPicker, StringList } from '../ui';
 
 const TABS = [
@@ -84,13 +85,37 @@ export default function SiteEditor() {
             <>
               <Card
                 title="Theme colours"
-                hint="Every shade on the site is derived from these four colours, so changing one moves the whole interface. The preview updates as you type; it is not live until you save."
+                hint="Pick a template, or choose Manual to set the four colours yourself. Every shade on the site is derived from them, and the profile picture, page illustrations, logo and particles follow along. The preview is not live until you save."
               >
+                <ThemePresetPicker
+                  theme={data.theme}
+                  onPick={(preset) => {
+                    // Manual keeps the current colours; a template replaces all four
+                    // (and the particles, which should match the accent).
+                    set('theme.preset', preset.key);
+                    if (!preset.theme) return;
+                    Object.entries(preset.theme).forEach(([key, value]) => set(`theme.${key}`, value));
+                    set('particles.color', preset.theme.secondaryColor);
+                  }}
+                />
                 <div className="admin-grid cols-4">
-                  <Text label="Primary" type="color" value={data.theme?.primaryColor} onChange={(v) => set('theme.primaryColor', v)} />
-                  <Text label="Accent" type="color" value={data.theme?.secondaryColor} onChange={(v) => set('theme.secondaryColor', v)} />
-                  <Text label="Light" type="color" value={data.theme?.tertiaryColor} onChange={(v) => set('theme.tertiaryColor', v)} />
-                  <Text label="Dark background" type="color" value={data.theme?.primaryColorDark} onChange={(v) => set('theme.primaryColorDark', v)} />
+                  {[
+                    ['Primary', 'primaryColor'],
+                    ['Accent', 'secondaryColor'],
+                    ['Light', 'tertiaryColor'],
+                    ['Dark background', 'primaryColorDark'],
+                  ].map(([label, key]) => (
+                    <Text
+                      key={key}
+                      label={label}
+                      type="color"
+                      value={data.theme?.[key]}
+                      onChange={(v) => {
+                        set(`theme.${key}`, v);
+                        set('theme.preset', 'manual');
+                      }}
+                    />
+                  ))}
                 </div>
                 <ThemePreview theme={data.theme} />
                 <div className="admin-grid cols-2">
