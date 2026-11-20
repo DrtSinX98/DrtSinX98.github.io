@@ -623,8 +623,8 @@
 
 /* ---- terminal ---- */
 .vx-bento { padding-bottom: var(--section-gap); }
-/* The terminal stands alone under the hero: centred, at a readable width. */
-.vx-bento__main { display: flex; max-width: 48rem; margin-inline: auto; }
+/* The terminal stands alone under the hero and takes the whole row. */
+.vx-bento__main { display: flex; }
 
 .vx-term {
   --term-bg: color-mix(in srgb, var(--primary-color-dark) 70%, var(--primary-color));
