@@ -54,7 +54,7 @@ export default function SiteEditor() {
           {active === 'navigation' && (
             <Card
               title="Menu items"
-              hint="Appears in the header on desktop and the bottom bar on mobile. The icon is only used on mobile. Turn a page off to hide it without deleting anything: it leaves the menu, footer and home page, and its address shows a 404, until you turn it back on."
+              hint="Appears in the header on desktop and the bottom bar on mobile. The icon is only used on mobile. Turn a page off to hide it without deleting anything: it leaves the menu and the home page, and its address shows a 404, until you turn it back on."
             >
               <ListEditor
                 items={data.nav || []}
@@ -79,7 +79,7 @@ export default function SiteEditor() {
                     {item.href !== '/' && (
                       <Switch
                         label="Show this page"
-                        hint="Off hides it from the menu, footer and home page, and its address shows a 404. Its content is kept."
+                        hint="Off hides it from the menu and home page, and its address shows a 404. Its content is kept."
                         checked={item.enabled !== false}
                         onChange={(v) => update({ enabled: v })}
                       />

@@ -495,9 +495,11 @@
 @media (max-width: 991.98px) { .vx-footer { padding-bottom: calc(2rem + 4.5rem + env(safe-area-inset-bottom)); } }
 /* The end padding keeps footer content clear of the floating back-to-top button. */
 .vx-footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding-inline-end: 3.75rem; }
-.vx-footer__nav ul { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-.vx-footer__nav a { color: var(--muted); transition: color var(--dur-fast) var(--ease); }
-.vx-footer__nav a:hover { color: var(--ink); }
+/* On phones the two lines stack, centred (the button no longer needs room beside them). */
+@media (max-width: 991.98px) {
+  .vx-footer__inner { flex-direction: column; justify-content: center; gap: 0.5rem; padding-inline-end: 0; text-align: center; }
+  .vx-footer__inner p { margin: 0; }
+}
 .vx-footer__stack svg { color: var(--accent-text); vertical-align: -0.15em; }
 
 /* ---- back to top ---- */

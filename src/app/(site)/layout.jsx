@@ -49,7 +49,7 @@ export default async function SiteLayout({ children }) {
               {children}
             </main>
           </Preloader>
-          <Footer owner={site.footer?.owner} writtenIn={site.footer?.writtenIn} nav={nav} />
+          <Footer owner={site.footer?.owner} writtenIn={site.footer?.writtenIn} />
           <ScrollTop />
         </div>
       </MotionProvider>

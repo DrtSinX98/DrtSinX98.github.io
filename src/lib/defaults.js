@@ -17,7 +17,7 @@ export const defaultSite = {
   description: 'Portfolio website of Pritish Joshi',
   // Bumped when a release adds pages to the menu; see lib/siteUpgrade.js.
   navVersion: 2,
-  // `enabled: false` hides a page (menu, footer, home list) and makes its address
+  // `enabled: false` hides a page (menu, home list) and makes its address
   // a 404, without deleting the item or the page's content.
   nav: [
     { key: 'home', label: 'Home', href: '/', icon: 'house' },
