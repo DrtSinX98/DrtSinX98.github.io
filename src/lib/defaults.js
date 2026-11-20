@@ -31,6 +31,8 @@ export const defaultSite = {
     secondaryColor: '#c91574',
     tertiaryColor: '#eeeafc',
     primaryColorDark: '#130A15',
+    // One of the templates in lib/themePresets.js, or 'manual'.
+    preset: 'rose',
     dayStartHour: 6,
     nightStartHour: 18,
   },

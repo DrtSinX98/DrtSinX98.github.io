@@ -9,6 +9,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { getContent } from '@/lib/content';
 import { themeInitScript } from '@/lib/theme';
 import { Analytics } from '@vercel/analytics/next';
@@ -36,6 +37,24 @@ const display = Bricolage_Grotesque({
 });
 const sans = Geist({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--nf-sans' });
 const mono = Geist_Mono({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--nf-mono' });
+
+/**
+ * A fourth face, used only for the biggest headings: Samarkan (Titivillus
+ * Foundry, shareware — see src/fonts/Samarkan-README.txt, which must stay with
+ * the font). It is a decorative display face, so it is never used for running
+ * text or small sizes. Only the Normal is shipped; it covers every heading on
+ * the site except "ń" (Poznań), which falls back to the display face.
+ *
+ * `src/fonts/Samarkan-Normal.woff2` is a lossless re-wrap of the original TTF:
+ * same 238 glyphs, no editing or subsetting.
+ */
+const accent = localFont({
+  src: '../fonts/Samarkan-Normal.woff2',
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
+  variable: '--nf-accent',
+});
 
 export async function generateMetadata() {
   const site = await getContent('site');
@@ -68,7 +87,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} ${accent.variable}`}
       suppressHydrationWarning
     >
       <head>

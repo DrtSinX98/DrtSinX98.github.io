@@ -1,14 +1,21 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useId, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Eye, EyeOff, LogIn } from 'lucide-react';
+import Orbit from '@/components/ui/Orbit';
+import { AdminTile } from '@/components/admin/AdminShell';
+import AdminThemeToggle from '@/components/admin/AdminThemeToggle';
+import { Alert } from '@/components/admin/ui';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState('');
+  const [reveal, setReveal] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const id = useId();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -34,30 +41,51 @@ function LoginForm() {
 
   return (
     <div className="admin-login">
-      <form className="admin-login-card" onSubmit={submit}>
-        <h1>Vortex Admin</h1>
-        <p className="sub">Sign in to edit the site.</p>
+      <div className="admin-login__theme">
+        <AdminThemeToggle />
+      </div>
 
-        {error && <div className="admin-alert error">{error}</div>}
+      <div className="admin-login__stage">
+        {/* The site's orbit motif, ringing the card. */}
+        <Orbit className="admin-login__orbit" />
 
-        <div className="admin-field">
-          <label htmlFor="admin-password">Password</label>
-          <input
-            id="admin-password"
-            className="admin-input"
-            type="password"
-            value={password}
-            autoFocus
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <form className="admin-login-card" onSubmit={submit}>
+          <AdminTile brand size="lg" />
+          <h1>Vortex Admin</h1>
+          <p className="sub">Sign in to edit the site.</p>
 
-        <button type="submit" className="admin-btn primary w-100 justify-content-center" disabled={busy || !password}>
-          {busy ? <span className="admin-spinner" /> : null}
-          {busy ? 'Signing in…' : 'Sign in'}
-        </button>
-      </form>
+          {error && <Alert type="error">{error}</Alert>}
+
+          <div className="admin-field">
+            <label htmlFor={id}>Password</label>
+            <div className="admin-passwordfield">
+              <input
+                id={id}
+                className="admin-input"
+                type={reveal ? 'text' : 'password'}
+                value={password}
+                autoFocus
+                autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-btn icon-only"
+                onClick={() => setReveal((v) => !v)}
+                aria-label={reveal ? 'Hide password' : 'Show password'}
+                aria-pressed={reveal}
+              >
+                {reveal ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" className="admin-btn primary admin-btn--block" disabled={busy || !password}>
+            {busy ? <span className="admin-spinner" aria-hidden="true" /> : <LogIn size={16} aria-hidden="true" />}
+            {busy ? 'Signing in…' : 'Sign in'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

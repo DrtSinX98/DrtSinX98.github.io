@@ -259,6 +259,7 @@
 }
 .vx-brand:hover { color: var(--ink); }
 .logo-path { fill: var(--ink); }
+.logo-accent { fill: var(--accent); }
 
 /* ---- desktop nav: a pill with a sliding indicator ---- */
 .vx-nav { display: none; position: relative; }
@@ -1015,4 +1016,21 @@
 html .yarl__root {
   --yarl__color_backdrop: color-mix(in srgb, var(--primary-color-dark) 96%, transparent);
   --yarl__thumbnails_thumbnail_active_border_color: var(--accent);
+}
+
+/* ==========================================================================
+   Accent display face (Samarkan) — the biggest headings only
+   --------------------------------------------------------------------------
+   One rule, so it is easy to widen or pull back: add or remove selectors here.
+   Samarkan ships a single weight, so the 650 the headings otherwise use would
+   make the browser synthesise a bold (smeared glyphs) — hence weight 400 and
+   `font-synthesis: none`. The tight tracking tuned for Bricolage would also
+   crowd its letterforms, so it is reset.
+   ========================================================================== */
+.vx-bio__title,
+.vx-pagehero__title {
+  font-family: var(--ff-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0;
 }

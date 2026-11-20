@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import AdminShell, { SectionTabs } from './AdminShell';
 import SaveBar from './SaveBar';
 import useContentEditor from './useContentEditor';
+import { Alert, LoadingBlock } from './ui';
 
 /**
  * Shared scaffolding for every content section: loads the document, renders the
@@ -22,10 +23,10 @@ export default function EditorPage({ section, title, subtitle, tabs, render }) {
     <AdminShell title={title} subtitle={subtitle}>
       <SectionTabs tabs={tabs} active={active} />
 
-      {editor.loading && <div className="admin-empty">Loading…</div>}
+      {editor.loading && <LoadingBlock rows={3} />}
 
       {!editor.loading && editor.status.type === 'error' && !editor.data && (
-        <div className="admin-alert error">{editor.status.message}</div>
+        <Alert type="error">{editor.status.message}</Alert>
       )}
 
       {!editor.loading && editor.data && render(editor.data, editor.set, active, editor)}

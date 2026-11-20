@@ -9,13 +9,14 @@ import Buttons from './Buttons';
 import { ElementTile } from './ui/Eyebrow';
 import { Reveal, RevealGroup, RevealItem } from './motion/Reveal';
 import { PAGE_ART } from '@/lib/pages';
+import { artUrl, portraitUrl } from '@/lib/portrait';
 
 /**
  * Home is now a hub, not a dead end: after the hero and the terminal there is a
  * way into every other page. The thumbnails are the same Storyset artwork the
  * pages open with, so each door previews the room.
  */
-function Explore({ nav }) {
+function Explore({ nav, theme }) {
   const items = nav.filter((item) => PAGE_ART[item.key]);
   if (items.length === 0) return null;
 
@@ -29,9 +30,9 @@ function Explore({ nav }) {
           <RevealItem key={item.key} role="listitem">
             <Link href={item.href} className="vx-explore__link">
               <span className="vx-explore__art">
-                {/* Static SVG: `unoptimized` skips the image optimiser, which
-                    would otherwise refuse SVG without an opt-in. */}
-                <Image src={PAGE_ART[item.key]} alt="" width={72} height={72} unoptimized />
+                {/* Served recoloured to the active theme. `unoptimized` skips the
+                    image optimiser, which would otherwise refuse SVG. */}
+                <Image src={artUrl(item.key, theme)} alt="" width={72} height={72} unoptimized />
               </span>
               <span className="vx-explore__text">
                 <span className="vx-explore__label">{item.label}</span>
@@ -46,7 +47,7 @@ function Explore({ nav }) {
   );
 }
 
-function Home({ content = {}, serverHour, nav = [] }) {
+function Home({ content = {}, serverHour, nav = [], theme }) {
   return (
     <>
       <section className="vx-hero vx-wrap">
@@ -56,14 +57,17 @@ function Home({ content = {}, serverHour, nav = [] }) {
             <Buttons buttons={content.buttons || []} />
           </Reveal>
         </div>
-        <Rimage light={content.profileImageLight} dark={content.profileImageDark} />
+        <Rimage
+          light={portraitUrl('light', theme, content.profileImageLight)}
+          dark={portraitUrl('dark', theme, content.profileImageDark)}
+        />
       </section>
 
       <section className="vx-bento vx-wrap">
         <Reveal className="vx-bento__main">
           <TerminalCard content={content.terminal || {}} />
         </Reveal>
-        <Explore nav={nav} />
+        <Explore nav={nav} theme={theme} />
       </section>
     </>
   );

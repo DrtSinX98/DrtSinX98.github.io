@@ -38,6 +38,9 @@
 
   /* ---- typefaces (loaded by next/font in the root layout) ---- */
   --ff-display: var(--nf-display, "Bricolage Grotesque"), ui-sans-serif, system-ui, sans-serif;
+  /* The decorative face for the biggest headings, falling back to the display face
+     for any glyph it lacks (it has no "ń") or if it fails to load. */
+  --ff-accent: var(--nf-accent, "Samarkan"), var(--ff-display);
   --ff-sans: var(--nf-sans, "Geist"), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ff-mono: var(--nf-mono, "Geist Mono"), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 

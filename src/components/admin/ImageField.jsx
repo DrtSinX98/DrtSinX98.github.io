@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { Upload } from 'lucide-react';
+import React, { useId, useRef, useState } from 'react';
+import { Upload, X } from 'lucide-react';
 import { Button, Field } from './ui';
 
 /**
@@ -12,6 +12,7 @@ export default function ImageField({ label, hint, value, onChange }) {
   const inputRef = useRef(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const id = useId();
 
   const upload = async (file) => {
     if (!file) return;
@@ -33,33 +34,40 @@ export default function ImageField({ label, hint, value, onChange }) {
   };
 
   return (
-    <Field label={label} hint={hint}>
+    <Field label={label} hint={hint} htmlFor={id}>
       <div className="admin-image-field">
         <div
           className="admin-image-preview"
+          role="img"
+          aria-label={value ? `${label || 'Image'} preview` : 'No image set'}
           style={value ? { backgroundImage: `url("${value}")` } : undefined}
         >
           {!value && 'No image'}
         </div>
         <div className="controls">
           <input
-            className="admin-input mb-2"
+            id={id}
+            className="admin-input"
             value={value ?? ''}
             placeholder="https://i.ibb.co/..."
             onChange={(e) => onChange(e.target.value)}
           />
-          <div className="d-flex gap-2 align-items-center flex-wrap">
+          <div className="admin-actions">
             <Button onClick={() => inputRef.current?.click()} disabled={busy}>
-              {busy ? <span className="admin-spinner" /> : <Upload size={16} />}
+              {busy ? <span className="admin-spinner" aria-hidden="true" /> : <Upload size={16} aria-hidden="true" />}
               {busy ? 'Uploading…' : 'Upload to ImgBB'}
             </Button>
             {value && (
               <Button variant="danger" size="sm" onClick={() => onChange('')}>
-                Clear
+                <X size={14} aria-hidden="true" /> Clear
               </Button>
             )}
           </div>
-          {error && <div className="field-hint" style={{ color: '#ff8f8f' }}>{error}</div>}
+          {error && (
+            <div className="field-hint field-hint--error" role="alert">
+              {error}
+            </div>
+          )}
           <input
             ref={inputRef}
             type="file"
