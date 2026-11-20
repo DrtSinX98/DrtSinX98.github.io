@@ -1,72 +1,42 @@
 'use client';
 
-import { useState, useEffect, useId } from "react";
-import { Col } from "react-bootstrap";
-import { useSpring, animated } from "@react-spring/web";
-import blobshape from "blobshape";
+import { useState, useEffect, useId } from 'react';
+import { useSpring, animated } from '@react-spring/web';
+import blobshape from 'blobshape';
+import Orbit from './ui/Orbit';
+import usePrefersReducedMotion from '@/lib/usePrefersReducedMotion';
 
-/** The blob morph is a persistent, unstoppable animation, so it has to honour
- *  the OS reduced-motion setting; CSS can't reach a react-spring loop. */
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const onChange = (e) => setReduced(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-
-  return reduced;
-}
-
+/**
+ * The hero portrait: the same living, morphing blob as before, now square-framed
+ * (so it scales cleanly to any width) and ringed by two electron orbits.
+ */
 function Rimage({ light, dark }) {
   // The blob paths are randomised on every frame, so they can't be server
-  // rendered. The fixed-size wrapper below is, which keeps the layout stable.
+  // rendered. The fixed-ratio wrapper below is, which keeps the layout stable.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   return (
-    <Col lg={4} className="image-p">
-      <div className="blob">
+    <div className="vx-hero__visual">
+      <div className="vx-blob">
+        <Orbit className="vx-blob__orbit" />
         {mounted && (
           <>
-            <Blob
-              color="var(--secondary-color)"
-              style={{ opacity: 0.8, position: "absolute", top: 0, left: 0 }}
-            />
-            <Blob
-              color="var(--primary-color)"
-              style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
-            />
-            <Blob
-              color="var(--secondary-color)"
-              style={{ opacity: 1.0, position: "absolute", top: 0, left: 0 }}
-            />
-            <Blob
-              image
-              light={light}
-              dark={dark}
-              style={{
-                width: "92%",
-                opacity: 0.95,
-                position: "absolute",
-                top: 10,
-                left: 10
-              }}
-            />
+            <Blob color="var(--secondary-color)" style={{ opacity: 0.8 }} />
+            <Blob color="var(--primary-color)" style={{ opacity: 1 }} />
+            <Blob color="var(--secondary-color)" style={{ opacity: 1 }} />
+            <Blob image light={light} dark={dark} style={{ opacity: 0.95 }} />
           </>
         )}
       </div>
-    </Col>
+    </div>
   );
 }
 
 function getRandomPath() {
   return blobshape({
     growth: 8,
-    edges: 15
+    edges: 15,
   }).path;
 }
 
@@ -109,7 +79,17 @@ function Blob(props) {
   const clipId = `blob-clip-${useId().replace(/:/g, '')}`;
 
   return (
-    <svg viewBox="0 0 500 500" width="100%" style={props.style} aria-hidden={!props.image}>
+    <svg
+      className="vx-blob__layer"
+      // blobshape draws in a 400-unit box and the portrait fills exactly that
+      // box. Shifting the viewBox (rather than moving the shapes) centres the
+      // blob in its square frame without disturbing the clip alignment.
+      viewBox="-50 -50 500 500"
+      style={props.style}
+      aria-hidden={props.image ? undefined : true}
+      role={props.image ? 'img' : undefined}
+      aria-label={props.image ? 'Profile portrait' : undefined}
+    >
       {!props.image && <animated.path fill={props.color} d={path} />}
 
       {props.image && (

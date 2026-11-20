@@ -1,11 +1,19 @@
 'use client';
 
-import React, { useState } from "react";
-import { Col, Container, Row, Card, Button, Form } from "react-bootstrap";
-import RichText from "./RichText";
-import Illustration from "./Illustration";
-import { Reveal, RevealGroup, RevealItem } from "./motion/Reveal";
-import Icon from "./Icon";
+import React, { useState } from 'react';
+import { ArrowUpRight, Send } from 'lucide-react';
+import RichText from './RichText';
+import Icon from './Icon';
+import PageHero from './ui/PageHero';
+import { Reveal, RevealGroup, RevealItem } from './motion/Reveal';
+
+/** Wraps every occurrence of `highlight` in the accent colour. */
+function highlighted(text, highlight) {
+  if (!highlight) return text;
+  return text.split(highlight).flatMap((chunk, i, arr) =>
+    i < arr.length - 1 ? [chunk, <span className="pink" key={i}>{highlight}</span>] : [chunk],
+  );
+}
 
 function Contact({ content = {}, illustration = null, animateIllustration = true }) {
   const form = content.form || {};
@@ -13,7 +21,7 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
 
   const [message, setMessage] = useState('');
@@ -26,7 +34,7 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -57,126 +65,108 @@ function Contact({ content = {}, illustration = null, animateIllustration = true
   };
 
   return (
-    <Container>
-      <Row>
-      <Col lg={4} className="image-p">
-      <div className="page-illustration">
-      <Illustration
+    <>
+      <PageHero
+        page="contact"
+        label="Contact"
+        heading={content.heading}
+        image={content.image}
         illustration={illustration}
-        src={content.image}
-        alt="contact-pic"
-        className="mb-4"
+        alt="Illustration: a person checking notifications on a park bench"
         animate={animateIllustration}
+        lead={
+          <>
+            <RichText value={content.leadPrefix} />
+            <a className="vx-btn vx-btn--soft vx-btn--sm" href={`mailto:${content.email}`}>
+              <Icon name="envelope" /> {content.emailButtonLabel}
+            </a>
+            {content.leadSuffix}
+          </>
+        }
       />
-      </div>
-      </Col>
-      <Col>
-      <h1><RichText value={content.heading} /></h1>
-      <p className="lead">
-        <RichText value={content.leadPrefix} />
-        <Button variant="secondary" size="sm" href={`mailto:${content.email}`} target="_blank">{content.emailButtonLabel}</Button>
-        {content.leadSuffix}
-      </p>
-      </Col>
-      </Row>
-      <hr className="my-4" />
-      <RevealGroup>
-      <Row className="g-4">
-      {(content.cards || []).map((card, index) => (
-        <Col lg={4} md={6} key={index}>
-        <RevealItem className="h-100">
-        <a href={card.href} target="_blank" rel="noreferrer" className="text-decoration-none">
-        <Card className="h-100 text-center contact-card border-0">
-          <Card.Body className="d-flex flex-column justify-content-center align-items-center p-4">
-            <div className="icon-wrapper mb-3">
-              <Icon name={card.icon} size="2x" />
-            </div>
-            <Card.Title className ="pink fw-bold">{card.title}</Card.Title>
-            <Card.Text className="text-muted small">
-              {card.highlight
-                ? card.text.split(card.highlight).flatMap((chunk, i, arr) =>
-                    i < arr.length - 1
-                      ? [chunk, <span className="pink" key={i}>{card.highlight}</span>]
-                      : [chunk],
-                  )
-                : card.text}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-        </a>
-        </RevealItem>
-        </Col>
-      ))}
-      </Row>
-      </RevealGroup>
 
-      {form.enabled !== false && (
-        <>
-          <hr className="my-5" />
-          <Row className="mb-5 pb-4">
-            <Col>
-              <h2 className="place mb-4 fw-bold" style={{ fontSize: '32px' }}>{form.title}</h2>
-              <div className="glass-card p-4">
-                <Form id="contact-form" onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-semibold">{form.nameLabel}</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder={form.namePlaceholder}
-                      required
-                      className="contact-input"
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-semibold">{form.emailLabel}</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder={form.emailPlaceholder}
-                      required
-                      className="contact-input"
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label className="fw-semibold">{form.messageLabel}</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      name="message"
-                      rows={4}
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder={form.messagePlaceholder}
-                      required
-                      className="contact-input"
-                    />
-                  </Form.Group>
-                  <div className="text-center">
-                    <Button variant="primary" type="submit" className="px-5 py-2 fw-bold" disabled={isSubmitting}>
-                      {isSubmitting ? form.submittingLabel : form.submitLabel}
-                    </Button>
-                  </div>
-                </Form>
-                {/* Rendered unconditionally so the live region already exists
-                    when the text arrives — a region added at the same moment
-                    as its content is unreliably announced. */}
-                <p
-                  role="status"
-                  aria-live="polite"
-                  className={`form-status text-center mt-3 mb-0 fw-bold${status ? ` is-${status}` : ''}`}
-                >
-                  {message}
-                </p>
+      <div className="vx-wrap vx-contact">
+        <RevealGroup className="vx-channels" role="list" stagger={0.06}>
+          {(content.cards || []).map((card, index) => (
+            <RevealItem key={index} role="listitem">
+              <a href={card.href} target="_blank" rel="noreferrer" className="vx-channel">
+                <span className="vx-iconbox">
+                  <Icon name={card.icon} size="lg" />
+                </span>
+                <span className="vx-channel__text">
+                  <span className="vx-channel__title">{card.title}</span>
+                  <span className="vx-channel__desc">{highlighted(card.text, card.highlight)}</span>
+                </span>
+                <ArrowUpRight className="vx-channel__arrow" size={20} aria-hidden="true" />
+              </a>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        {form.enabled !== false && (
+          <Reveal className="vx-card vx-card--pad vx-formcard">
+            <h2 className="vx-formcard__title">{form.title}</h2>
+
+            <form id="contact-form" className="vx-form" onSubmit={handleSubmit}>
+              <div className="vx-field">
+                <label htmlFor="contact-name">{form.nameLabel}</label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder={form.namePlaceholder}
+                  required
+                />
               </div>
-            </Col>
-          </Row>
-        </>
-      )}
-    </Container>
+              <div className="vx-field">
+                <label htmlFor="contact-email">{form.emailLabel}</label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder={form.emailPlaceholder}
+                  required
+                />
+              </div>
+              <div className="vx-field">
+                <label htmlFor="contact-message">{form.messageLabel}</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder={form.messagePlaceholder}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="vx-btn vx-btn--primary" disabled={isSubmitting}>
+                <Send size={16} aria-hidden="true" />
+                {isSubmitting ? form.submittingLabel : form.submitLabel}
+              </button>
+
+              {/* Rendered unconditionally so the live region already exists
+                  when the text arrives — a region added at the same moment as
+                  its content is unreliably announced. */}
+              <p
+                role="status"
+                aria-live="polite"
+                className={`form-status${status ? ` is-${status}` : ''}`}
+              >
+                {message}
+              </p>
+            </form>
+          </Reveal>
+        )}
+      </div>
+    </>
   );
 }
 

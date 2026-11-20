@@ -1,18 +1,41 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/styles/index.css';
 import '@/styles/components.css';
+import '@/styles/cv.css';
 import '@/styles/illustrations.css';
 import '@/styles/storyset.css';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
+import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google';
 import { getContent } from '@/lib/content';
 import { themeInitScript } from '@/lib/theme';
 import { Analytics } from '@vercel/analytics/next';
 
 // Font Awesome injects its own <style> at runtime; Next already ships the CSS above.
 config.autoAddCss = false;
+
+/**
+ * Three voices, each with one job. All variable fonts, self-hosted by next/font
+ * so there is no third-party request and no layout shift.
+ *
+ *   display  Bricolage Grotesque — headlines, big numbers. Has an optical-size
+ *            axis, so large type tightens up on its own.
+ *   sans     Geist — body copy and UI.
+ *   mono     Geist Mono — labels, tags, the terminal, anything "instrument".
+ *
+ * `latin-ext` is there for the city names in the gallery (Poznań, Västerås).
+ * The CSS custom properties are consumed in styles/index.css.
+ */
+const display = Bricolage_Grotesque({
+  subsets: ['latin', 'latin-ext'],
+  axes: ['opsz'],
+  display: 'swap',
+  variable: '--nf-display',
+});
+const sans = Geist({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--nf-sans' });
+const mono = Geist_Mono({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--nf-mono' });
 
 export async function generateMetadata() {
   const site = await getContent('site');
@@ -43,7 +66,11 @@ export default async function RootLayout({ children }) {
 }`;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <style dangerouslySetInnerHTML={{ __html: themeVars }} />
         <script

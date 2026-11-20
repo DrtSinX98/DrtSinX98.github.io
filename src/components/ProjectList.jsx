@@ -1,26 +1,32 @@
 import React from 'react';
-import Icon from "./Icon";
+import { ArrowUpRight } from 'lucide-react';
+import Icon from './Icon';
 
 /**
  * Card list used by every "Projects & Portfolios" tab.
  * Replaces the three near-identical AndroidProjects/DesignProjects/CompProjects
  * components; the projects themselves now come from the database.
+ *
+ * Each row is one link with a tile for its icon. The arrow marks it as external.
  */
 function ProjectList({ projects = [] }) {
   return (
-    <div className="project-list">
+    <ul className="vx-projects">
       {projects.map((project, index) => (
-        <a href={project.link} target="_blank" rel="noreferrer" className="project-card d-flex mb-3 text-decoration-none" key={index}>
-          <div className="project-icon-wrapper">
-            <Icon name={project.icon} size="3x" />
-          </div>
-          <div className="project-content p-3 text-start d-flex flex-column justify-content-center">
-            <h4 className="fw-bold pink mb-2">{project.title}</h4>
-            <p className="text-muted mb-0">{project.desc}</p>
-          </div>
-        </a>
+        <li key={index}>
+          <a href={project.link} target="_blank" rel="noreferrer" className="vx-project">
+            <span className="vx-project__icon">
+              <Icon name={project.icon} size="2x" />
+            </span>
+            <span className="vx-project__body">
+              <span className="vx-project__title">{project.title}</span>
+              <span className="vx-project__desc">{project.desc}</span>
+            </span>
+            <ArrowUpRight className="vx-project__arrow" size={20} aria-hidden="true" />
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 

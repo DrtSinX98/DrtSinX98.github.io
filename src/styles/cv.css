@@ -1,0 +1,190 @@
+/* CV modal — carried over unchanged from the previous design. The modal renders in
+   a portal outside .vx-site, so it relies only on the global theme tokens. */
+
+
+.custom-modal .modal-content {
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--elev-2);
+  color: var(--bs-body-color);
+  border-radius: var(--radius);
+}
+
+.cv-save-icon {
+  color: var(--bs-body-color);
+  opacity: 0.6;
+  transition: color var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+.cv-save-icon:hover {
+  color: var(--accent);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cv-save-icon:hover {
+    transform: scale(1.15);
+  }
+}
+
+.cv-header {
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 1.5rem;
+}
+
+.cv-name {
+  letter-spacing: -0.5px;
+}
+
+.contact-info span,
+.contact-info a {
+  font-size: 0.95rem;
+  color: var(--bs-body-color);
+}
+
+.section-title-sm {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-30);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.cv-section {
+  background: var(--surface-subtle);
+  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--surface-border);
+}
+
+.cv-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.cv-list {
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.cv-list li {
+  margin-bottom: 0.4rem;
+}
+
+.cv-list-no-bullet {
+  list-style-type: none;
+  padding-left: 0;
+  font-size: 0.95rem;
+}
+
+.cv-list-no-bullet li:not(:last-child) {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--surface-border);
+}
+
+.cv-date {
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--accent-10);
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+/* Were #aaa / #ccc, which sit near 2:1 against the light background. */
+.cv-supervisors {
+  font-size: 0.85rem;
+  color: var(--text-muted-strong);
+  margin-top: 0.3rem;
+}
+
+.cv-authors {
+  font-size: var(--fs-sm);
+  color: var(--text-muted-strong);
+}
+
+.cv-link {
+  color: var(--bs-body-color);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.cv-link:hover {
+  color: var(--accent);
+}
+
+/* PDF export runs html2pdf over a cloned subtree, which has to render light
+   regardless of the active theme. */
+.force-light-pdf {
+  background-color: #fff !important;
+  color: #212529 !important;
+  padding: 10px !important;
+}
+
+.force-light-pdf .cv-section {
+  background: #f8f9fa !important;
+  border-color: #e9ecef !important;
+}
+
+.force-light-pdf :is(h1, h4, h5, h6, p, span, li, strong, a, em) {
+  color: #212529 !important;
+}
+
+.force-light-pdf :is(.cv-supervisors, .cv-authors) {
+  color: #6c757d !important;
+}
+
+.force-light-pdf .cv-header,
+.force-light-pdf .cv-list-no-bullet li {
+  border-bottom-color: #e9ecef !important;
+}
+
+.force-light-pdf :is(.pink, .cv-role) {
+  color: #c91574 !important;
+}
+
+.force-light-pdf .social-badge {
+  border-color: rgb(201 21 116 / 0.3) !important;
+  color: #212529 !important;
+  background-color: transparent !important;
+}
+
+.force-light-pdf .cv-badge,
+.force-light-pdf .cv-date {
+  background-color: rgb(201 21 116 / 0.1) !important;
+  color: #c91574 !important;
+  border: 1px solid rgb(201 21 116 / 0.3) !important;
+}
+
+.force-light-pdf .cv-download-btn {
+  display: none !important;
+}
+
+/* Chips used inside the CV. These were shared primitives in the old stylesheet;
+   the CV is now their only user. */
+.cv-badge {
+  background-color: var(--accent-15) !important;
+  color: var(--bs-body-color) !important;
+  border: 1px solid var(--accent-30);
+  font-weight: 500;
+  padding: 0.3rem 0.6rem;
+}
+
+.social-badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background-color: var(--accent-10);
+  border: 1px solid var(--accent-30);
+  border-radius: var(--radius-pill);
+  color: var(--bs-body-color);
+  font-weight: 600;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.social-badge:hover { background-color: var(--accent); color: var(--on-accent); }
+
+/* Bootstrap utility classes the modal's markup relies on. */
+.custom-modal .pink { color: var(--accent-text); }
+.custom-modal :is(h1, h2, h3, h4, h5, h6) { font-family: var(--ff-display); }
