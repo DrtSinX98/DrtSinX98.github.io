@@ -165,6 +165,12 @@ html {
   html { scroll-behavior: auto; }
 }
 
+/* The public site hides the page scrollbar. Scrolling is unchanged (wheel, touch,
+   keyboard, find-in-page, anchors); only the bar is gone. Scoped to pages that
+   have the site shell, so the admin panel keeps its own. */
+html:has(.vx-site) { scrollbar-width: none; }
+html:has(.vx-site)::-webkit-scrollbar { display: none; }
+
 body {
   font-family: var(--ff-sans);
   -webkit-font-smoothing: antialiased;
