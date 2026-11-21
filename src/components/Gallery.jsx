@@ -2,18 +2,16 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { flushSync } from 'react-dom';
-import { ArrowLeft, Hand } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Hand, Maximize2, Minimize2, Pause, Play, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from 'react-simple-maps';
 import { Tooltip } from 'react-tooltip';
 import { RowsPhotoAlbum } from 'react-photo-album';
 import 'react-photo-album/rows.css';
-import Lightbox from 'yet-another-react-lightbox';
+import Lightbox, { useLightboxState } from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
 import Slideshow from 'yet-another-react-lightbox/plugins/slideshow';
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import CountryInfo from './CountryInfo';
 import RichText from './RichText';
 import PageHero from './ui/PageHero';
@@ -308,6 +306,69 @@ const CountryChips = memo(({ countries, onSelect, title }) => {
 });
 CountryChips.displayName = 'CountryChips';
 
+/**
+ * The photo viewer's filmstrip. It replaces the Thumbnails plugin, whose boxes are
+ * all one fixed size, so every photo that isn't that shape got black bars: here
+ * each thumbnail is as wide as its own photo (fixed height, the photo's aspect
+ * ratio), and the current one is brought to the middle of the strip.
+ */
+function PhotoStrip({ onGo }) {
+  const { slides, globalIndex } = useLightboxState();
+  const track = useRef(null);
+
+  useEffect(() => {
+    const box = track.current;
+    const item = box?.children[globalIndex];
+    if (!item) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    box.scrollTo({ left: item.offsetLeft - (box.clientWidth - item.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+  }, [globalIndex]);
+
+  if (slides.length < 2) return null;
+
+  // Dragging or scrolling the strip must not also swipe the photo behind it.
+  const keep = (e) => e.stopPropagation();
+
+  return (
+    <nav className="vx-strip" aria-label="Photos">
+      <ul className="vx-strip__track" ref={track} onPointerDown={keep} onWheel={keep}>
+        {slides.map((slide, i) => (
+          <li key={`${i}|${slide.src}`}>
+            <button
+              type="button"
+              className={`vx-strip__thumb${i === globalIndex ? ' is-active' : ''}`}
+              style={{ aspectRatio: `${slide.width || 3} / ${slide.height || 2}` }}
+              aria-label={`Photo ${i + 1} of ${slides.length}`}
+              aria-current={i === globalIndex ? 'true' : undefined}
+              onClick={() => onGo(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={slide.src} alt="" loading="lazy" decoding="async" draggable={false} />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+// The viewer's controls, drawn with the same line icons as the rest of the site.
+const lightboxIcon = (Icon) => {
+  const Rendered = () => <Icon className="yarl__icon" size={22} strokeWidth={2} aria-hidden="true" />;
+  return Rendered;
+};
+const LIGHTBOX_ICONS = {
+  iconClose: lightboxIcon(X),
+  iconPrev: lightboxIcon(ChevronLeft),
+  iconNext: lightboxIcon(ChevronRight),
+  iconZoomIn: lightboxIcon(ZoomIn),
+  iconZoomOut: lightboxIcon(ZoomOut),
+  iconSlideshowPlay: lightboxIcon(Play),
+  iconSlideshowPause: lightboxIcon(Pause),
+  iconEnterFullscreen: lightboxIcon(Maximize2),
+  iconExitFullscreen: lightboxIcon(Minimize2),
+};
+
 const LazyImage = ({ style, ...restProps }) => {
   const [loaded, setLoaded] = useState(false);
   return (
@@ -406,7 +467,13 @@ function Gallery({ content = {}, countries = [], galleries = {}, illustration = 
               open={lightbox.open}
               index={lightbox.index}
               close={() => setLightbox({ ...lightbox, open: false })}
-              plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+              plugins={[Fullscreen, Slideshow, Zoom]}
+              className="vx-lightbox"
+              render={{
+                ...LIGHTBOX_ICONS,
+                controls: () => <PhotoStrip onGo={(index) => setLightbox((l) => ({ ...l, index }))} />,
+              }}
+              on={{ view: ({ index }) => setLightbox((l) => (l.index === index ? l : { ...l, index })) }}
             />
           </>
         ) : (
