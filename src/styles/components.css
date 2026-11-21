@@ -363,6 +363,39 @@
 /* ---- theme toggle: a circle that stretches into a pill, then a list ---- */
 .vx-themewrap { position: relative; justify-self: end; width: 2.75rem; height: 2.75rem; }
 
+/* The first-visit hint under the theme button. */
+.vx-themehint {
+  position: absolute;
+  inset-block-start: calc(100% + 0.65rem);
+  inset-inline-end: 0;
+  z-index: 10;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+  box-shadow: var(--shadow-float);
+  font: 500 0.8rem/1.3 var(--ff-mono);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: themehint-in var(--dur) var(--ease);
+}
+/* A small pointer toward the button. */
+.vx-themehint::before {
+  content: "";
+  position: absolute;
+  inset-block-start: -0.36rem;
+  inset-inline-end: 1.05rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-block-start: 1px solid var(--line-strong);
+  border-inline-start: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  transform: rotate(45deg);
+}
+@keyframes themehint-in { from { opacity: 0; transform: translateY(-0.4rem); } }
+@media (prefers-reduced-motion: reduce) { .vx-themehint { animation: none; } }
+
 /* One element, three shapes. At rest (closed) it is the 2.75rem circle around the
    sun/moon button; on a long press (pill) it stretches leftwards, the button
    staying at the right end; clicking the theme (list) lets it grow downwards.

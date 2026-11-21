@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Icon from './Icon';
 import ThemePill from './ThemePill';
@@ -8,6 +8,26 @@ import { useTheme } from './ThemeProvider';
 import { VISITOR_COOKIE } from '@/lib/themePresets';
 
 const LONG_PRESS_MS = 600; // hold this long to open the theme pill
+const USED_KEY = 'vx-theme-used'; // set once the visitor has opened the pill
+const HINT_KEY = 'vx-theme-hint'; // how many times the hint has been shown
+const HINT_MAX = 3; // …before it stops appearing
+const HINT_DELAY_MS = 350; // hover this long before it shows
+
+// Storage can throw (private windows, blocked cookies); the hint then just shows.
+const read = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+const write = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* nothing to do */
+  }
+};
 
 /**
  * One theme control for every screen size — it replaces a hidden-on-mobile
@@ -23,6 +43,10 @@ const LONG_PRESS_MS = 600; // hold this long to open the theme pill
  * into a pill showing the current colour template; click the pill to see them all. The
  * choice is a cookie in the visitor's own browser — it changes what they see and
  * nothing else (see lib/visitorTheme.js).
+ *
+ * A visitor who has not found the long press yet gets a small hint when they
+ * hover (or keyboard-focus) the button — at most three times, and never once they
+ * have opened the pill. Touch has no hover, so it is not shown there.
  */
 export default function ThemeToggle() {
   const { theme, toggleTheme, preset, sitePreset, visitor } = useTheme();
@@ -34,7 +58,45 @@ export default function ThemeToggle() {
   const wasHeld = useRef(false);
   const button = useRef(null);
 
-  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  const [hint, setHint] = useState(false);
+  const hintTimer = useRef(null);
+  const hintId = useId();
+
+  useEffect(
+    () => () => {
+      clearTimeout(holdTimer.current);
+      clearTimeout(hintTimer.current);
+    },
+    [],
+  );
+
+  const showHint = () => {
+    if (phase !== 'closed' || read(USED_KEY) || Number(read(HINT_KEY)) >= HINT_MAX) return;
+    clearTimeout(hintTimer.current);
+    hintTimer.current = setTimeout(() => {
+      setHint(true);
+      write(HINT_KEY, String(Number(read(HINT_KEY)) + 1));
+    }, HINT_DELAY_MS);
+  };
+  const hideHint = useCallback(() => {
+    clearTimeout(hintTimer.current);
+    setHint(false);
+  }, []);
+
+  // The hint gives way to the pill, and Escape dismisses it (it must be
+  // dismissible without moving the pointer or focus).
+  useEffect(() => {
+    if (phase === 'closed') return undefined;
+    write(USED_KEY, '1');
+    hideHint();
+    return undefined;
+  }, [phase, hideHint]);
+  useEffect(() => {
+    if (!hint) return undefined;
+    const onKey = (e) => e.key === 'Escape' && hideHint();
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [hint, hideHint]);
 
   const close = useCallback(() => {
     setPhase('closed');
@@ -43,6 +105,7 @@ export default function ThemeToggle() {
 
   const startHold = () => {
     wasHeld.current = false;
+    hideHint();
     clearTimeout(holdTimer.current);
     holdTimer.current = setTimeout(() => {
       wasHeld.current = true;
@@ -88,11 +151,18 @@ export default function ThemeToggle() {
           role="switch"
           aria-checked={theme === 'dark'}
           aria-label="Dark mode"
+          aria-describedby={hint ? hintId : undefined}
           className="vx-themebtn"
           onClick={onClick}
+          onPointerEnter={(e) => e.pointerType === 'mouse' && showHint()}
+          onFocus={(e) => e.currentTarget.matches(':focus-visible') && showHint()}
+          onBlur={hideHint}
           onPointerDown={startHold}
           onPointerUp={endHold}
-          onPointerLeave={endHold}
+          onPointerLeave={() => {
+            endHold();
+            hideHint();
+          }}
           onPointerCancel={endHold}
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && !e.repeat && startHold()}
           onKeyUp={endHold}
@@ -102,6 +172,12 @@ export default function ThemeToggle() {
           <Icon name="moon" className="vx-themebtn__moon" />
         </button>
       </ThemePill>
+
+      {hint && (
+        <span id={hintId} role="tooltip" className="vx-themehint">
+          Hold to change theme
+        </span>
+      )}
     </div>
   );
 }
