@@ -397,13 +397,16 @@
   box-shadow: var(--shadow-float);
 }
 
-.vx-themepill__row { display: flex; align-items: center; height: calc(var(--pill-h) - 2px); }
+.vx-themepill__row { position: relative; height: calc(var(--pill-h) - 2px); }
 
-/* The sun/moon button: always the last thing in the row, so it stays put. */
+/* The sun/moon button is pinned to the row's right end, so it stays put however
+   narrow the shape is (an in-flow button would be pushed out of a circle by the
+   theme's own padding). */
 .vx-themebtn {
-  position: relative;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
   display: grid;
-  flex: none;
   place-items: center;
   width: calc(var(--pill-h) - 2px);
   height: calc(var(--pill-h) - 2px);
@@ -430,7 +433,7 @@
 [data-bs-theme="light"] .vx-themebtn__moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
 [data-bs-theme="dark"] .vx-themebtn__sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
 
-/* The current theme, to the left of the button. Squeezed to nothing while closed. */
+/* The current theme, to the left of the button (hidden while closed). */
 .vx-themepill__head,
 .vx-themepill__opt {
   display: flex;
@@ -446,7 +449,7 @@
   white-space: nowrap;
   cursor: var(--cursor-point, pointer);
 }
-.vx-themepill__head { flex: 1; min-width: 0; border-radius: 999px 0 0 999px; transition: opacity var(--dur-fast) var(--ease), visibility 0s linear var(--dur-slow); }
+.vx-themepill__head { padding-inline-end: calc(var(--pill-h) - 2px); border-radius: 999px; transition: opacity var(--dur-fast) var(--ease), visibility 0s linear var(--dur-slow); }
 .vx-themepill.is-closed .vx-themepill__head { opacity: 0; visibility: hidden; }
 .vx-themepill:not(.is-closed) .vx-themepill__head { transition-delay: 0s; }
 .vx-themepill__head:hover,
