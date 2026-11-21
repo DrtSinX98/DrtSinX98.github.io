@@ -107,8 +107,10 @@ export default function CountryInfo({ country, data, visitedCities, labels = {} 
             center={data.mapCenter}
             zoom={data.mapZoom}
             minZoom={data.mapZoom}
-            maxZoom={data.mapZoom * 4}
-            filterZoomEvent={e => e.type === 'wheel'}
+            maxZoom={data.mapZoom}
+            // The map is a picture, not a control: no wheel, pinch or drag. Any of
+            // those would swallow the gesture the page needs to scroll.
+            filterZoomEvent={() => false}
           >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
