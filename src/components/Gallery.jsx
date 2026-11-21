@@ -310,7 +310,9 @@ CountryChips.displayName = 'CountryChips';
  * The photo viewer's filmstrip. It replaces the Thumbnails plugin, whose boxes are
  * all one fixed size, so every photo that isn't that shape got black bars: here
  * each thumbnail is as wide as its own photo (fixed height, the photo's aspect
- * ratio), and the current one is brought to the middle of the strip.
+ * ratio, passed as `--ar`), and the current one is brought to the middle of the
+ * strip. The width is computed outright rather than left to `aspect-ratio`: on a
+ * <button> Safari did not derive it, and a zero-width thumbnail shows nothing.
  */
 function PhotoStrip({ onGo }) {
   const { slides, globalIndex } = useLightboxState();
@@ -337,7 +339,7 @@ function PhotoStrip({ onGo }) {
             <button
               type="button"
               className={`vx-strip__thumb${i === globalIndex ? ' is-active' : ''}`}
-              style={{ aspectRatio: `${slide.width || 3} / ${slide.height || 2}` }}
+              style={{ '--ar': (slide.width || 3) / (slide.height || 2) }}
               aria-label={`Photo ${i + 1} of ${slides.length}`}
               aria-current={i === globalIndex ? 'true' : undefined}
               onClick={() => onGo(i)}
