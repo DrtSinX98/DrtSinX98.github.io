@@ -1170,26 +1170,35 @@
   opacity: 1 !important;
 }
 
-/* ---- country list: the About page's skills panel, with a pill per country ---- */
+/* ---- country list: the About page's skills panel, with a tile per country ---- */
+/* Rounded rectangles that wrap and grow to fill each line, so a row is always full:
+   nothing is left over at the end of a line the way it is with pills of different
+   widths. Full lines are even; only a short last line stretches its tiles wider. */
 .vx-countries__list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.vx-countries__list > li { flex: 1 1 9rem; min-width: 0; }
+/* Phones always get two to a line, even on the narrowest screens. */
+@media (max-width: 575.98px) { .vx-countries__list > li { flex-basis: calc(50% - 0.25rem); } }
 .vx-skillrow__icon--num { font: 600 0.85rem/1 var(--ff-mono); }
 .vx-country {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.9rem 0.35rem 0.65rem;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
   border: 1px solid var(--accent-30);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--ink);
   font-size: 0.875rem;
   font-weight: 600;
+  text-align: start;
   cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .vx-country:hover { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
 .vx-country:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
-.vx-country__flag { font-size: 1.1rem; line-height: 1; }
+.vx-country__flag { flex: none; font-size: 1.1rem; line-height: 1; }
+.vx-country__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---- country view ---- */
 /* One card: the country's map is a panel inside it, beside the facts (above them on

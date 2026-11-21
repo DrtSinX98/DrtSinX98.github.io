@@ -293,7 +293,7 @@ const CountryChips = memo(({ countries, onSelect, title }) => {
                 <li key={country.name}>
                   <button type="button" className="vx-country" onClick={() => onSelect(country.name)}>
                     <span className="vx-country__flag" aria-hidden="true">{country.flag || '🌍'}</span>
-                    {country.name}
+                    <span className="vx-country__name">{country.name}</span>
                   </button>
                 </li>
               ))}
