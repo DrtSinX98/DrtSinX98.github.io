@@ -415,8 +415,10 @@
   border-radius: calc(var(--pill-h) / 2);
   background: var(--surface-1);
   color: var(--ink);
+  /* Closing eases straight to the circle: a spring here would overshoot below
+     the circle's own width and clip the sun/moon button. */
   transition:
-    width var(--dur-slow) var(--ease-spring),
+    width var(--dur-slow) var(--ease),
     background-color var(--dur) var(--ease),
     border-color var(--dur) var(--ease),
     box-shadow var(--dur) var(--ease);
@@ -425,6 +427,8 @@
 .vx-themepill.is-pill,
 .vx-themepill.is-list {
   width: var(--pill-w);
+  transition-property: width, background-color, border-color, box-shadow;
+  transition-timing-function: var(--ease-spring), var(--ease), var(--ease), var(--ease);
   border-color: var(--line-strong);
   background: var(--surface-2);
   box-shadow: var(--shadow-float);
@@ -448,6 +452,7 @@
   border-radius: 50%;
   background: transparent;
   color: var(--ink);
+  z-index: 2; /* above the row that bounces up during a pick */
   cursor: var(--cursor-point, pointer);
   transition: background-color var(--dur) var(--ease);
   -webkit-touch-callout: none;
@@ -514,17 +519,21 @@
 }
 .vx-themepill__opt { transition: opacity var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease); }
 
-/* Choosing: the others fade, the chosen row bounces up over the top row (whose
-   own text gives way), then the whole shape folds back into the circle. */
-.vx-themepill.is-picking .vx-themepill__opt:not(.is-flying) { opacity: 0; }
-.vx-themepill.is-picking .vx-themepill__head { opacity: 0; transition-delay: 0s; }
+/* Choosing, in steps (see ThemePill): the others fade and the chosen row glides up
+   over the top row, outside its list's own box. It lands softly (no overshoot, which
+   would be cut off by the pill's edge); then the list folds away, and the row —
+   showing exactly what the top row now shows — fades out so the swap is seamless. */
+.vx-themepill.is-picking .vx-themepill__opt:not(.is-flying) { opacity: 0; transition-duration: 120ms; }
+.vx-themepill.is-picking .vx-themepill__list { overflow: visible; }
 .vx-themepill__opt.is-flying {
   position: relative;
   z-index: 1;
   background: var(--surface-2);
   transform: translateY(var(--fly, 0));
-  transition: transform 420ms var(--ease-spring);
+  will-change: transform;
+  transition: transform 520ms cubic-bezier(0.32, 0.72, 0, 1), opacity 160ms var(--ease);
 }
+.vx-themepill.is-landed .vx-themepill__opt.is-flying { opacity: 0; }
 
 .vx-themepill__swatches {
   display: flex;

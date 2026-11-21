@@ -5,13 +5,14 @@
  * are real pictures of the page and nothing has to be animated by hand.
  *
  * Without that API, or for visitors who ask for reduced motion, it just calls
- * `update` and the change is instant.
+ * `update` and the change is instant. Returns a promise that settles when the
+ * wash is over, so the caller can follow it with the next step.
  */
-export function morph(update, from, duration = 850) {
+export function morph(update, from, duration = 1400) {
   const instant = !document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (instant) {
     update();
-    return;
+    return Promise.resolve();
   }
 
   const { x, y } = from;
@@ -29,6 +30,7 @@ export function morph(update, from, duration = 850) {
       ),
     )
     .catch(() => {});
+  return transition.finished.catch(() => {});
 }
 
 /** The middle of the portrait if it is on this page, else of `fallback` (the switch). */

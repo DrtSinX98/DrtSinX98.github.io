@@ -7,7 +7,8 @@ import { THEME_PRESETS } from '@/lib/themePresets';
 // "Manual" is the admin's own free-form option; visitors choose from the templates.
 const OPTIONS = THEME_PRESETS.filter((p) => p.theme);
 const themeOf = (key) => THEME_PRESETS.find((p) => p.key === key);
-const FLY_MS = 420; // how long the chosen row takes to bounce up to the top
+const FLY_MS = 520; // the chosen row glides up into the top row (= its CSS transition)…
+const FOLD_MS = 450; // …the list folds away (= --dur-slow) and only then does the colour wash start
 
 const Swatches = ({ theme }) => (
   <span className="vx-themepill__swatches" aria-hidden="true">
@@ -40,11 +41,20 @@ export default function ThemePill({ phase, setPhase, preset, sitePreset, visitor
   const timer = useRef(null);
   const open = phase !== 'closed';
 
+  // A pick plays out in steps: `flying` (the row rises), then `landed` (the list
+  // folds away and the top row shows the new name), then the page washes (onPick),
+  // then the shape closes — which resets all three.
   const [flying, setFlying] = useState(null);
+  const [landed, setLanded] = useState(null);
   useEffect(() => () => clearTimeout(timer.current), []);
+  useEffect(() => {
+    if (phase !== 'closed') return;
+    setFlying(null);
+    setLanded(null);
+  }, [phase]);
 
-  // `preset` is what is on screen (the provider updates it the moment a pick is applied).
-  const shown = themeOf(preset);
+  // What the top row names: the pick once it has landed, else what is on screen.
+  const shown = themeOf(landed || preset);
 
   const rows = [
     ...(visitor
@@ -81,18 +91,20 @@ export default function ThemePill({ phase, setPhase, preset, sitePreset, visitor
     const dy = head.current.getBoundingClientRect().top - row.getBoundingClientRect().top;
     row.style.setProperty('--fly', `${dy}px`);
     setFlying(option.key);
+
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     timer.current = setTimeout(
       () => {
-        setFlying(null);
-        onPick(option.key === 'default' ? null : option.key);
+        setLanded(option.key === 'default' ? sitePreset : option.key);
+        setPhase('pill');
+        timer.current = setTimeout(() => onPick(option.key === 'default' ? null : option.key), reduced ? 0 : FOLD_MS);
       },
       reduced ? 0 : FLY_MS,
     );
   };
 
   return (
-    <div className={`vx-themepill is-${phase}${flying ? ' is-picking' : ''}`} ref={panel}>
+    <div className={`vx-themepill is-${phase}${flying ? ' is-picking' : ''}${landed ? ' is-landed' : ''}`} ref={panel}>
       <div className="vx-themepill__row">
         <button
           ref={head}

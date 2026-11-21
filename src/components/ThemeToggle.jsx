@@ -145,17 +145,18 @@ export default function ThemeToggle() {
     toggleTheme();
   };
 
-  const pick = (key) => {
+  const pick = async (key) => {
     // `key` null = back to the site's own theme.
     document.cookie = key
       ? `${VISITOR_COOKIE}=${key}; path=/; max-age=31536000; samesite=lax`
       : `${VISITOR_COOKIE}=; path=/; max-age=0; samesite=lax`;
-    setPhase('closed');
-    // Colours and portrait change here and now, as a wash spreading out from the
-    // portrait; the re-render on the server (which now reads the cookie) follows
-    // for what only it can draw: illustrations, logo and particles.
-    morph(() => applyPreset(key), morphOrigin(button.current));
+    // The server re-renders in parallel (it now reads the cookie) for what only it
+    // can draw: illustrations, logo and particles.
     startTransition(() => router.refresh());
+    // Colours and portrait change here and now, as a wash spreading out from the
+    // portrait. The pill stays as it is until the wash is over, then closes.
+    await morph(() => applyPreset(key), morphOrigin(button.current));
+    setPhase('closed');
   };
 
   return (
