@@ -5,12 +5,21 @@ import { useSpring, animated } from '@react-spring/web';
 import blobshape from 'blobshape';
 import Orbit from './ui/Orbit';
 import usePrefersReducedMotion from '@/lib/usePrefersReducedMotion';
+import { useTheme } from './ThemeProvider';
+import { portraitFor } from '@/lib/portrait';
 
 /**
  * The hero portrait: the same living, morphing blob as before, now square-framed
  * (so it scales cleanly to any width) and ringed by two electron orbits.
  */
 function Rimage({ light, dark }) {
+  // `light` / `dark` are the original images. The recoloured URL is built here, in
+  // the browser, from the theme state — so a pick swaps the portrait with no wait
+  // for the server (and the image is already cached, see PortraitPreload).
+  const { preset, visitor, siteColours } = useTheme();
+  const lightUrl = portraitFor('light', { preset, visitor }, siteColours, light);
+  const darkUrl = portraitFor('dark', { preset, visitor }, siteColours, dark);
+
   // The blob paths are randomised on every frame, so they can't be server
   // rendered. The fixed-ratio wrapper below is, which keeps the layout stable.
   const [mounted, setMounted] = useState(false);
@@ -25,7 +34,7 @@ function Rimage({ light, dark }) {
             <Blob color="var(--secondary-color)" style={{ opacity: 0.8 }} />
             <Blob color="var(--primary-color)" style={{ opacity: 1 }} />
             <Blob color="var(--secondary-color)" style={{ opacity: 1 }} />
-            <Blob image light={light} dark={dark} style={{ opacity: 0.95 }} />
+            <Blob image light={lightUrl} dark={darkUrl} style={{ opacity: 0.95 }} />
           </>
         )}
       </div>

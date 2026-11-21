@@ -9,6 +9,8 @@
  * (to build the URLs) and in plain node.
  */
 
+import { presetTheme } from './themePresets';
+
 function hash(text) {
   let h = 0x811c9dc5;
   for (let i = 0; i < text.length; i += 1) {
@@ -36,4 +38,15 @@ const forVisitor = (theme) => (theme?.visitor ? `&t=${encodeURIComponent(theme.p
 export function portraitUrl(variant, theme, src) {
   if (!src) return src;
   return `/api/profile-image/${variant}?v=${hash(`${RECOLOR_VERSION}|${themeText(theme)}|${src}`)}${forVisitor(theme)}`;
+}
+
+/**
+ * The same URL, for a theme state the browser knows about but the server has not
+ * rendered yet: `{ preset, visitor }` as the theme provider holds it, plus the
+ * site's own colours. Gives exactly the URL the server would, so an image
+ * preloaded here is the one the page later asks for.
+ */
+export function portraitFor(variant, { preset, visitor }, siteColours, src) {
+  const colours = visitor ? presetTheme(preset) : null;
+  return portraitUrl(variant, colours ? { ...colours, preset, visitor: true } : siteColours, src);
 }

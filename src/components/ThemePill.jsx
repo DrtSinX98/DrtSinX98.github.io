@@ -40,19 +40,23 @@ export default function ThemePill({ phase, setPhase, preset, sitePreset, visitor
   const timer = useRef(null);
   const open = phase !== 'closed';
 
-  // What this visitor picked a moment ago, until the server render catches up.
-  const [picked, setPicked] = useState(null);
   const [flying, setFlying] = useState(null);
-  useEffect(() => setPicked(null), [preset, visitor]);
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const isVisitor = picked ? picked !== 'default' : visitor;
-  const key = picked ? (picked === 'default' ? sitePreset : picked) : visitor ? preset : sitePreset;
-  const shown = themeOf(key);
+  // `preset` is what is on screen (the provider updates it the moment a pick is applied).
+  const shown = themeOf(preset);
 
   const rows = [
-    ...(isVisitor ? [{ key: 'default', label: 'Site default', theme: themeOf(sitePreset)?.theme }] : []),
-    ...OPTIONS.filter((o) => o.key !== key),
+    ...(visitor
+      ? [
+          {
+            key: 'default',
+            label: 'Site default',
+            theme: themeOf(sitePreset)?.theme,
+          },
+        ]
+      : []),
+    ...OPTIONS.filter((o) => o.key !== preset),
   ];
 
   useEffect(() => {
@@ -80,7 +84,6 @@ export default function ThemePill({ phase, setPhase, preset, sitePreset, visitor
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     timer.current = setTimeout(
       () => {
-        setPicked(option.key);
         setFlying(null);
         onPick(option.key === 'default' ? null : option.key);
       },

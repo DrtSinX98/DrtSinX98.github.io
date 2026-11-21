@@ -1,8 +1,25 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { flushSync } from 'react-dom';
+import { presetTheme, resolveTheme } from '@/lib/themePresets';
 
-const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {}, preset: 'rose', sitePreset: 'rose', visitor: false });
+const ThemeContext = createContext({
+  theme: 'light',
+  toggleTheme: () => {},
+  preset: 'rose',
+  sitePreset: 'rose',
+  siteColours: {},
+  visitor: false,
+  applyPreset: () => {},
+});
+
+const VARS = {
+  primaryColor: '--primary-color',
+  secondaryColor: '--secondary-color',
+  tertiaryColor: '--tertiary-color',
+  primaryColorDark: '--primary-color-dark',
+};
 
 export const useTheme = () => useContext(ThemeContext);
 
@@ -18,8 +35,34 @@ export const useTheme = () => useContext(ThemeContext);
  * this visitor picked it themselves (long-press on the switch) or it is the
  * site's own, and `sitePreset` is the site's own whichever is on screen.
  */
-export default function ThemeProvider({ children, dayStartHour = 6, nightStartHour = 18, preset = 'rose', sitePreset = 'rose', visitor = false }) {
+export default function ThemeProvider({
+  children,
+  dayStartHour = 6,
+  nightStartHour = 18,
+  preset = 'rose',
+  sitePreset = 'rose',
+  siteColours = {},
+  visitor = false,
+}) {
   const [theme, setTheme] = useState('light');
+
+  // What is on screen. The server's answer wins whenever it arrives; until then
+  // a pick shows immediately.
+  const [view, setView] = useState({ preset, visitor });
+  useEffect(() => {
+    setView({ preset, visitor });
+    // The server's own <style> now carries these colours, so drop the early ones.
+    Object.values(VARS).forEach((name) => document.documentElement.style.removeProperty(name));
+  }, [preset, visitor]);
+
+  const applyPreset = useCallback(
+    (key) => {
+      const colours = key ? presetTheme(key) : resolveTheme(siteColours);
+      flushSync(() => setView(key ? { preset: key, visitor: true } : { preset: sitePreset, visitor: false }));
+      Object.entries(VARS).forEach(([k, name]) => document.documentElement.style.setProperty(name, colours[k]));
+    },
+    [siteColours, sitePreset],
+  );
 
   useEffect(() => {
     const manualOverride = sessionStorage.getItem('darkModeManual');
@@ -43,5 +86,19 @@ export default function ThemeProvider({ children, dayStartHour = 6, nightStartHo
     });
   }, []);
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme, preset, sitePreset, visitor }}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+        preset: view.preset,
+        sitePreset,
+        siteColours,
+        visitor: view.visitor,
+        applyPreset,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 }

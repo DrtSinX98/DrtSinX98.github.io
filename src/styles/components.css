@@ -1225,3 +1225,9 @@ html .yarl__root {
   font-synthesis: none;
   letter-spacing: 0;
 }
+
+/* ---- theme change: the new theme is revealed by a growing circle (lib/themeMorph.js) ---- */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }

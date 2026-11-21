@@ -6,6 +6,7 @@ import Icon from './Icon';
 import ThemePill from './ThemePill';
 import { useTheme } from './ThemeProvider';
 import { VISITOR_COOKIE } from '@/lib/themePresets';
+import { morph, morphOrigin } from '@/lib/themeMorph';
 
 const LONG_PRESS_MS = 600; // hold this long to open the theme pill
 const USED_KEY = 'vx-theme-used'; // set once the visitor has opened the pill
@@ -49,7 +50,7 @@ const write = (key, value) => {
  * have opened the pill. Touch has no hover, so it is not shown there.
  */
 export default function ThemeToggle() {
-  const { theme, toggleTheme, preset, sitePreset, visitor } = useTheme();
+  const { theme, toggleTheme, preset, sitePreset, visitor, applyPreset } = useTheme();
   const router = useRouter();
   const [, startTransition] = useTransition();
 
@@ -129,8 +130,10 @@ export default function ThemeToggle() {
       ? `${VISITOR_COOKIE}=${key}; path=/; max-age=31536000; samesite=lax`
       : `${VISITOR_COOKIE}=; path=/; max-age=0; samesite=lax`;
     setPhase('closed');
-    // Re-render on the server, which now reads the cookie: colours, portrait,
-    // illustrations, logo and particles all follow.
+    // Colours and portrait change here and now, as a wash spreading out from the
+    // portrait; the re-render on the server (which now reads the cookie) follows
+    // for what only it can draw: illustrations, logo and particles.
+    morph(() => applyPreset(key), morphOrigin(button.current));
     startTransition(() => router.refresh());
   };
 

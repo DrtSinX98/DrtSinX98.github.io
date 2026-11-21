@@ -1,10 +1,9 @@
 import Home from '@/components/Home';
-import { getContentMany } from '@/lib/content';
-import { visitorTheme } from '@/lib/visitorTheme';
+import { getContent } from '@/lib/content';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const { home, site } = await getContentMany(['home', 'site']);
-  return <Home content={home} theme={await visitorTheme(site.theme)} serverHour={new Date().getHours()} />;
+  const home = await getContent('home');
+  return <Home content={home} serverHour={new Date().getHours()} />;
 }

@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import Preloader from '@/components/Preloader';
 import ParticlesBG from '@/components/ParticlesBg';
 import ScrollTop from '@/components/ScrollTop';
+import PortraitPreload from '@/components/PortraitPreload';
 
 export default async function SiteLayout({ children }) {
   const { site, home } = await getContentMany(['site', 'home']);
@@ -36,6 +37,7 @@ export default async function SiteLayout({ children }) {
       nightStartHour={theme.nightStartHour ?? 18}
       preset={theme.visitor ? theme.preset : presetOf(theme)}
       sitePreset={presetOf(site.theme || {})}
+      siteColours={site.theme || {}}
       visitor={Boolean(theme.visitor)}
     >
       <MotionProvider>
@@ -54,6 +56,7 @@ export default async function SiteLayout({ children }) {
           </Preloader>
           <Footer owner={site.footer?.owner} writtenIn={site.footer?.writtenIn} />
           <ScrollTop />
+          <PortraitPreload light={light} dark={dark} />
         </div>
       </MotionProvider>
     </ThemeProvider>

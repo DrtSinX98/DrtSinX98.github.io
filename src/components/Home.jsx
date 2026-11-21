@@ -4,9 +4,8 @@ import Rimage from './Rimage';
 import Bio from './Bio';
 import Buttons from './Buttons';
 import { Reveal } from './motion/Reveal';
-import { portraitUrl } from '@/lib/portrait';
 
-function Home({ content = {}, serverHour, theme }) {
+function Home({ content = {}, serverHour }) {
   return (
     <>
       <section className="vx-hero vx-wrap">
@@ -16,10 +15,7 @@ function Home({ content = {}, serverHour, theme }) {
             <Buttons buttons={content.buttons || []} />
           </Reveal>
         </div>
-        <Rimage
-          light={portraitUrl('light', theme, content.profileImageLight)}
-          dark={portraitUrl('dark', theme, content.profileImageDark)}
-        />
+        <Rimage light={content.profileImageLight} dark={content.profileImageDark} />
       </section>
 
       <section className="vx-bento vx-wrap">
