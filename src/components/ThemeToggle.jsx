@@ -13,6 +13,8 @@ const USED_KEY = 'vx-theme-used'; // set once the visitor has opened the pill
 const HINT_KEY = 'vx-theme-hint'; // how many times the hint has been shown
 const HINT_MAX = 3; // …before it stops appearing
 const HINT_DELAY_MS = 350; // hover this long before it shows
+const TOUCH_DELAY_MS = 3000; // on touch screens: after the page has settled…
+const TOUCH_SHOWN_MS = 5000; // …shown this long, since there is no pointer to leave
 
 // Storage can throw (private windows, blocked cookies); the hint then just shows.
 const read = (key) => {
@@ -47,7 +49,8 @@ const write = (key, value) => {
  *
  * A visitor who has not found the long press yet gets a small hint when they
  * hover (or keyboard-focus) the button — at most three times, and never once they
- * have opened the pill. Touch has no hover, so it is not shown there.
+ * have opened the pill. Touch has no hover, so there it appears by itself a few
+ * seconds after the page loads and fades after a few more.
  */
 export default function ThemeToggle() {
   const { theme, toggleTheme, preset, sitePreset, visitor, applyPreset } = useTheme();
@@ -59,14 +62,16 @@ export default function ThemeToggle() {
   const wasHeld = useRef(false);
   const button = useRef(null);
 
-  const [hint, setHint] = useState(false);
+  const [hint, setHint] = useState(false); // false | 'hover' | 'touch'
   const hintTimer = useRef(null);
+  const touchTimer = useRef(null);
   const hintId = useId();
 
   useEffect(
     () => () => {
       clearTimeout(holdTimer.current);
       clearTimeout(hintTimer.current);
+      clearTimeout(touchTimer.current);
     },
     [],
   );
@@ -75,13 +80,29 @@ export default function ThemeToggle() {
     if (phase !== 'closed' || read(USED_KEY) || Number(read(HINT_KEY)) >= HINT_MAX) return;
     clearTimeout(hintTimer.current);
     hintTimer.current = setTimeout(() => {
-      setHint(true);
+      setHint('hover');
       write(HINT_KEY, String(Number(read(HINT_KEY)) + 1));
     }, HINT_DELAY_MS);
   };
   const hideHint = useCallback(() => {
     clearTimeout(hintTimer.current);
+    clearTimeout(touchTimer.current);
     setHint(false);
+  }, []);
+
+  // Touch screens: no hover to wait for, so show it once the page has settled.
+  useEffect(() => {
+    if (!window.matchMedia('(hover: none)').matches) return undefined;
+    if (read(USED_KEY) || Number(read(HINT_KEY)) >= HINT_MAX) return undefined;
+    hintTimer.current = setTimeout(() => {
+      setHint('touch');
+      write(HINT_KEY, String(Number(read(HINT_KEY)) + 1));
+      touchTimer.current = setTimeout(() => setHint(false), TOUCH_SHOWN_MS);
+    }, TOUCH_DELAY_MS);
+    return () => {
+      clearTimeout(hintTimer.current);
+      clearTimeout(touchTimer.current);
+    };
   }, []);
 
   // The hint gives way to the pill, and Escape dismisses it (it must be
@@ -178,7 +199,7 @@ export default function ThemeToggle() {
 
       {hint && (
         <span id={hintId} role="tooltip" className="vx-themehint">
-          Hold to change theme
+          {hint === 'touch' ? 'Touch and hold to change theme' : 'Hold to change theme'}
         </span>
       )}
     </div>
