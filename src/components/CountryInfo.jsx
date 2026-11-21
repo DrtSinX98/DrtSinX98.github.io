@@ -93,10 +93,10 @@ export default function CountryInfo({ country, data, visitedCities, labels = {} 
   if (!data) return null;
 
   return (
-    <div className="vx-country-info">
+    <div className="vx-card vx-country-info">
       {/* The country, drawn large; its greeting appears on hover. */}
       <div
-        className="vx-card vx-country-info__map"
+        className="vx-country-info__map"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         role="img"
@@ -172,7 +172,7 @@ export default function CountryInfo({ country, data, visitedCities, labels = {} 
         </ComposableMap>
       </div>
 
-      <div className="vx-card vx-card--pad vx-country-info__facts">
+      <div className="vx-country-info__facts">
         <h2 className="vx-country-info__name">{data.displayName || data.name}</h2>
 
         <dl className="vx-facts">

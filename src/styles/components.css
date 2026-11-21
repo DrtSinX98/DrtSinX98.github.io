@@ -1192,16 +1192,27 @@
 .vx-country__flag { font-size: 1.1rem; line-height: 1; }
 
 /* ---- country view ---- */
-.vx-country-info { display: grid; gap: 1.5rem; }
+/* One card: the country's map is a panel inside it, beside the facts (above them on
+   phones, where it is kept short so the facts are not pushed off the screen). */
+.vx-country-info { display: grid; gap: clamp(1.25rem, 3vw, 2rem); padding: clamp(1rem, 3vw, 1.5rem); }
 @media (min-width: 768px) { .vx-country-info { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+.vx-country-info:hover { border-color: var(--line); }
 /* d3-zoom pins `touch-action: none` on the map's svg, which would stop a swipe that
    starts on it from scrolling the page; the map takes no gestures, so give it back. */
 .vx-country-info__map svg { touch-action: manipulation !important; }
-.vx-country-info__map { display: grid; place-items: center; min-height: 20rem; padding: 0; overflow: hidden; background: var(--globe-ocean); }
-.vx-country-info__facts { display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
+.vx-country-info__map { display: grid; place-items: center; overflow: hidden; aspect-ratio: 16 / 10; border-radius: var(--radius); background: var(--globe-ocean); }
+@media (min-width: 768px) { .vx-country-info__map { aspect-ratio: auto; min-height: 17rem; } }
+.vx-country-info__facts { display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; min-width: 0; }
+@media (min-width: 768px) { .vx-country-info__facts { padding-block: 0.5rem; padding-inline-end: 0.5rem; } }
 .vx-country-info__name { color: var(--accent-text); font-size: var(--fs-h2); }
 
 .vx-facts { display: grid; gap: 1.1rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin: 0; }
+/* Two to a row on phones, so the card is not a long single column. The last fact
+   (the visited cities, a list) takes the whole row. */
+@media (max-width: 575.98px) {
+  .vx-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .vx-fact:last-child { grid-column: 1 / -1; }
+}
 .vx-fact dt { margin-bottom: 0.2rem; color: var(--muted); font: 600 0.75rem/1.4 var(--ff-mono); letter-spacing: 0.1em; text-transform: uppercase; }
 .vx-fact dd { margin: 0; font-family: var(--ff-mono); font-size: 1rem; line-height: 1.5; }
 
