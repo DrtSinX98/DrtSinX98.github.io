@@ -17,6 +17,7 @@ import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import CountryInfo from './CountryInfo';
 import RichText from './RichText';
 import PageHero from './ui/PageHero';
+import SectionHead from './ui/SectionHead';
 import { Reveal } from './motion/Reveal';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -181,17 +182,30 @@ function InteractiveGlobe({ setSelectedCountry, countries, content }) {
     }
   };
 
+  const total = Number(content.totalCountries) || 195;
+  const share = Math.min(100, Math.round((countries.length / total) * 100));
+
   return (
     <div className="vx-globe vx-card">
-      <div className="vx-globe__head">
-        <p className="vx-stat" aria-label={`${countries.length} of ${content.totalCountries} countries visited`}>
+      <div className="vx-globe__info">
+        <p className="vx-mono-label">Countries visited</p>
+        <p className="vx-stat" aria-label={`${countries.length} of ${total} countries visited`}>
           <span className="vx-stat__num">{countries.length}</span>
-          <span className="vx-stat__of">/ {content.totalCountries}</span>
+          <span className="vx-stat__of">/ {total}</span>
         </p>
-        <h2 className="vx-globe__headline">
-          <span className="pink">{content.mapHeadline}</span>
-          <span className="vx-globe__subline">{content.mapSubline}</span>
-        </h2>
+        <div className="vx-meter" role="img" aria-label={`${share}% of the world`}>
+          <span style={{ width: `${Math.max(share, 2)}%` }} />
+        </div>
+        <p className="vx-globe__sub">{content.mapSubline}</p>
+
+        <ul className="vx-legend" aria-hidden="true">
+          <li><i className="is-visited" /> Visited</li>
+          <li><i /> Still to go</li>
+        </ul>
+        {/* The interactions are invisible, so say what they are. */}
+        <p className="vx-globe__hint">
+          <Hand size={14} aria-hidden="true" /> Drag to rotate · double-click to zoom
+        </p>
       </div>
 
       <div className="vx-globe__stage">
@@ -239,40 +253,56 @@ function InteractiveGlobe({ setSelectedCountry, countries, content }) {
         </div>
       </div>
 
-      {/* The interactions are invisible, so say what they are. */}
-      <p className="vx-globe__hint">
-        <Hand size={14} aria-hidden="true" /> Drag to rotate · double-click to zoom
-      </p>
       <Tooltip id="map-tooltip" className="map-tooltip" />
     </div>
   );
 }
 
 /**
- * Every visited country, always visible. This replaces a modal that was hidden
- * behind a tap on the counter — nothing suggested the counter was a button, so
- * the only keyboard- and screen-reader-friendly way to pick a country was
- * buried. Lives outside the globe so it doesn't re-render with each frame.
+ * Every visited country, always visible, grouped by continent in the same
+ * hairline-row panel the About page uses for its tech stack. (This replaces a
+ * modal that was hidden behind a tap on the counter — nothing suggested the
+ * counter was a button.) Lives outside the globe so it doesn't re-render with
+ * each frame.
  */
 const CountryChips = memo(({ countries, onSelect, title }) => {
-  const sorted = useMemo(
-    () => [...countries].sort((a, b) => a.name.localeCompare(b.name)),
-    [countries],
-  );
+  const groups = useMemo(() => {
+    const by = new Map();
+    [...countries]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((c) => {
+        // Transcontinental countries are stored as "Europe/Asia"; file them under the first.
+        const key = (c.continent || 'Elsewhere').split('/')[0].trim();
+        by.set(key, [...(by.get(key) || []), c]);
+      });
+    return [...by.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+  }, [countries]);
 
   return (
-    <section className="vx-countries" aria-labelledby="visited-title">
-      <h2 id="visited-title" className="vx-mono-label">{title}</h2>
-      <ul className="vx-countries__list">
-        {sorted.map((country) => (
-          <li key={country.name}>
-            <button type="button" className="vx-country" onClick={() => onSelect(country.name)}>
-              <span className="vx-country__flag" aria-hidden="true">{country.flag || '🌍'}</span>
-              {country.name}
-            </button>
-          </li>
+    <section aria-labelledby="visited-title">
+      <SectionHead id="visited-title" index="02" icon="mapMarker" title={title}>
+        <span className="vx-count">{countries.length}</span>
+      </SectionHead>
+      <div className="vx-card vx-skills">
+        {groups.map(([continent, list]) => (
+          <div key={continent} className="vx-skillrow">
+            <h3 className="vx-skillrow__title">
+              <span className="vx-skillrow__icon vx-skillrow__icon--num" aria-hidden="true">{list.length}</span>
+              {continent}
+            </h3>
+            <ul className="vx-countries__list">
+              {list.map((country) => (
+                <li key={country.name}>
+                  <button type="button" className="vx-country" onClick={() => onSelect(country.name)}>
+                    <span className="vx-country__flag" aria-hidden="true">{country.flag || '🌍'}</span>
+                    {country.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 });
@@ -381,7 +411,10 @@ function Gallery({ content = {}, countries = [], galleries = {}, illustration = 
           </>
         ) : (
           <>
-            <InteractiveGlobe setSelectedCountry={setSelectedCountry} countries={countries} content={content} />
+            <section aria-labelledby="map-title">
+              <SectionHead id="map-title" index="01" icon="globe" title={content.mapHeadline || 'Explore the world through my lens.'} />
+              <InteractiveGlobe setSelectedCountry={setSelectedCountry} countries={countries} content={content} />
+            </section>
             <CountryChips
               countries={countries}
               onSelect={setSelectedCountry}

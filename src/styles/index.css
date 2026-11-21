@@ -106,8 +106,8 @@
   --shadow-float: 0 10px 32px rgb(48 25 52 / 0.14);
 
   /* the always-dark terminal and the globe */
-  --globe-ocean: var(--surface-1);
-  --globe-land: color-mix(in srgb, var(--ink) 16%, var(--surface-1));
+  --globe-ocean: color-mix(in srgb, var(--accent) 9%, var(--surface-1));
+  --globe-land: color-mix(in srgb, var(--ink) 15%, var(--surface-1));
 
   .pfp-dark { display: none; }
 }
@@ -133,8 +133,8 @@
 
   --shadow-float: 0 12px 36px rgb(0 0 0 / 0.5);
 
-  --globe-ocean: var(--surface-1);
-  --globe-land: color-mix(in srgb, var(--ink) 18%, var(--surface-1));
+  --globe-ocean: color-mix(in srgb, var(--accent) 9%, var(--surface-1));
+  --globe-land: color-mix(in srgb, var(--ink) 22%, var(--surface-1));
 
   .pfp-light { display: none; }
 }
