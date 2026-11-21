@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import { presetTheme, resolveTheme } from '@/lib/themePresets';
+import { sweep } from '@/lib/themeMorph';
 
 const ThemeContext = createContext({
   theme: 'light',
@@ -77,12 +78,15 @@ export default function ThemeProvider({
     document.documentElement.setAttribute('data-bs-theme', initialTheme);
   }, [dayStartHour, nightStartHour]);
 
+  // Light <-> dark, as a diagonal sweep (lib/themeMorph.js). The next mode is read
+  // from the page itself, so it is right even when the click comes before React has
+  // caught up, and the whole change happens inside the transition's callback.
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === 'light' ? 'dark' : 'light';
+    sweep(() => {
+      const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-bs-theme', next);
       sessionStorage.setItem('darkModeManual', next);
-      return next;
+      flushSync(() => setTheme(next));
     });
   }, []);
 
